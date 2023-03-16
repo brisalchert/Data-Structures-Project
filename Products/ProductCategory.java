@@ -11,4 +11,9 @@ public enum ProductCategory {
   ProductCategory(TypeConstructor constructor){
       this.constructor = constructor;
   }
+
+  public TypeConstructor getConstructor(){
+      return this.constructor;
+  }
+
 }

@@ -2,7 +2,7 @@ package Products;
 
 public class ProductPlush extends Product{
 
-  public ProductPlush(long id, double price, String title) {
+  public ProductPlush(int id, double price, String title) {
     super(ProductCategory.Plush, id, price, title);
   }
 }

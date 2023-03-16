@@ -2,13 +2,15 @@ package Products;// Represent a single product. This is the base class for all t
 import java.util.Date;
 public abstract class Product {
     private double price; // price of the product
+    private ProductCategory type;
     private String title; // title of the product
     private Date listingDate; // when the product first brought to the inventory
-    private long id; // unique id
+    private int id; // unique id
 
 
-  public Product(ProductCategory product, long id, double price, String title){
+  public Product(ProductCategory type, int id, double price, String title){
         this.price = price;
+        this.type = type;
         this.title = title;
         this.listingDate = new Date();
         this.id = id;
@@ -28,9 +30,17 @@ public abstract class Product {
     return listingDate;
   }
 
-  public long getId() {
+  public int getId() {
         return id;
     }
+
+  public ProductCategory getType(){
+      return type;
+  }
+
+  public String toString(){
+      return  "Type: " + type +",Title: " + title + ",Id: " + id;
+  }
 
   //mutators ------------------------------------------------------------
 
