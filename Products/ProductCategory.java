@@ -8,10 +8,18 @@ public enum ProductCategory {
 
   private TypeConstructor constructor;
 
+    /**
+     * Constructs a Product type
+     * @param constructor method to construct Product of type
+     */
   ProductCategory(TypeConstructor constructor){
       this.constructor = constructor;
   }
 
+    /**
+     * returns the constructor method for type
+     * @return constructor method for object of type
+     */
   public TypeConstructor getConstructor(){
       return this.constructor;
   }
