@@ -8,8 +8,9 @@ import java.util.Random;
 public class Catalog {
 
     private final int MAX_SIZE;
-    HashMap<Integer, Product> map;
-    int[] sizePerType = new int[ProductCategory.values().length];
+    private HashMap<Integer, Product> catalog;
+    private int[] sizePerType = new int[ProductCategory.values().length]; //ordinal value represents index in array that stores
+                                                                          //the size of the catalog for each type of product
 
     /**
      * Constructs a Catalog
@@ -17,9 +18,9 @@ public class Catalog {
      */
     public Catalog(int maxSize){
         this.MAX_SIZE = maxSize;
-        this.map = new HashMap<>(MAX_SIZE);
-        //fill sizePerType with 0
-        for(int i : sizePerType){
+        this.catalog = new HashMap<>(MAX_SIZE);
+
+        for(int i : sizePerType){ //fill with zeros
             i = 0;
         }
     }
@@ -29,7 +30,7 @@ public class Catalog {
      * @return number of Products in catalog
      */
     public int getSize(){
-        return map.size();
+        return catalog.size();
     }
 
     /**
@@ -51,13 +52,13 @@ public class Catalog {
         Random random = new Random();
         int id = random.nextInt(MAX_SIZE);
 
-        if(map.size() == 0)
-            map.put(id, type.getConstructor().apply(id, price, title));
+        if(catalog.size() == 0)
+            catalog.put(id, type.getConstructor().apply(id, price, title));
         else {
-            while (map.containsKey(id)) {
+            while (catalog.containsKey(id)) {
                 id = random.nextInt(MAX_SIZE);
             }
-            map.put(id, type.getConstructor().apply(id, price, title));
+            catalog.put(id, type.getConstructor().apply(id, price, title));
         }
         sizePerType[type.ordinal()]++;
     }
@@ -69,17 +70,19 @@ public class Catalog {
      */
     public Product removeProduct(int id){
         Product removedProd = null;
-        if(map.containsKey(id)){
-            removedProd = map.get(id);
-            map.remove(id);
+        if(catalog.containsKey(id)){
+            removedProd = catalog.get(id);
+            catalog.remove(id);
             sizePerType[removedProd.getType().ordinal()]--;
         }
      return removedProd;
     }
 
+    /**
+     * Returns the catalog for the shop
+     * @return hashmap representing catalog for shop
+     */
     public HashMap<Integer, Product> getCatalog(){
-        return map;
+        return catalog;
     }
-
-
 }
