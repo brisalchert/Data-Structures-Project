@@ -2,7 +2,7 @@ package Products;
 
 public class ProductShirt extends Product{
 
-  public ProductShirt(double price) {
-    super(price, ProductCategory.Shirt);
+  public ProductShirt(long id, double price, String title) {
+    super(ProductCategory.Shirt, id, price, title);
   }
 }
