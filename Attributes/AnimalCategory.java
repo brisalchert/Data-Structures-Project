@@ -10,16 +10,16 @@ public enum AnimalCategory implements Attribute {
     private HashSet<Integer> set;
 
     /**
-     * Constructs a Product type
-     * @param set method to construct Product of type
+     * sets a hashset for the animal type
+     * @param set hashset for animal of type
      */
     AnimalCategory(HashSet<Integer> set){
         this.set = set;
     }
 
     /**
-     * returns the constructor method for type
-     * @return set of ids with this attribute
+     * returns the hashset for type
+     * @return hashset of ids with this attribute
      */
     public HashSet<Integer> getSet(){
         return this.set;
