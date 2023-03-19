@@ -11,7 +11,7 @@ public class main {
     public static void main(String[] args) {
         Catalog catalog = new Catalog(100);
         LoadCatalog test = new LoadCatalog(catalog);
-        Attribute[] attributes = {SizeCategory.Medium, ColorCategory.Red};
+        Attribute[] attributes = {SizeCategory.Medium};
 
         test.load();
 
