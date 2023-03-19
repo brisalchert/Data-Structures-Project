@@ -1,4 +1,6 @@
 package Products;// Represent a single product. This is the base class for all the product types
+import Attributes.Attribute;
+
 import java.util.Date;
 
 public abstract class Product {
@@ -65,6 +67,8 @@ public abstract class Product {
   public ProductCategory getType(){
       return type;
   }
+
+  public abstract Attribute[] getAttributes();
 
   /**
    * string representation of Catalog
