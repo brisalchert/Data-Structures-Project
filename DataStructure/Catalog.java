@@ -6,35 +6,30 @@ import java.util.*;
 
 public class Catalog {
 
-    private final int MAX_SIZE;
-    private HashSet<Integer> ids;
-//    private HashMap<Integer, Product> catalog;
-//    private int[] sizePerType = new int[ProductCategory.values().length]; //ordinal value represents index in array that stores
-//                                                                          //the size of the catalog for each type of product
+    private final int MAX_SIZE; //max size of catalog
+    private HashSet<Integer> ids; //ids in catalog
 
     /**
      * Constructs a Catalog
      * @param maxSize maximum size of catalog
      */
-//    public Catalog(int maxSize){
-//        this.MAX_SIZE = maxSize;
-//        this.catalog = new HashMap<>(MAX_SIZE);
-//
-//        for(int i : sizePerType){ //fill with zeros
-//            i = 0;
-//        }
-//    }
     public Catalog(int maxSize){
         this.MAX_SIZE = maxSize;
+        this.ids = new HashSet<Integer>(MAX_SIZE);
+    }
+
+    /**
+     * Returns maxsize of catalog
+     * @return maxsize of catalog
+     */
+    public int getMAX_SIZE(){
+        return MAX_SIZE;
     }
 
     /**
      * Returns size of catalog
      * @return number of Products in catalog
      */
-//    public int getSize(){
-//        return catalog.size();
-//    }
     public  int getSize(){
         int result = 0;
         for(ProductCategory type: ProductCategory.values()){
@@ -48,9 +43,6 @@ public class Catalog {
      * @param type type of product
      * @return
      */
-//    public int getSize(ProductCategory type){
-//        return sizePerType[type.ordinal()];
-//    }
     public int getSize(ProductCategory type){
         return type.getHashMap().size();
     }
@@ -68,7 +60,7 @@ public class Catalog {
         Random random = new Random();
         int id = random.nextInt(MAX_SIZE*2);
 
-        if (ids.size() != 0) {
+        if (ids != null) {
             while (ids.contains(id)) {
                 id = random.nextInt(MAX_SIZE * 2);
             }
@@ -102,25 +94,14 @@ public class Catalog {
      return removedProd;
     }
 
-    public LinkedList<Integer> getByAtt(Attribute[] attributes){
-        LinkedList<Integer> results = null;
-        for(Integer id : ids){
-            boolean match = true;
-            for(Attribute attribute : attributes){
-                if(!attribute.getSet().contains(id)){
-                    match = false;
-                }
-            }
-
-            if(match){
-                results.add(id);
-            }
-        }
-        return results;
-    }
-
-    public LinkedList<Integer> getByTypeAndAtt(ProductCategory type, Attribute[] attributes){
-        LinkedList<Integer> results = null;
+    /**
+     * Returns a list of the products type that have the attributes
+     * @param attributes attributes to sort by
+     * @param type type of product to sort by
+     * @return list of product  matching the attributes of type
+     */
+    public LinkedList<Product> getByAtt(ProductCategory type, Attribute[] attributes){
+        LinkedList<Product> results = new LinkedList<Product>();
         for(Integer id : type.getHashMap().keySet()){
             boolean match = true;
             for(Attribute attribute : attributes){
@@ -130,10 +111,12 @@ public class Catalog {
             }
 
             if(match){
-                results.add(id);
+                results.add(type.getHashMap().get(id));
             }
         }
         return results;
     }
+
+   //need method that returns iterator of the whole catalog without having to copy the product type into a set
 
 }

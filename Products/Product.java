@@ -1,6 +1,7 @@
 package Products;// Represent a single product. This is the base class for all the product types
 import Attributes.Attribute;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public abstract class Product {
@@ -9,6 +10,7 @@ public abstract class Product {
     private String title;           // title of the product
     private Date listingDate;       // when the product first brought to the inventory
     private int id;                 // unique id
+    private Attribute[] attributes; // Array of attributes
 
 
   /**
@@ -18,12 +20,13 @@ public abstract class Product {
   * @param price cost of Product in dollars
   * @param title display name of Product
   */
-  public Product(ProductCategory type, int id, double price, String title){
+  public Product(ProductCategory type, int id, double price, String title, Attribute[] attributes){
         this.price = price;
         this.type = type;
         this.title = title;
         this.listingDate = new Date();
         this.id = id;
+        this.attributes = attributes;
   }
 
   //accessors ------------------------------------------------------------
@@ -68,14 +71,21 @@ public abstract class Product {
       return type;
   }
 
-  public abstract Attribute[] getAttributes();
+  /**
+   * Returns attributes of product
+   * @return array of attributes
+   */
+  public Attribute[] getAttributes(){
+      return attributes;
+  }
 
   /**
    * string representation of Catalog
    * @return string representation of Catalog
    */
   public String toString(){
-      return  "Type: " + type +",Title: " + title + ",Id: " + id;
+      String result = "";
+      return  "Type: " + type + " ,Id: " + id + " ,Att: " + Arrays.toString(attributes);
   }
 
   //mutators ------------------------------------------------------------
