@@ -98,7 +98,6 @@ public class Catalog {
                 attribute.getSet().remove(id);
             }
             ids.remove(id);
-            sizePerType[removedProd.getType().ordinal()]--;
         }
      return removedProd;
     }
