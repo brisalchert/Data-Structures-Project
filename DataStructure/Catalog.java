@@ -117,6 +117,12 @@ public class Catalog {
         return results;
     }
 
-   //need method that returns iterator of the whole catalog without having to copy the product type into a set
+    public Product get(Integer id){
+        Product result = null;
+        for(ProductCategory type : ProductCategory.values()){
+            result = type.getHashMap().get(id);
+        }
+        return result;
+    }
 
 }
