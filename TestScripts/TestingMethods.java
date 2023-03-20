@@ -8,12 +8,12 @@ import DataStructure.Catalog;
 import Products.ProductCategory;
 import java.util.Random;
 
-public class LoadCatalog {
+public class TestingMethods {
     Catalog catalog;
     int size = 0;
     Random random = new Random();
 
-    public LoadCatalog(Catalog catalog){
+    public TestingMethods(Catalog catalog){
         this.catalog = catalog;
         size = catalog.getSize();
     }
@@ -26,13 +26,13 @@ public class LoadCatalog {
             Attribute color = ColorCategory.values()[random.nextInt(ColorCategory.values().length)];
             Attribute animal = AnimalCategory.values()[random.nextInt(AnimalCategory.values().length)];
 
-            if (type == ProductCategory.Plush) {
-                Attribute[] attributes = {size, color, animal};
-                catalog.addProduct(type, price, "", attributes);
+            Attribute[] attributes;
+            if(type == ProductCategory.Plush) {
+                attributes = new Attribute[]{size, color, animal};
             } else {
-                Attribute[] attributes = {size, color};
-                catalog.addProduct(type, price, "", attributes);
+                attributes = new Attribute[]{size, color};
             }
+            catalog.addProduct(type, price, "", attributes);
         }
     }
 }

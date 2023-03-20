@@ -1,17 +1,16 @@
-import Attributes.AnimalCategory;
 import Attributes.Attribute;
 import Attributes.ColorCategory;
 import Attributes.SizeCategory;
 import DataStructure.Catalog;
 import Products.Product;
 import Products.ProductCategory;
-import TestScripts.LoadCatalog;
+import TestScripts.TestingMethods;
 
 public class main {
     public static void main(String[] args) {
-        Catalog catalog = new Catalog(100);
-        LoadCatalog test = new LoadCatalog(catalog);
-        Attribute[] attributes = {SizeCategory.Medium};
+        Catalog catalog = new Catalog(1000);
+        TestingMethods test = new TestingMethods(catalog);
+        Attribute[] attributes = {SizeCategory.Medium, ColorCategory.Red};
 
         test.load();
 
@@ -23,7 +22,8 @@ public class main {
 
         System.out.println("##########################################################");
 
-        for(Product product : catalog.getByAtt(ProductCategory.Plush, attributes)){
+
+        for(Product product : catalog.getByAtt(attributes)){
             System.out.println(product.toString());
         }
     }
