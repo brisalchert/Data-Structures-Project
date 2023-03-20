@@ -100,7 +100,7 @@ public class Catalog {
      * @param type type of product to sort by
      * @return list of product  matching the attributes of type
      */
-    public LinkedList<Product> getByAtt(ProductCategory type, Attribute[] attributes){
+    public LinkedList<Product> getByAtt(ProductCategory type, Attribute[] attributes){ //0(n*k) where n is # of attributes, k is # of ids
         LinkedList<Product> results = new LinkedList<Product>();
         for(Integer id : type.getHashMap().keySet()){
             boolean match = true;
@@ -117,10 +117,39 @@ public class Catalog {
         return results;
     }
 
-    public Product get(Integer id){
+    /**
+     * Returns a list of the products that have the attributes
+     * @param attributes attributes to sort by
+     * @return list of product matching the attributes
+     */
+    public LinkedList<Product> getByAtt(Attribute[] attributes){ //0(n*k) where n is # of attributes, k is # of ids
+        LinkedList<Product> results = new LinkedList<Product>();
+        for(Integer id : ids){
+            boolean match = true;
+            for(Attribute attribute : attributes){
+                if(!attribute.getSet().contains(id)){
+                    match = false;
+                }
+            }
+
+            if(match){
+                results.add(get(id));
+            }
+        }
+        return results;
+    }
+
+    /**
+     * Gets the product with the matching id
+     * @param id id of product to get
+     * @return product with id equal to id
+     */
+    public Product get(Integer id){ //0(1)
         Product result = null;
-        for(ProductCategory type : ProductCategory.values()){
-            result = type.getHashMap().get(id);
+        for(ProductCategory type : ProductCategory.values()){ //always 4 loops -> constant
+           if(type.getHashMap().containsKey(id)){
+               result = type.getHashMap().get(id);
+           }
         }
         return result;
     }
