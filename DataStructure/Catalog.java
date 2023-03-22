@@ -5,9 +5,9 @@ import Products.ProductCategory;
 import java.util.*;
 
 public class Catalog {
-
     private final int MAX_SIZE; //max size of catalog
-    private HashSet<Integer> ids; //ids in catalog
+    private HashMap<Integer, Product> catalog;
+    private int[] sizePerType = new int[ProductCategory.values().length];
 
     /**
      * Constructs a Catalog
@@ -15,7 +15,10 @@ public class Catalog {
      */
     public Catalog(int maxSize){
         this.MAX_SIZE = maxSize;
-        this.ids = new HashSet<Integer>(MAX_SIZE);
+        this.catalog = new HashMap<>(MAX_SIZE);
+        for(int i : sizePerType){
+            sizePerType[i] = 0;
+        }
     }
 
     /**
@@ -30,12 +33,8 @@ public class Catalog {
      * Returns size of catalog
      * @return number of Products in catalog
      */
-    public  int getSize(){
-        int result = 0;
-        for(ProductCategory type: ProductCategory.values()){
-            result += type.getHashMap().size();
-        }
-        return result;
+    public  int getSize(){ //O(1)
+        return catalog.size();
     }
 
     /**
@@ -43,8 +42,8 @@ public class Catalog {
      * @param type type of product
      * @return
      */
-    public int getSize(ProductCategory type){
-        return type.getHashMap().size();
+    public int getSize(ProductCategory type){ //O(1)
+        return sizePerType[type.ordinal()];
     }
 
     /**
@@ -53,23 +52,23 @@ public class Catalog {
      * @param price price in dollars
      * @param title title representing the product
      */
-    public void addProduct(ProductCategory type, double price, String title, Attribute[] attributes){
+    public void addProduct(ProductCategory type, double price, String title, Attribute[] attributes){ //O(1)
         if(getSize() == MAX_SIZE){
             return;
         }
         Random random = new Random();
         int id = random.nextInt(MAX_SIZE*2);
 
-        if (ids != null) {
-            while (ids.contains(id)) {
+        if (catalog.size() != 0) {
+            while (catalog.containsKey(id)) {
                 id = random.nextInt(MAX_SIZE * 2);
             }
         }
-        ids.add(id);
-        type.getHashMap().put(id, type.getConstructor().apply(id, price, title, attributes));
+        catalog.put(id, type.getConstructor().apply(id, price, title, attributes));
         for(Attribute attribute : attributes){ //add to Attribute sets
             attribute.getSet().add(id);
         }
+        sizePerType[type.ordinal()]++;
     }
 
     /**
@@ -77,21 +76,17 @@ public class Catalog {
      * @param id id number of product to be removed
      * @return removed product
      */
-    public Product removeProduct(int id){
+    public Product removeProduct(int id){ //O(1)
         Product removedProd = null;
-        if(ids.contains(id)){
-            for(ProductCategory type: ProductCategory.values()){//remove from product set of id type
-                if(type.getHashMap().containsKey(id)){
-                    removedProd = type.getHashMap().get(id);
-                }
-            }
-
-            for(Attribute attribute : removedProd.getAttributes()){ //remove from Attribute sets
-                attribute.getSet().remove(id);
-            }
-            ids.remove(id);
+        if(catalog.containsKey(id)){
+            removedProd = catalog.get(id);
+            sizePerType[removedProd.getType().ordinal()]--;
         }
-     return removedProd;
+
+        for(Attribute attribute : removedProd.getAttributes()){ //remove from Attribute sets
+                attribute.getSet().remove(id);
+        }
+        return removedProd;
     }
 
     /**
@@ -102,16 +97,19 @@ public class Catalog {
      */
     public LinkedList<Product> getByAtt(ProductCategory type, Attribute[] attributes){ //0(n*k) where n is # of attributes, k is # of ids
         LinkedList<Product> results = new LinkedList<Product>();
-        for(Integer id : type.getHashMap().keySet()){
+        for(Integer id : catalog.keySet()){
             boolean match = true;
-            for(Attribute attribute : attributes){
-                if(!attribute.getSet().contains(id)){
-                    match = false;
+            if(catalog.get(id).getType() == type){
+                for(Attribute attribute : attributes){
+                    if(!attribute.getSet().contains(id)){
+                        match = false;
+                    }
                 }
-            }
+            }else
+                match = false;
 
             if(match){
-                results.add(type.getHashMap().get(id));
+                results.add(catalog.get(id));
             }
         }
         return results;
@@ -124,7 +122,7 @@ public class Catalog {
      */
     public LinkedList<Product> getByAtt(Attribute[] attributes){ //0(n*k) where n is # of attributes, k is # of ids
         LinkedList<Product> results = new LinkedList<Product>();
-        for(Integer id : ids){
+        for(Integer id : catalog.keySet()){
             boolean match = true;
             for(Attribute attribute : attributes){
                 if(!attribute.getSet().contains(id)){
@@ -145,13 +143,15 @@ public class Catalog {
      * @return product with id equal to id
      */
     public Product get(Integer id){ //0(1)
-        Product result = null;
-        for(ProductCategory type : ProductCategory.values()){ //always 4 loops -> constant
-           if(type.getHashMap().containsKey(id)){
-               result = type.getHashMap().get(id);
-           }
-        }
-        return result;
+        return catalog.get(id);
+    }
+
+    /**
+     * returns iterable list of products in catalog
+     * @return iterable list of products in catalog
+     */
+    public Collection<Product> values(){
+        return catalog.values();
     }
 
 }

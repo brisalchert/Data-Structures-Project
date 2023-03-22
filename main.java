@@ -8,22 +8,22 @@ import TestScripts.TestingMethods;
 
 public class main {
     public static void main(String[] args) {
-        Catalog catalog = new Catalog(1000);
+        Catalog catalog = new Catalog(100);
         TestingMethods test = new TestingMethods(catalog);
-        Attribute[] attributes = {SizeCategory.Medium, ColorCategory.Red};
+        Attribute[] attributes = {};
 
         test.load();
 
-        for (ProductCategory type : ProductCategory.values()) {
-            for (Product product : type.getHashMap().values()){
-                System.out.println(product.toString());
-            }
+
+        for (Product product : catalog.values()){
+            System.out.println(product.toString());
         }
+
 
         System.out.println("##########################################################");
 
 
-        for(Product product : catalog.getByAtt(attributes)){
+        for(Product product : catalog.getByAtt(ProductCategory.Hat ,attributes)){
             System.out.println(product.toString());
         }
     }
