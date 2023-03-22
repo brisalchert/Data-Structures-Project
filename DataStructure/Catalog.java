@@ -7,7 +7,7 @@ import java.util.*;
 public class Catalog {
     private final int MAX_SIZE; //max size of catalog
     private HashMap<Integer, Product> catalog;
-    private int[] sizePerType = new int[ProductCategory.values().length];
+    private int[] sizePerType = new int[ProductCategory.values().length]; //size of type is stored at index equal to types ordinal
 
     /**
      * Constructs a Catalog
@@ -15,7 +15,7 @@ public class Catalog {
      */
     public Catalog(int maxSize){
         this.MAX_SIZE = maxSize;
-        this.catalog = new HashMap<>(MAX_SIZE);
+        this.catalog = new HashMap<Integer, Product>(MAX_SIZE);
         for(int i : sizePerType){
             sizePerType[i] = 0;
         }

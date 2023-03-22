@@ -12,19 +12,17 @@ public class main {
         TestingMethods test = new TestingMethods(catalog);
         Attribute[] attributes = {};
 
-        test.load();
+        test.load(); //fill Catalog
 
-
-        for (Product product : catalog.values()){
+        for (Product product : catalog.values()){ //print out catalog
             System.out.println(product.toString());
         }
-
 
         System.out.println("##########################################################");
 
-
-        for(Product product : catalog.getByAtt(ProductCategory.Hat ,attributes)){
+        for(Product product : catalog.getByAtt(ProductCategory.Shirt ,attributes)){ //print out searched products
             System.out.println(product.toString());
         }
+        System.out.println(catalog.getSize(ProductCategory.Shirt));
     }
 }
