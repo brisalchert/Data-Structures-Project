@@ -15,8 +15,6 @@ public abstract class Product {
     private Date listingDate;       // when the product first brought to the inventory
     private int id;                 // unique id
     private Attribute[] attributes; // Array of attributes
-    protected static final int MAX_DATE = 1000; // Maximum number of days after Jan 1st 2023 a product can be listed
-    protected static final double MAX_PRICE = 1000; // Maximum price an item may be listed for
 
 
   /**
@@ -38,7 +36,7 @@ public abstract class Product {
         Calendar date = Calendar.getInstance();
         date.setLenient(true);
         date.set(Calendar.YEAR, 2023);
-        date.set(Calendar.DAY_OF_MONTH, (random.nextInt(MAX_DATE)));
+        date.set(Calendar.DAY_OF_MONTH, (random.nextInt(1000)));
         this.listingDate = date.getTime();
   }
 
