@@ -4,7 +4,9 @@ import Attributes.SizeCategory;
 import DataStructure.Catalog;
 import Products.Product;
 import Products.ProductCategory;
+import Products.SortCategory;
 import TestScripts.TestingMethods;
+import java.util.LinkedList;
 
 public class main {
     public static void main(String[] args) {
@@ -20,9 +22,51 @@ public class main {
 
         System.out.println("##########################################################");
 
-        for(Product product : catalog.getByAtt(ProductCategory.Shirt ,attributes)){ //print out searched products
+        LinkedList<Product> searchList = catalog.getByAtt(ProductCategory.Shirt ,attributes);
+
+        for(Product product : searchList){ //print out searched products
             System.out.println(product.toString());
         }
         System.out.println(catalog.getSize(ProductCategory.Shirt));
+
+        System.out.println("##########################################################");
+
+        System.out.println();
+        System.out.println("Searched Products from New to Old:");
+        System.out.println();
+
+        for (Product product : catalog.bucketSort(SortCategory.DateNewToOld, searchList)) {
+            System.out.println(product);
+        }
+
+        System.out.println("##########################################################");
+
+        System.out.println();
+        System.out.println("Searched Products from Old to New:");
+        System.out.println();
+
+        for (Product product : catalog.bucketSort(SortCategory.DateOldToNew, searchList)) {
+            System.out.println(product);
+        }
+
+        System.out.println("##########################################################");
+
+        System.out.println();
+        System.out.println("Searched Products from Most Expensive to Cheapest:");
+        System.out.println();
+
+        for (Product product : catalog.bucketSort(SortCategory.PriceExpensiveToCheap, searchList)) {
+            System.out.println(product);
+        }
+
+        System.out.println("##########################################################");
+
+        System.out.println();
+        System.out.println("Searched Products from Most Cheapest to Most Expensive:");
+        System.out.println();
+
+        for (Product product : catalog.bucketSort(SortCategory.PriceCheapToExpensive, searchList)) {
+            System.out.println(product);
+        }
     }
 }
