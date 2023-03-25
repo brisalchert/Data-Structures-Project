@@ -13,6 +13,7 @@ public abstract class Product {
     private ProductCategory type;   // type of the product
     private String title;           // title of the product
     private Date listingDate;       // when the product first brought to the inventory
+    private int daysAfterMinDay;    // How many days after Jan 1 2023 the product was listed
     private int id;                 // unique id
     private Attribute[] attributes; // Array of attributes
 
@@ -31,12 +32,12 @@ public abstract class Product {
         this.id = id;
         this.attributes = attributes;
 
-        // Set random listing date sometime after Jan 1st, 2023
+        // Generate random listing date sometime after Jan 1st, 2023
         Random random = new Random();
         Calendar date = Calendar.getInstance();
         date.setLenient(true);
         date.set(Calendar.YEAR, 2023);
-        date.set(Calendar.DAY_OF_MONTH, (random.nextInt(1000)));
+        date.set(Calendar.DAY_OF_MONTH, (daysAfterMinDay = random.nextInt(1000)));
         this.listingDate = date.getTime();
   }
 
@@ -64,6 +65,14 @@ public abstract class Product {
   */
   public Date getDate() {
     return listingDate;
+  }
+
+    /**
+     * Returns the number of days after Jan 1 2023 the product was listed
+     * @return the number of days after the minimum date
+     */
+  protected int getDaysAfterMinDay() {
+      return daysAfterMinDay;
   }
 
   /**
