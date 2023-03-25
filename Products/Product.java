@@ -3,7 +3,9 @@ package Products;// Represent a single product. This is the base class for all t
 import Attributes.Attribute;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public abstract class Product {
     private NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();        // Used to format the price
@@ -26,9 +28,16 @@ public abstract class Product {
         this.price = price;
         this.type = type;
         this.title = title;
-        this.listingDate = new Date();
         this.id = id;
         this.attributes = attributes;
+
+        // Set random listing date sometime after Jan 1st, 2023
+        Random random = new Random();
+        Calendar date = Calendar.getInstance();
+        date.setLenient(true);
+        date.set(Calendar.YEAR, 2023);
+        date.set(Calendar.DAY_OF_MONTH, (random.nextInt(1000)));
+        this.listingDate = date.getTime();
   }
 
   //accessors ------------------------------------------------------------
