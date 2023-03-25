@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Catalog {
     private final int MAX_SIZE; //max size of catalog
+    private final int MAX_ID; // Maximum id number for the catalog
     private HashMap<Integer, Product> catalog;
     private int[] sizePerType = new int[ProductCategory.values().length]; //size of type is stored at index equal to types ordinal
 
@@ -15,6 +16,7 @@ public class Catalog {
      */
     public Catalog(int maxSize){
         this.MAX_SIZE = maxSize;
+        this.MAX_ID = maxSize * 2;
         this.catalog = new HashMap<Integer, Product>(MAX_SIZE);
         for(int i : sizePerType){
             sizePerType[i] = 0;
@@ -57,11 +59,11 @@ public class Catalog {
             return;
         }
         Random random = new Random();
-        int id = random.nextInt(MAX_SIZE*2);
+        int id = random.nextInt(MAX_ID);
 
         if (catalog.size() != 0) {
             while (catalog.containsKey(id)) {
-                id = random.nextInt(MAX_SIZE * 2);
+                id = random.nextInt(MAX_ID);
             }
         }
         catalog.put(id, type.getConstructor().apply(id, price, title, attributes));
