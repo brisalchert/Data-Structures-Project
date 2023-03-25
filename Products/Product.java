@@ -1,10 +1,12 @@
 package Products;// Represent a single product. This is the base class for all the product types
-import Attributes.Attribute;
 
+import Attributes.Attribute;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Date;
 
 public abstract class Product {
+    private NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();        // Used to format the price
     private double price;           // price of the product
     private ProductCategory type;   // type of the product
     private String title;           // title of the product
@@ -85,7 +87,7 @@ public abstract class Product {
    */
   public String toString(){
       String result = "";
-      return  "Type: " + type + " ,Id: " + id + " ,Att: " + Arrays.toString(attributes);
+      return  "Type: " + type + ", Id: " + id + ", Att: " + Arrays.toString(attributes) + ", Price: " + currencyFormatter.format(price) + ", Listing Date: " + listingDate;
   }
 
   //mutators ------------------------------------------------------------
