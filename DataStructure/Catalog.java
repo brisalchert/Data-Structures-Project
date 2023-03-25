@@ -2,6 +2,8 @@ package DataStructure;
 import Attributes.Attribute;
 import Products.Product;
 import Products.ProductCategory;
+import Products.SortCategory;
+
 import java.util.*;
 
 public class Catalog {
@@ -156,4 +158,56 @@ public class Catalog {
         return catalog.values();
     }
 
+    public LinkedList<Product> bucketSort(SortCategory sortCategory, LinkedList<Product> list) {
+        int bucketSize = 100;
+        ArrayList<LinkedList<Product>> buckets = new ArrayList<>();
+        int max = (int)sortCategory.getMax(sortCategory) / bucketSize;
+        LinkedList<Product> result = new LinkedList<>();
+
+        // Check if list is trivially sorted
+        if (list.size() < 2) {
+            return list;
+        }
+
+        // Initialize the buckets each with range 5
+        for (int bucketIndex = 0; bucketIndex < (max + 1); bucketIndex++) {
+            buckets.add(new LinkedList<>());
+        }
+
+        // Put list items into their respective buckets
+        for (Product product : list) {
+            int index = (int)sortCategory.getValue(sortCategory, product) / bucketSize;
+            buckets.get(index).add(product);
+        }
+
+        // Sort the buckets individually
+        for (LinkedList<Product> bucket : buckets) {
+            if (bucket.size() > 1) {
+                insertionSortBucket(sortCategory, bucket);
+            }
+        }
+
+        // Recombine the elements of the buckets
+        for (LinkedList<Product> bucket : buckets) {
+            result.addAll(bucket);
+        }
+
+        return result;
+    }
+
+    private void insertionSortBucket(SortCategory sortCategory, LinkedList<Product> list) {
+        for (int listIndex = 0; listIndex < list.size(); listIndex++) {
+            int index = listIndex;
+            while ((index >= 1) && sortCategory.compare(list.get(index), list.get(index - 1)) < 0) {
+                swapBucketValues(list, list.get(index), list.get(index - 1));
+                index--;
+            }
+        }
+    }
+
+    private void swapBucketValues(LinkedList<Product> list, Product prod1, Product prod2) {
+        int prod2Index = list.indexOf(prod2);
+        list.set(list.indexOf(prod1), prod2);
+        list.set(prod2Index, prod1);
+    }
 }
