@@ -56,7 +56,7 @@ public class Catalog {
      * @param price price in dollars
      * @param title title representing the product
      */
-    public void addProduct(ProductCategory type, double price, String title, Attribute[] attributes){ //O(1)
+    public void addProduct(ProductCategory type, double price, int daysAfterMinDay, String title, Attribute[] attributes){ //O(1)
         if(getSize() == MAX_SIZE){
             return;
         }
@@ -68,7 +68,7 @@ public class Catalog {
                 id = random.nextInt(MAX_ID);
             }
         }
-        catalog.put(id, type.getConstructor().apply(id, price, title, attributes));
+        catalog.put(id, type.getConstructor().apply(id, price, daysAfterMinDay, title, attributes));
         for(Attribute attribute : attributes){ //add to Attribute sets
             attribute.getSet().add(id);
         }
