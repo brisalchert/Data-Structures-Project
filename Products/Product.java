@@ -5,7 +5,6 @@ import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 public abstract class Product {
     private NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();        // Used to format the price
@@ -24,20 +23,20 @@ public abstract class Product {
   * @param id value used for identification
   * @param price cost of Product in dollars
   * @param title display name of Product
+  * @param daysAfterMinDay days after Jan 1 2023 the Product was listed
   */
-  public Product(ProductCategory type, int id, double price, String title, Attribute[] attributes){
+  public Product(ProductCategory type, int id, double price, int daysAfterMinDay, String title, Attribute[] attributes){
         this.price = price;
         this.type = type;
         this.title = title;
         this.id = id;
         this.attributes = attributes;
 
-        // Generate random listing date sometime after Jan 1st, 2023
-        Random random = new Random();
+        // Set listingDate
         Calendar date = Calendar.getInstance();
         date.setLenient(true);
         date.set(Calendar.YEAR, 2023);
-        date.set(Calendar.DAY_OF_MONTH, (daysAfterMinDay = random.nextInt(1000)));
+        date.set(Calendar.DAY_OF_MONTH, (this.daysAfterMinDay = daysAfterMinDay));
         this.listingDate = date.getTime();
   }
 
