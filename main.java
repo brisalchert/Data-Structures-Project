@@ -80,25 +80,32 @@ public class main {
 
     private static void search(Catalog catalog, ArrayList<ProductCategory> products, ArrayList<ColorCategory> colors,
                                ArrayList<SizeCategory> sizes, ArrayList<AnimalCategory> animals) {
-        ArrayList<Attribute> attributes = new ArrayList<>();
+        ArrayList<ArrayList<Attribute>> attributeLists = new ArrayList<>();
+        ArrayList<ArrayList<Attribute>> attributeSets = new ArrayList<>();
         LinkedList<Product> searchResults = new LinkedList<>();
 
-        // Add color attributes
-        attributes.addAll(colors);
+        // Add all attribute lists
+        ArrayList<Attribute> colorAttributes = new ArrayList<>(colors);
+        attributeLists.add(colorAttributes);
 
-        // Add size attributes
-        attributes.addAll(sizes);
+        ArrayList<Attribute> sizeAttributes = new ArrayList<>(sizes);
+        attributeLists.add(sizeAttributes);
 
-        // Add animal attributes
-        attributes.addAll(animals);
+        ArrayList<Attribute> animalAttributes = new ArrayList<>(animals);
+        attributeLists.add(animalAttributes);
+
+        // Create all attribute sets (0(1) since the categories are of constant size)
+        getAttributeSets(attributeLists, attributeSets, 0, new ArrayList<>());
 
         System.out.println();
         System.out.println("####################################################################################################");
         System.out.println();
 
-        // Add all products matching the search criteria
+        // Add all products matching the search criteria (0(n * k), where n = number of products, k = number of attributes)
         for (ProductCategory productCategory : products) {
-            searchResults.addAll(catalog.getByAtt(productCategory, attributes));
+            for (ArrayList<Attribute> attributeSet : attributeSets) {
+                searchResults.addAll(catalog.getByAtt(productCategory, attributeSet));
+            }
         }
 
         System.out.println("\t" + searchResults.size() + " results for:");
@@ -119,11 +126,19 @@ public class main {
 
         // Print searched attributes
         System.out.print("\tAttributes: ");
-        Iterator<Attribute> attributeIterator = attributes.iterator();
-        while (attributeIterator.hasNext()) {
-            System.out.print(attributeIterator.next());
-            if (attributeIterator.hasNext()) {
-                System.out.print(", ");
+        Iterator<ArrayList<Attribute>> attributeListIterator = attributeLists.iterator();
+        while (attributeListIterator.hasNext()) {
+            Iterator<Attribute> attributeIterator = attributeListIterator.next().iterator();
+            while (attributeIterator.hasNext()) {
+                System.out.print(attributeIterator.next());
+
+                if (attributeIterator.hasNext()) {
+                    System.out.print(", ");
+                }
+            }
+
+            if (attributeListIterator.hasNext()) {
+                System.out.print("\t");
             }
         }
 
@@ -294,5 +309,34 @@ public class main {
         for (String integer : integers) {
             list.add(Integer.parseInt(integer));
         }
+    }
+
+    private static ArrayList<ArrayList<Attribute>> getAttributeSets(ArrayList<ArrayList<Attribute>> attributeLists, ArrayList<ArrayList<Attribute>> result,
+                                         int attributeListIndex, ArrayList<Attribute> currentAttributeSet) {
+        // If an attribute has been chosen for each category, add the current attribute set
+        if (attributeListIndex == attributeLists.size()) {
+            ArrayList<Attribute> resultSet = new ArrayList<>(currentAttributeSet);
+            result.add(resultSet);
+            return result;
+        }
+
+        // Get the attribute sets for each value of the current attribute
+        if (attributeLists.get(attributeListIndex).isEmpty()) {
+            getAttributeSets(attributeLists, result, attributeListIndex + 1, currentAttributeSet);
+        }
+        else {
+            for (int index = 0; index < attributeLists.get(attributeListIndex).size(); index++) {
+                // Add the current attribute
+                currentAttributeSet.add(attributeLists.get(attributeListIndex).get(index));
+
+                // Add the next attribute
+                getAttributeSets(attributeLists, result, attributeListIndex + 1, currentAttributeSet);
+
+                // Remove the last element from the current attribute set
+                currentAttributeSet.remove(attributeListIndex);
+            }
+        }
+
+        return result;
     }
 }
