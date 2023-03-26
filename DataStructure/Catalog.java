@@ -99,7 +99,7 @@ public class Catalog {
      * @param type type of product to sort by
      * @return list of product  matching the attributes of type
      */
-    public LinkedList<Product> getByAtt(ProductCategory type, Attribute[] attributes){ //0(n*k) where n is # of attributes, k is # of ids
+    public LinkedList<Product> getByAtt(ProductCategory type, ArrayList<Attribute> attributes){ //0(n*k) where n is # of attributes, k is # of ids
         LinkedList<Product> results = new LinkedList<Product>();
         for(Integer id : catalog.keySet()){
             boolean match = true;
@@ -124,7 +124,7 @@ public class Catalog {
      * @param attributes attributes to sort by
      * @return list of product matching the attributes
      */
-    public LinkedList<Product> getByAtt(Attribute[] attributes){ //0(n*k) where n is # of attributes, k is # of ids
+    public LinkedList<Product> getByAtt(ArrayList<Attribute> attributes){ //0(n*k) where n is # of attributes, k is # of ids
         LinkedList<Product> results = new LinkedList<Product>();
         for(Integer id : catalog.keySet()){
             boolean match = true;
