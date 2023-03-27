@@ -1,5 +1,8 @@
 package Products;
+import Attributes.Attribute;
+
 import java.util.HashMap;
+import java.util.HashSet;
 
 public enum ProductCategory {
   Shirt (ProductShirt::new),
@@ -24,4 +27,5 @@ public enum ProductCategory {
   public TypeConstructor getConstructor(){
       return this.constructor;
   }
+
 }

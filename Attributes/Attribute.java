@@ -6,4 +6,6 @@ public interface Attribute {
      * @return ids of products with attribute
      */
     public HashSet<Integer> getSet();
+
+    public String name();
 }

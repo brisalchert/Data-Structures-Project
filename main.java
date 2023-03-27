@@ -18,7 +18,49 @@ public class main {
 
         test.load(); //fill Catalog
 
-        printHome(catalog, input);
+        tokenizeSearch(input.nextLine(), catalog);
+        //printHome(catalog, input);
+
+    }
+
+    public static void tokenizeSearch(String search, Catalog catalog){
+        HashMap<String, Attribute> tokenAtts = new HashMap<>();
+        HashMap<String, ProductCategory> tokenTypes = new HashMap<>();
+        for(Attribute attribute: ColorCategory.values()){
+            tokenAtts.put(attribute.name().toLowerCase(), attribute);
+        }
+        for(Attribute attribute: SizeCategory.values()){
+            tokenAtts.put(attribute.name().toLowerCase(), attribute);
+        }
+        for(Attribute attribute: AnimalCategory.values()){
+            tokenAtts.put(attribute.name().toLowerCase(), attribute);
+        }
+        for(ProductCategory type: ProductCategory.values()){
+            tokenTypes.put(type.name().toLowerCase(), type);
+        }
+        Scanner tokenScan = new Scanner(search);
+
+        ArrayList<Attribute> attributes = new ArrayList<>();
+        ProductCategory type = null;
+        while(tokenScan.hasNext()){
+            String token = tokenScan.next();
+            if(tokenAtts.containsKey(token.toLowerCase())){
+                attributes.add(tokenAtts.get(token.toLowerCase()));
+            }
+            if(tokenTypes.containsKey(token.toLowerCase())){
+                type = tokenTypes.get(token.toLowerCase());
+            }
+        }
+
+        if(type == null){
+            for(Product p : catalog.getByAtt(attributes)){
+                System.out.println(p);
+            }
+        }else{
+            for(Product p : catalog.getByAtt(type, attributes)){
+                System.out.println(p);
+            }
+        }
 
     }
 
