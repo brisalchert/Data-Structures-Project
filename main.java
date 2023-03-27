@@ -8,6 +8,7 @@ import Products.ProductCategory;
 import Products.SortCategory;
 import TestScripts.TestingMethods;
 
+import java.nio.file.LinkPermission;
 import java.util.*;
 
 public class main {
@@ -58,11 +59,52 @@ public class main {
 
                 System.out.println();
 
-                tokenizedSearch(search, catalog);
+                LinkedList<Product> searchResults = tokenizedSearch(search, catalog);
 
                 System.out.println();
                 System.out.println("####################################################################################################");
                 System.out.println();
+
+                System.out.println("\tPlease choose a new action below:");
+                System.out.println();
+                System.out.println("\tSort (Sort the list of searched items\n\tSearch (New query)\n\tHome (Return to the homepage)");
+                System.out.println();
+                System.out.println("####################################################################################################");
+                System.out.println();
+                System.out.print("\tEnter an action: ");
+
+                action = input.nextLine();
+                searchAction(catalog, action);
+
+            }
+        }
+    }
+
+    /**
+     * Performs the post-search action input by the user
+     * @param catalog the catalog of products
+     * @param action the user's chosen action
+     */
+    private static void searchAction(Catalog catalog, String action) {
+        Scanner input = new Scanner(System.in);
+
+        switch (action.toLowerCase()) {
+            case "sort" -> {
+                System.out.println();
+                System.out.println("####################################################################################################");
+                System.out.println();
+                System.out.println("\tChoose a sort criterion below:");
+                System.out.println();
+                System.out.println("\tPriceMin (Price Ascending)\n\tPriceMax (Price Descending)\n\tDateOld (Listing Date Ascending)\n\tDateNew (Listing Date Descending)");
+                System.out.println();
+                System.out.println("####################################################################################################");
+                System.out.println();
+                System.out.print("\tEnter an action: ");
+
+                action = input.nextLine();
+            }
+            case "search" -> {
+                homeAction(catalog, "search");
             }
         }
     }
@@ -212,22 +254,6 @@ public class main {
         }
 
         return searchResults;
-    }
-
-    private static void searchAction(int action) {
-        switch (action) {
-            case 0 -> {
-                System.out.println();
-                System.out.println("####################################################################################################");
-                System.out.println();
-                System.out.println("\tChoose a sort criterion below:");
-                System.out.println();
-                System.out.println("\tPrice Ascending (0)\n\tPrice Descending (1)\n\tListing Date Ascending (2)\n\tListing Date Descending (3)");
-                System.out.println();
-                System.out.println("####################################################################################################");
-                System.out.println();
-            }
-        }
     }
 
     /**
