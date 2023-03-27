@@ -18,9 +18,53 @@ public class main {
 
         test.load(); //fill Catalog
 
-        tokenizedSearch(input.nextLine(), catalog);
-        //printHome(catalog, input);
+        printHome(catalog);
+    }
 
+    /**
+     * Prints the home page of the clothing store
+     * @param catalog the catalog of products in the store
+     */
+    public static void printHome(Catalog catalog) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println();
+        System.out.println("####################################################################################################"); // 100 chars
+        System.out.println();
+        System.out.println("\tWelcome to the clothing store!");
+        System.out.println("\tPlease choose an action below:");
+        System.out.println();
+        System.out.println("\tSearch (Search the catalog)\n\tLogin (Login as an administrator)");
+        System.out.println();
+        System.out.println("####################################################################################################");
+        System.out.println();
+        System.out.print("\tEnter an action: ");
+
+        String action = input.nextLine();
+        homeAction(catalog, action);
+    }
+
+    private static void homeAction(Catalog catalog, String action) {
+        Scanner input = new Scanner(System.in);
+
+        switch (action.toLowerCase()) {
+            case "search" -> {
+                System.out.println();
+                System.out.println("####################################################################################################");
+                System.out.println();
+
+                System.out.print("\tEnter your search query: ");
+                String search = input.nextLine();
+
+                System.out.println();
+
+                tokenizedSearch(search, catalog);
+
+                System.out.println();
+                System.out.println("####################################################################################################");
+                System.out.println();
+            }
+        }
     }
 
     /**
@@ -112,12 +156,12 @@ public class main {
         }
 
         // Print the number of results
-        System.out.println("Found " + searchResults.size() + " results for the following query:");
+        System.out.println("\tFound " + searchResults.size() + " results for the following query:");
 
         System.out.println();
 
         // Print the searched product categories
-        System.out.print("Products: ");
+        System.out.print("\tProducts: ");
 
         if (types.isEmpty()) {
             System.out.print("All");
@@ -128,7 +172,7 @@ public class main {
                 System.out.print(productCategoryIterator.next());
 
                 if (productCategoryIterator.hasNext()) {
-                    System.out.println(", ");
+                    System.out.print(", ");
                 }
             }
         }
@@ -139,11 +183,11 @@ public class main {
         ArrayList<Attribute> uncategorizedAttributes = new ArrayList<>();
 
         // Generate one list with all the attributes
-        for (ArrayList<Attribute> attributeSet : attributeSets) {
-            uncategorizedAttributes.addAll(attributeSet);
-        }
+        uncategorizedAttributes.addAll(colors);
+        uncategorizedAttributes.addAll(sizes);
+        uncategorizedAttributes.addAll(animals);
 
-        System.out.print("Attributes: ");
+        System.out.print("\tAttributes: ");
 
         if (uncategorizedAttributes.isEmpty()) {
             System.out.print("Any");
@@ -164,54 +208,10 @@ public class main {
 
         // Print search results
         for (Product product : searchResults) {
-            System.out.println(product);
+            System.out.println("\t" + product);
         }
 
         return searchResults;
-    }
-
-    /**
-     * Prints the home page of the clothing store
-     * @param catalog the catalog of products in the store
-     */
-    public static void printHome(Catalog catalog) {
-        Scanner input = new Scanner(System.in);
-
-        System.out.println();
-        System.out.println("####################################################################################################"); // 100 chars
-        System.out.println();
-        System.out.println("\tWelcome to the clothing store!");
-        System.out.println("\tPlease enter an integer to select an action below:");
-        System.out.println();
-        System.out.println("\tSearch Products (0)\n\tLogin as Admin (1)");
-        System.out.println();
-        System.out.println("####################################################################################################");
-        System.out.println();
-        System.out.print("Enter an integer: ");
-
-        // Need to use nextLine() instead of nextInt() otherwise the scanner will malfunction
-        int action = Integer.parseInt(input.nextLine());
-        homeAction(catalog, action);
-    }
-
-    private static void homeAction(Catalog catalog, int action) {
-        Scanner input = new Scanner(System.in);
-
-        switch (action) {
-            case 0 -> {
-                System.out.println();
-                System.out.println("####################################################################################################");
-                System.out.println();
-
-                System.out.print("Enter your search query: ");
-
-                tokenizedSearch(input.nextLine(), catalog);
-
-                System.out.println();
-                System.out.println("####################################################################################################");
-                System.out.println();
-            }
-        }
     }
 
 //    private static void search(Catalog catalog, ArrayList<ProductCategory> products, ArrayList<ColorCategory> colors,
