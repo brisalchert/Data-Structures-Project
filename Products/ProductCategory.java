@@ -1,13 +1,9 @@
 package Products;
-import Attributes.Attribute;
-
-import java.util.HashMap;
-import java.util.HashSet;
 
 public enum ProductCategory {
   Shirt (ProductShirt::new),
   Hat   (ProductHat::new),
-  Pant  (ProductPant::new),
+  Pants(ProductPants::new),
   Plush (ProductPlush::new);
 
   private TypeConstructor constructor;
