@@ -180,7 +180,7 @@ public class main {
             }
 
             if (attributeListIterator.hasNext()) {
-                System.out.print("\t");
+                System.out.print(", ");
             }
         }
 
@@ -375,7 +375,7 @@ public class main {
                 getAttributeSets(attributeLists, result, attributeListIndex + 1, currentAttributeSet);
 
                 // Remove the last element from the current attribute set
-                currentAttributeSet.remove(attributeListIndex);
+                currentAttributeSet.remove(currentAttributeSet.size() - 1);
             }
         }
 
