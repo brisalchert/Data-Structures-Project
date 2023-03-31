@@ -1,7 +1,9 @@
 package DataStructure;
+import Attributes.AnimalCategory;
 import Attributes.Attribute;
 import Products.Product;
 import Products.ProductCategory;
+import Products.ProductPlush;
 import Products.SortCategory;
 
 import java.util.*;
@@ -101,12 +103,23 @@ public class Catalog {
      */
     public LinkedList<Product> getByAtt(ProductCategory type, ArrayList<Attribute> attributes){ //0(n*k) where n is # of ids, k is # of attributes
         LinkedList<Product> results = new LinkedList<Product>();
+        ArrayList<Attribute> animals = new ArrayList<>(Arrays.asList(AnimalCategory.values()));
         for(Integer id : catalog.keySet()){
             boolean match = true;
             if(catalog.get(id).getType() == type){
                 for(Attribute attribute : attributes){
-                    if(!attribute.getSet().contains(id)){
-                        match = false;
+                    if(animals.contains(attribute)) {
+                        // Ignore animal attributes for non-plush products
+                        if(type == ProductCategory.Plush) {
+                            if(!attribute.getSet().contains(id)){
+                                match = false;
+                            }
+                        }
+                    }
+                    else {
+                        if(!attribute.getSet().contains(id)){
+                            match = false;
+                        }
                     }
                 }
             }else
