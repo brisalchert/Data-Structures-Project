@@ -16,17 +16,18 @@ public class main {
         Catalog catalog = new Catalog(100);
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
+        boolean isAdmin = false;
 
         test.load(); //fill Catalog
 
-        printHome(catalog);
+        printHome(catalog, isAdmin);
     }
 
     /**
      * Prints the home page of the clothing store
      * @param catalog the catalog of products in the store
      */
-    public static void printHome(Catalog catalog) {
+    public static void printHome(Catalog catalog, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
 
         System.out.println();
@@ -35,17 +36,24 @@ public class main {
         System.out.println("\tWelcome to the clothing store!");
         System.out.println("\tPlease choose an action below:");
         System.out.println();
-        System.out.println("\tSearch (Search the catalog)\n\tLogin (Login as an administrator)");
+
+        if (isAdmin) {
+            System.out.println("\tSearch (Search the catalog)\n\tEdit (Edit the catalog)");
+        }
+        else {
+            System.out.println("\tSearch (Search the catalog)\n\tLogin (Login as an administrator)");
+        }
+
         System.out.println();
         System.out.println("####################################################################################################");
         System.out.println();
         System.out.print("\tEnter an action: ");
 
         String action = input.nextLine();
-        homeAction(catalog, action);
+        homeAction(catalog, action, isAdmin);
     }
 
-    private static void homeAction(Catalog catalog, String action) {
+    private static void homeAction(Catalog catalog, String action, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
 
         switch (action.toLowerCase()) {
@@ -74,8 +82,38 @@ public class main {
                 System.out.print("\tEnter an action: ");
 
                 action = input.nextLine();
-                searchAction(catalog, action);
+                searchAction(catalog, action, isAdmin);
+            }
+            case "login" -> {
+                if (!isAdmin) {
+                    System.out.println();
+                    System.out.println("####################################################################################################");
+                    System.out.println();
 
+                    System.out.print("\tEnter password: ");
+                    String password = input.nextLine();
+
+                    if (password.equals("password")) {
+                        isAdmin = true;
+                    }
+
+                    System.out.println();
+                    System.out.println("####################################################################################################");
+                    System.out.println();
+                }
+                else {
+                    System.out.println();
+                    System.out.println("User is already an admin.");
+                    System.out.println();
+                }
+
+                printHome(catalog, isAdmin);
+            }
+            default -> {
+                System.out.println();
+                System.out.println("Action not recognized -- please try again.");
+
+                printHome(catalog, isAdmin);
             }
         }
     }
@@ -85,7 +123,7 @@ public class main {
      * @param catalog the catalog of products
      * @param action the user's chosen action
      */
-    private static void searchAction(Catalog catalog, String action) {
+    private static void searchAction(Catalog catalog, String action, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
 
         switch (action.toLowerCase()) {
@@ -104,7 +142,7 @@ public class main {
                 action = input.nextLine();
             }
             case "search" -> {
-                homeAction(catalog, "search");
+                homeAction(catalog, "search", isAdmin);
             }
         }
     }
