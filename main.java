@@ -26,6 +26,7 @@ public class main {
     /**
      * Prints the home page of the clothing store
      * @param catalog the catalog of products in the store
+     * @param isAdmin true if the user is logged in as an administrator
      */
     public static void printHome(Catalog catalog, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
@@ -53,6 +54,12 @@ public class main {
         homeAction(catalog, action, isAdmin);
     }
 
+    /**
+     * Function for handling actions from the home menu
+     * @param catalog the catalog of products
+     * @param action the action selected by the user
+     * @param isAdmin true if the user is logged in as an administrator
+     */
     private static void homeAction(Catalog catalog, String action, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
 
@@ -69,20 +76,7 @@ public class main {
 
                 LinkedList<Product> searchResults = tokenizedSearch(search, catalog);
 
-                System.out.println();
-                System.out.println("####################################################################################################");
-                System.out.println();
-
-                System.out.println("\tPlease choose a new action below:");
-                System.out.println();
-                System.out.println("\tSort (Sort the list of searched items\n\tSearch (New query)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
-                System.out.println();
-                System.out.println("####################################################################################################");
-                System.out.println();
-                System.out.print("\tEnter an action: ");
-
-                action = input.nextLine();
-                searchAction(catalog, action, isAdmin);
+                getSearchAction(catalog, action, isAdmin);
             }
             case "login" -> {
                 if (!isAdmin) {
@@ -103,7 +97,7 @@ public class main {
                 }
                 else {
                     System.out.println();
-                    System.out.println("User is already an admin.");
+                    System.out.println("\tUser is already an admin.");
                     System.out.println();
                 }
 
@@ -114,7 +108,7 @@ public class main {
             }
             default -> {
                 System.out.println();
-                System.out.println("Action not recognized -- please try again.");
+                System.out.println("\tAction not recognized -- please try again.");
 
                 printHome(catalog, isAdmin);
             }
@@ -125,6 +119,7 @@ public class main {
      * Performs the post-search action input by the user
      * @param catalog the catalog of products
      * @param action the user's chosen action
+     * @param isAdmin true if the user is logged in as an administrator
      */
     private static void searchAction(Catalog catalog, String action, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
@@ -147,16 +142,37 @@ public class main {
             case "search" -> {
                 homeAction(catalog, "search", isAdmin);
             }
+            case "home" -> {
+                printHome(catalog, isAdmin);
+            }
             case "exit" -> {
                 break;
             }
             default -> {
                 System.out.println();
-                System.out.println("Action not recognized -- please try again.");
+                System.out.println("\tAction not recognized -- please try again.");
 
-                searchAction(catalog, "search", isAdmin);
+                getSearchAction(catalog, action, isAdmin);
             }
         }
+    }
+
+    private static void getSearchAction(Catalog catalog, String action, boolean isAdmin) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println();
+        System.out.println("####################################################################################################");
+        System.out.println();
+        System.out.println("\tPlease choose a search action below:");
+        System.out.println();
+        System.out.println("\tSort (Sort the list of searched items)\n\tSearch (New query)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
+        System.out.println();
+        System.out.println("####################################################################################################");
+        System.out.println();
+        System.out.print("\tEnter an action: ");
+
+        action = input.nextLine();
+        searchAction(catalog, action, isAdmin);
     }
 
     /**
