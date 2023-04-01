@@ -38,10 +38,10 @@ public class main {
         System.out.println();
 
         if (isAdmin) {
-            System.out.println("\tSearch (Search the catalog)\n\tEdit (Edit the catalog)");
+            System.out.println("\tSearch (Search the catalog)\n\tEdit (Edit the catalog)\n\tExit (Exit the store)");
         }
         else {
-            System.out.println("\tSearch (Search the catalog)\n\tLogin (Login as an administrator)");
+            System.out.println("\tSearch (Search the catalog)\n\tLogin (Login as an administrator)\n\tExit (Exit the store)");
         }
 
         System.out.println();
@@ -75,7 +75,7 @@ public class main {
 
                 System.out.println("\tPlease choose a new action below:");
                 System.out.println();
-                System.out.println("\tSort (Sort the list of searched items\n\tSearch (New query)\n\tHome (Return to the homepage)");
+                System.out.println("\tSort (Sort the list of searched items\n\tSearch (New query)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
                 System.out.println();
                 System.out.println("####################################################################################################");
                 System.out.println();
@@ -108,6 +108,9 @@ public class main {
                 }
 
                 printHome(catalog, isAdmin);
+            }
+            case "exit" -> {
+                break;
             }
             default -> {
                 System.out.println();
@@ -143,6 +146,15 @@ public class main {
             }
             case "search" -> {
                 homeAction(catalog, "search", isAdmin);
+            }
+            case "exit" -> {
+                break;
+            }
+            default -> {
+                System.out.println();
+                System.out.println("Action not recognized -- please try again.");
+
+                searchAction(catalog, "search", isAdmin);
             }
         }
     }
