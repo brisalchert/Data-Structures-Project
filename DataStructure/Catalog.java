@@ -87,12 +87,22 @@ public class Catalog {
         if(catalog.containsKey(id)){
             removedProd = catalog.get(id);
             sizePerType[removedProd.getType().ordinal()]--;
+            catalog.remove(id);
         }
 
         for(Attribute attribute : removedProd.getAttributes()){ //remove from Attribute sets
                 attribute.getSet().remove(id);
         }
         return removedProd;
+    }
+
+    /**
+     * Returns true if the product with the given id is in the catalog
+     * @param id the id of the product
+     * @return true if the product exists
+     */
+    public boolean containsID(int id) {
+        return catalog.containsKey(id);
     }
 
     /**
