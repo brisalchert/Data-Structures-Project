@@ -8,7 +8,8 @@ import Products.ProductCategory;
 import Products.SortCategory;
 import TestScripts.TestingMethods;
 
-import java.nio.file.LinkPermission;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.*;
 
 public class main {
@@ -76,7 +77,7 @@ public class main {
 
                 LinkedList<Product> searchResults = tokenizedSearch(search, catalog);
 
-                getSearchAction(catalog, action, isAdmin);
+                getSearchAction(catalog, searchResults, isAdmin);
             }
             case "login" -> {
                 if (!isAdmin) {
@@ -103,6 +104,17 @@ public class main {
 
                 printHome(catalog, isAdmin);
             }
+            case "edit" -> {
+                if (isAdmin) {
+                    getEditAction(catalog, isAdmin);
+                }
+                else {
+                    System.out.println();
+                    System.out.println("\tUser does not have administrative privileges.");
+
+                    printHome(catalog, isAdmin);
+                }
+            }
             case "exit" -> {
                 break;
             }
@@ -116,28 +128,135 @@ public class main {
     }
 
     /**
+     * Function for getting the edit action from the user
+     * @param catalog the catalog of products
+     * @param isAdmin true if the user is logged in as an administrator
+     */
+    private static void getEditAction(Catalog catalog, boolean isAdmin) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println();
+        System.out.println("####################################################################################################");
+        System.out.println();
+        System.out.println("\tPlease choose an edit action below:");
+        System.out.println();
+        System.out.println("\tAdd (add products to the catalog)\n\tRemove (remove products from the catalog)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
+        System.out.println();
+        System.out.println("####################################################################################################");
+        System.out.println();
+        System.out.print("\tEnter an action: ");
+
+        String action = input.nextLine();
+
+        System.out.println();
+
+        editAction(catalog, action, isAdmin);
+    }
+
+    private static void editAction(Catalog catalog, String action, boolean isAdmin) {
+        Scanner input = new Scanner(System.in);
+
+        switch (action.toLowerCase()) {
+            case "add" -> {
+//                System.out.println("Enter product info: [Type], [Price], [Title], [Color], [Size], [Animal]");
+//                System.out.println();
+//                String info = input.nextLine();
+//
+//                Scanner productInfo = new Scanner(info);
+//
+//                ArrayList<ProductCategory> types = new ArrayList<>(Arrays.asList(ProductCategory.values()));
+//                ArrayList<ColorCategory> colors = new ArrayList<>(Arrays.asList(ColorCategory.values()));
+//                ArrayList<SizeCategory> sizes = new ArrayList<>(Arrays.asList(SizeCategory.values()));
+//                ArrayList<AnimalCategory> animals = new ArrayList<>(Arrays.asList(AnimalCategory.values()));
+//
+//                Calendar minDay = Calendar.getInstance();
+//                minDay.set(Calendar.YEAR, 2023);
+//                minDay.set(Calendar.DAY_OF_YEAR, 1);
+//
+//                Date current = new Date();
+//
+//                Temporal start = minDay.toInstant();
+//                Temporal end = current.toInstant();
+//
+//                int daysAfterMinDay = (int) ChronoUnit.DAYS.between(start, end);
+//
+//                ProductCategory type = types.get(types.indexOf(productInfo.next()));
+//                double price = Double.parseDouble(productInfo.next());
+//                String title = productInfo.next();
+//                ColorCategory color = colors.get(colors.indexOf(productInfo.next()));
+//                SizeCategory size = sizes.get(sizes.indexOf(productInfo.next()));
+//                AnimalCategory animal;
+//                Attribute[] attributes;
+//                if (type == ProductCategory.Plush) {
+//                    animal = animals.get(animals.indexOf(productInfo.next()));
+//                    attributes = new Attribute[] {color, size, animal};
+//                }
+//                else {
+//                    attributes = new Attribute[] {color, size};
+//                }
+//
+//                catalog.addProduct(type, price, daysAfterMinDay, title, attributes);
+
+                System.out.println("Product added to catalog.");
+
+                getEditAction(catalog, isAdmin);
+            }
+            case "remove" -> {
+                int id;
+                System.out.print("Enter the ID of a product to remove: ");
+
+                try {
+                    id = Integer.parseInt(input.nextLine());
+                }
+                catch (NumberFormatException error) {
+                    System.out.println();
+                    System.out.println("Invalid ID.");
+
+                    getEditAction(catalog, isAdmin);
+                    break;
+                }
+
+                System.out.println();
+
+                if (catalog.containsID(id)) {
+                    catalog.removeProduct(id);
+
+                    System.out.println("Removed product with ID " + id + ".");
+
+                    getEditAction(catalog, isAdmin);
+                }
+                else {
+                    System.out.println("Could not remove ID " + id + ": ID does not exist.");
+
+                    getEditAction(catalog, isAdmin);
+                }
+            }
+            case "home" -> {
+                printHome(catalog, isAdmin);
+            }
+            case "exit" -> {
+                break;
+            }
+            default -> {
+                System.out.println("Edit action not recognized -- please try again.");
+
+                getEditAction(catalog, isAdmin);
+            }
+        }
+    }
+
+    /**
      * Performs the post-search action input by the user
      * @param catalog the catalog of products
      * @param action the user's chosen action
      * @param isAdmin true if the user is logged in as an administrator
      */
-    private static void searchAction(Catalog catalog, String action, boolean isAdmin) {
+    private static void searchAction(Catalog catalog, LinkedList<Product> searchResults, String action, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
 
         switch (action.toLowerCase()) {
             case "sort" -> {
-                System.out.println();
-                System.out.println("####################################################################################################");
-                System.out.println();
-                System.out.println("\tChoose a sort criterion below:");
-                System.out.println();
-                System.out.println("\tPriceMin (Price Ascending)\n\tPriceMax (Price Descending)\n\tDateOld (Listing Date Ascending)\n\tDateNew (Listing Date Descending)");
-                System.out.println();
-                System.out.println("####################################################################################################");
-                System.out.println();
-                System.out.print("\tEnter an action: ");
-
-                action = input.nextLine();
+                getSortCriterion(catalog, searchResults, isAdmin);
             }
             case "search" -> {
                 homeAction(catalog, "search", isAdmin);
@@ -152,12 +271,18 @@ public class main {
                 System.out.println();
                 System.out.println("\tAction not recognized -- please try again.");
 
-                getSearchAction(catalog, action, isAdmin);
+                getSearchAction(catalog, searchResults, isAdmin);
             }
         }
     }
 
-    private static void getSearchAction(Catalog catalog, String action, boolean isAdmin) {
+    /**
+     * Function for printing the search action selection menu and choosing the search action
+     * @param catalog the catalog of products
+     * @param searchResults the list of products matching the search results
+     * @param isAdmin true if the user is logged in as an administrator
+     */
+    private static void getSearchAction(Catalog catalog, LinkedList<Product> searchResults, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
 
         System.out.println();
@@ -171,8 +296,162 @@ public class main {
         System.out.println();
         System.out.print("\tEnter an action: ");
 
-        action = input.nextLine();
-        searchAction(catalog, action, isAdmin);
+        String action = input.nextLine();
+
+        System.out.println();
+
+        searchAction(catalog, searchResults, action, isAdmin);
+    }
+
+    /**
+     * Function for printing the sort action selection menu and choosing the sort action
+     * @param catalog the catalog of products
+     * @param searchResults the list of products matching the search results
+     * @param isAdmin true if the user is logged in as an administrator
+     */
+    private static void getSortCriterion(Catalog catalog, LinkedList<Product> searchResults, boolean isAdmin) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println();
+        System.out.println("####################################################################################################");
+        System.out.println();
+        System.out.println("\tPlease choose a sort criterion below:");
+        System.out.println();
+        System.out.println("\tPriceMin (Price Ascending)\n\tPriceMax (Price Descending)\n\tDateOld (Listing Date Ascending)\n\tDateNew (Listing Date Descending)");
+        System.out.println();
+        System.out.println("####################################################################################################");
+        System.out.println();
+        System.out.print("\tEnter a criterion: ");
+
+        String action = input.nextLine();
+        sort(catalog, searchResults, action, isAdmin);
+    }
+
+    /**
+     * Sorts the list of search results by the criterion specified by the user
+     * @param catalog the catalog of products
+     * @param searchResults the list of products matching the search query
+     * @param criterion the sort criterion chosen by the user
+     * @param isAdmin true if the user is logged in as an admin
+     */
+    private static void sort(Catalog catalog, LinkedList<Product> searchResults, String criterion, boolean isAdmin) {
+        Scanner input = new Scanner(System.in);
+
+        switch (criterion.toLowerCase()) {
+            case "pricemin" -> {
+                searchResults = catalog.bucketSort(SortCategory.PriceCheapToExpensive, searchResults);
+
+                System.out.println();
+                System.out.println("\tSearch results sorted by minimum price:");
+                System.out.println();
+
+                // Print the sorted serach results
+                for (Product product : searchResults) {
+                    System.out.println("\t" + product);
+                }
+
+                getSortAction(catalog, searchResults, isAdmin);
+            }
+            case "pricemax" -> {
+                searchResults = catalog.bucketSort(SortCategory.PriceExpensiveToCheap, searchResults);
+
+                System.out.println();
+                System.out.println("\tSearch results sorted by maximum price:");
+                System.out.println();
+
+                // Print the sorted serach results
+                for (Product product : searchResults) {
+                    System.out.println("\t" + product);
+                }
+
+                getSortAction(catalog, searchResults, isAdmin);
+            }
+            case "dateold" -> {
+                searchResults = catalog.bucketSort(SortCategory.DateOldToNew, searchResults);
+
+                System.out.println();
+                System.out.println("\tSearch results sorted by earliest listing date:");
+                System.out.println();
+
+                // Print the sorted serach results
+                for (Product product : searchResults) {
+                    System.out.println("\t" + product);
+                }
+
+                getSortAction(catalog, searchResults, isAdmin);
+            }
+            case "datenew" -> {
+                searchResults = catalog.bucketSort(SortCategory.DateNewToOld, searchResults);
+
+                System.out.println();
+                System.out.println("\tSearch results sorted by latest listing date:");
+                System.out.println();
+
+                // Print the sorted serach results
+                for (Product product : searchResults) {
+                    System.out.println("\t" + product);
+                }
+
+                getSortAction(catalog, searchResults, isAdmin);
+            }
+            default -> {
+                System.out.println();
+                System.out.println("\tSort criterion not recognized -- please try again.");
+
+                getSortCriterion(catalog, searchResults, isAdmin);
+            }
+        }
+    }
+
+    /**
+     * Gets the sort action from the user
+     * @param catalog the catalog of products
+     * @param searchResults the list of products matching the search query
+     * @param isAdmin true if the user is logged in as an admin
+     */
+    private static void getSortAction(Catalog catalog, LinkedList<Product> searchResults, boolean isAdmin) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println();
+        System.out.println("####################################################################################################");
+        System.out.println();
+        System.out.println("\tPlease choose a sort action below:");
+        System.out.println();
+        System.out.println("\tSort (Choose a new sort criterion)\n\tSearch (New query)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
+        System.out.println();
+        System.out.println("####################################################################################################");
+        System.out.println();
+        System.out.print("\tEnter an action: ");
+
+        String action = input.nextLine();
+
+        System.out.println();
+
+        sortAction(catalog, searchResults, action, isAdmin);
+    }
+
+    private static void sortAction(Catalog catalog, LinkedList<Product> searchResults, String action, boolean isAdmin) {
+        Scanner input = new Scanner(System.in);
+
+        switch (action.toLowerCase()) {
+            case "sort" -> {
+                getSortCriterion(catalog, searchResults, isAdmin);
+            }
+            case "search" -> {
+                homeAction(catalog, "search", isAdmin);
+            }
+            case "home" -> {
+                printHome(catalog, isAdmin);
+            }
+            case "exit" -> {
+                break;
+            }
+            default -> {
+                System.out.println("\tAction not recognized -- please try again.");
+
+                getSearchAction(catalog, searchResults, isAdmin);
+            }
+        }
     }
 
     /**
