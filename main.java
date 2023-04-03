@@ -21,14 +21,15 @@ public class main {
 
         System.out.println("##########################################");
 
-        System.out.println(SearchMap.levenshteinDistance("Sharts", "Shirt"));
-       //tokenizeSearch(input.nextLine(), catalog);
+        //System.out.println(SearchMap.levenshteinDistance("Sharts", "Shirt"));
+        for(Product p : tokenizeSearch(input.nextLine(), catalog)){
+            System.out.println(p);
+        }
         //printHome(catalog, input);
-
     }
 
 
-    public static void tokenizeSearch(String search, Catalog catalog) {
+    public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
         for (Values attribute : Values.values()) {
             validTokens.put(attribute.name().toLowerCase(), attribute);
@@ -44,7 +45,7 @@ public class main {
             }
         }
 
-        catalog.searchQuires(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0 );
+        return catalog.searchQuires(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0, new LinkedList<Product>() );
     }
 
 };

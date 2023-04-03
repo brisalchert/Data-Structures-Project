@@ -7,7 +7,7 @@ public enum Values implements Category {
     //Size 0-3
     Shirt (new HashSet<Integer>(), Category.Product, ProductShirt::new),
     Hat   (new HashSet<Integer>(), Category.Product, ProductHat::new),
-    Pant  (new HashSet<Integer>(), Category.Product, ProductPant::new),
+    Pants (new HashSet<Integer>(), Category.Product, ProductPant::new),
     Plush (new HashSet<Integer>(), Category.Product, ProductPlush::new),
 
     //Size 4-7

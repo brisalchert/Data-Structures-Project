@@ -130,10 +130,10 @@ public class Catalog {
         return results;
     }
 
-    public void searchQuires(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex) {
+    public  LinkedList<Product> searchQuires(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex,  LinkedList<Product> results) {
         for (int x = i; x < categories.length;x++) {
             if(valueIndex + 1 < categories[x].getSearchSet().size()) {
-                searchQuires(categories, s , x, arrayIndex, valueIndex + 1);
+                searchQuires(categories, s , x, arrayIndex, valueIndex + 1, results);
             }
             if(valueIndex < categories[x].getSearchSet().size()) {
                 s[arrayIndex] = categories[x].getSearchSet().get(valueIndex);
@@ -143,15 +143,15 @@ public class Catalog {
 
         }
 
-        ArrayList<Values> r = new ArrayList<>();
+        ArrayList<Values> quire = new ArrayList<>();
         for(Values v : s){
             if(v != null){
-                r.add(v);
+                quire.add(v);
             }
         }
-        for(Product p : this.getByAtt(r)){
-            System.out.println(p);
-        }
+        results.addAll(getByAtt(quire));
+
+        return results;
     };
 
     /**
