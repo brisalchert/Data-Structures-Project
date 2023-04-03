@@ -1,20 +1,20 @@
 package Products;// Represent a single product. This is the base class for all the product types
+import Attributes.Values;
 
-import Attributes.Attribute;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 public abstract class Product {
+    private double price;                                                               // price of the product
     private NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();        // Used to format the price
-    private double price;           // price of the product
-    private ProductCategory type;   // type of the product
-    private String title;           // title of the product
-    private Date listingDate;       // when the product first brought to the inventory
-    private int daysAfterMinDay;    // How many days after Jan 1 2023 the product was listed
-    private int id;                 // unique id
-    private Attribute[] attributes; // Array of attributes
+    private Values type;                                                                // type of the product
+    private String title;                                                               // title of the product
+    private Date listingDate;                                                           // when the product first brought to the inventory
+    private int daysAfterMinDay;                                                        // How many days after Jan 1 2023 the product was listed
+    private int id;                                                                     // unique id
+    private Values[] attributes;                                                        // Array of attributes
 
 
   /**
@@ -25,7 +25,7 @@ public abstract class Product {
   * @param title display name of Product
   * @param daysAfterMinDay days after Jan 1 2023 the Product was listed
   */
-  public Product(ProductCategory type, int id, double price, int daysAfterMinDay, String title, Attribute[] attributes){
+  public Product(Values type, int id, double price, int daysAfterMinDay, String title, Values[] attributes){
         this.price = price;
         this.type = type;
         this.title = title;
@@ -86,7 +86,7 @@ public abstract class Product {
    * returns type of Product
    * @return type of Product
    */
-  public ProductCategory getType(){
+  public Values getType(){
       return type;
   }
 
@@ -94,7 +94,7 @@ public abstract class Product {
    * Returns attributes of product
    * @return array of attributes
    */
-  public Attribute[] getAttributes(){
+  public Values[] getAttributes(){
       return attributes;
   }
 

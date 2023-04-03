@@ -3,7 +3,7 @@ import Attributes.*;
 
 public class ProductHat extends Product{
 
-  public ProductHat(int id, double price, int daysAfterMinDay, String title, Attribute[] attributes ) {
-    super(ProductCategory.Hat, id, price, daysAfterMinDay, title, attributes);
+  public ProductHat(int id, double price, int daysAfterMinDay, String title, Values[] attributes ) {
+    super(Values.Hat, id, price, daysAfterMinDay, title, attributes);
   }
 }

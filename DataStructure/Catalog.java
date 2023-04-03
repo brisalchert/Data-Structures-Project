@@ -1,9 +1,7 @@
 package DataStructure;
-import Attributes.AnimalCategory;
-import Attributes.Attribute;
+import Attributes.Category;
+import Attributes.Values;
 import Products.Product;
-import Products.ProductCategory;
-import Products.ProductPlush;
 import Products.SortCategory;
 
 import java.util.*;
@@ -12,7 +10,7 @@ public class Catalog {
     private final int MAX_SIZE; //max size of catalog
     private final int MAX_ID; // Maximum id number for the catalog
     private HashMap<Integer, Product> catalog;
-    private int[] sizePerType = new int[ProductCategory.values().length]; //size of type is stored at index equal to types ordinal
+
 
     /**
      * Constructs a Catalog
@@ -22,9 +20,7 @@ public class Catalog {
         this.MAX_SIZE = maxSize;
         this.MAX_ID = maxSize * 2;
         this.catalog = new HashMap<Integer, Product>(MAX_SIZE);
-        for(int i : sizePerType){
-            sizePerType[i] = 0;
-        }
+
     }
 
     /**
@@ -39,17 +35,17 @@ public class Catalog {
      * Returns size of catalog
      * @return number of Products in catalog
      */
-    public  int getSize(){ //O(1)
+    public int getSize(){ //O(1)
         return catalog.size();
     }
 
     /**
-     * Returns size of catalog for a certain type
+     * Returns size of catalog for a certain category
      * @param type type of product
-     * @return
+     * @return size of catalog for a certain category
      */
-    public int getSize(ProductCategory type){ //O(1)
-        return sizePerType[type.ordinal()];
+    public int getSize(Values type){ //O(1)
+        return type.getSet().size();
     }
 
     /**
@@ -58,7 +54,7 @@ public class Catalog {
      * @param price price in dollars
      * @param title title representing the product
      */
-    public void addProduct(ProductCategory type, double price, int daysAfterMinDay, String title, Attribute[] attributes){ //O(1)
+    public void addProduct(Values type, double price, int daysAfterMinDay, String title, Values[] attributes){ //O(1)
         if(getSize() == MAX_SIZE){
             return;
         }
@@ -71,10 +67,10 @@ public class Catalog {
             }
         }
         catalog.put(id, type.getConstructor().apply(id, price, daysAfterMinDay, title, attributes));
-        for(Attribute attribute : attributes){ //add to Attribute sets
+        type.getSet().add(id);
+        for(Values attribute : attributes) { //add to corresponding attribute sets
             attribute.getSet().add(id);
         }
-        sizePerType[type.ordinal()]++;
     }
 
     /**
@@ -84,62 +80,16 @@ public class Catalog {
      */
     public Product removeProduct(int id){ //O(1)
         Product removedProd = null;
-        if(catalog.containsKey(id)){
-            removedProd = catalog.get(id);
-            sizePerType[removedProd.getType().ordinal()]--;
-            catalog.remove(id);
+        if(!catalog.containsKey(id)){
+            return removedProd;
         }
+        removedProd = catalog.get(id);
 
-        for(Attribute attribute : removedProd.getAttributes()){ //remove from Attribute sets
+        removedProd.getType().getSet().add(id);
+        for(Values attribute : removedProd.getAttributes()){ //remove from Category sets
                 attribute.getSet().remove(id);
         }
         return removedProd;
-    }
-
-    /**
-     * Returns true if the product with the given id is in the catalog
-     * @param id the id of the product
-     * @return true if the product exists
-     */
-    public boolean containsID(int id) {
-        return catalog.containsKey(id);
-    }
-
-    /**
-     * Returns a list of the products type that have the attributes
-     * @param attributes attributes to sort by
-     * @param type type of product to sort by
-     * @return list of product  matching the attributes of type
-     */
-    public LinkedList<Product> getByAtt(ProductCategory type, ArrayList<Attribute> attributes){ //0(n*k) where n is # of ids, k is # of attributes
-        LinkedList<Product> results = new LinkedList<Product>();
-        ArrayList<Attribute> animals = new ArrayList<>(Arrays.asList(AnimalCategory.values()));
-        for(Integer id : catalog.keySet()){
-            boolean match = true;
-            if(catalog.get(id).getType() == type){
-                for(Attribute attribute : attributes){
-                    if(animals.contains(attribute)) {
-                        // Ignore animal attributes for non-plush products
-                        if(type == ProductCategory.Plush) {
-                            if(!attribute.getSet().contains(id)){
-                                match = false;
-                            }
-                        }
-                    }
-                    else {
-                        if(!attribute.getSet().contains(id)){
-                            match = false;
-                        }
-                    }
-                }
-            }else
-                match = false;
-
-            if(match){
-                results.add(catalog.get(id));
-            }
-        }
-        return results;
     }
 
     /**
@@ -147,22 +97,63 @@ public class Catalog {
      * @param attributes attributes to sort by
      * @return list of product matching the attributes
      */
-    public LinkedList<Product> getByAtt(ArrayList<Attribute> attributes){ //0(n*k) where n is # of ids, k is # of attributes
+    public LinkedList<Product> getByAtt(ArrayList<Values> attributes){
         LinkedList<Product> results = new LinkedList<Product>();
-        for(Integer id : catalog.keySet()){
-            boolean match = true;
-            for(Attribute attribute : attributes){
-                if(!attribute.getSet().contains(id)){
-                    match = false;
+        if(attributes.isEmpty()){
+            return results;
+        }
+        boolean match = true;
+        if(attributes.get(0).getCategory() == Values.Category.Product) {
+            for(Integer id : attributes.get(0).getSet()){
+                match = true;
+                for (Values attribute : attributes) {
+                    if (!attribute.getSet().contains(id)) {
+                        match = false;
+                        break;
+                    }
                 }
+                if(!match){ continue;}
+                results.add(get(id));
             }
-
-            if(match){
+        } else{
+            for (Integer id : catalog.keySet()) {
+                match = true;
+                for (Values attribute : attributes) {
+                    if (!attribute.getSet().contains(id)) {
+                        match = false;
+                        break;
+                    }
+                }
+                if(!match){ continue;}
                 results.add(get(id));
             }
         }
         return results;
     }
+
+    public void searchQuires(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex) {
+        for (int x = i; x < categories.length;x++) {
+            if(valueIndex + 1 < categories[x].getSearchSet().size()) {
+                searchQuires(categories, s , x, arrayIndex, valueIndex + 1);
+            }
+            if(valueIndex < categories[x].getSearchSet().size()) {
+                s[arrayIndex] = categories[x].getSearchSet().get(valueIndex);
+            }
+            arrayIndex = arrayIndex + 1;
+            valueIndex = 0;
+
+        }
+
+        ArrayList<Values> r = new ArrayList<>();
+        for(Values v : s){
+            if(v != null){
+                r.add(v);
+            }
+        }
+        for(Product p : this.getByAtt(r)){
+            System.out.println(p);
+        }
+    };
 
     /**
      * Gets the product with the matching id

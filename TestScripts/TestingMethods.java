@@ -1,11 +1,7 @@
 package TestScripts;
 
-import Attributes.AnimalCategory;
-import Attributes.Attribute;
-import Attributes.ColorCategory;
-import Attributes.SizeCategory;
+import Attributes.Values;
 import DataStructure.Catalog;
-import Products.ProductCategory;
 import java.util.Random;
 
 public class TestingMethods {
@@ -22,18 +18,18 @@ public class TestingMethods {
 
     public void load(){
         for(int i = 0; i < catalog.getMAX_SIZE();i++) {
-            ProductCategory type = ProductCategory.values()[random.nextInt(ProductCategory.values().length)];
+            Values type = Values.values()[random.nextInt(0, 3)];
             double price = random.nextDouble(MAX_PRICE) + 1;
             int daysAfterMinDay = random.nextInt(MAX_DATE);
-            Attribute size = SizeCategory.values()[random.nextInt(SizeCategory.values().length)];
-            Attribute color = ColorCategory.values()[random.nextInt(ColorCategory.values().length)];
-            Attribute animal = AnimalCategory.values()[random.nextInt(AnimalCategory.values().length)];
+            Values size = Values.values()[random.nextInt(4, 7)];
+            Values color = Values.values()[random.nextInt(8, 11)];
+            Values animal = Values.values()[random.nextInt(12, 15)];
 
-            Attribute[] attributes;
-            if(type == ProductCategory.Plush) {
-                attributes = new Attribute[]{size, color, animal};
+            Values[] attributes;
+            if(type == Values.Plush) {
+                attributes = new Values[]{size, color, animal};
             } else {
-                attributes = new Attribute[]{size, color};
+                attributes = new Values[]{size, color};
             }
             catalog.addProduct(type, price, daysAfterMinDay, "", attributes);
         }
