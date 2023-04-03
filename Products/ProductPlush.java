@@ -1,9 +1,9 @@
 package Products;
-import Attributes.Attribute;
+import Attributes.Values;
 
 public class ProductPlush extends Product{
 
-  public ProductPlush(int id, double price, int daysAfterMinDay, String title, Attribute[] attributes) {
-      super(ProductCategory.Plush, id, price, daysAfterMinDay, title,attributes);
+  public ProductPlush(int id, double price, int daysAfterMinDay, String title, Values[] attributes) {
+      super(Values.Plush, id, price, daysAfterMinDay, title,attributes);
   }
 }
