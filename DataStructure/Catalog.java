@@ -48,6 +48,15 @@ public class Catalog {
     }
 
     /**
+     * Returns true if the given ID is in the catalog
+     * @param id the ID to check for
+     * @return true if the ID exists
+     */
+    public boolean containsID(int id) {
+        return catalog.containsKey(id);
+    }
+
+    /**
      * Adds a product to the catalog
      * @param type type of product
      * @param price price in dollars
@@ -130,10 +139,10 @@ public class Catalog {
         return results;
     }
 
-    public void searchQuires(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex) {
+    public void searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex) {
         for (int x = i; x < categories.length;x++) {
             if(valueIndex + 1 < categories[x].getSearchSet().size()) {
-                searchQuires(categories, s , x, arrayIndex, valueIndex + 1);
+                searchQueries(categories, s , x, arrayIndex, valueIndex + 1);
             }
             if(valueIndex < categories[x].getSearchSet().size()) {
                 s[arrayIndex] = categories[x].getSearchSet().get(valueIndex);
