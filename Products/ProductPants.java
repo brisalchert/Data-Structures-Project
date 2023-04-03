@@ -1,10 +1,10 @@
 package Products;
-import Attributes.Attribute;
+import Attributes.Values;
 
 public class ProductPants extends Product{
 
-  public ProductPants(int id, double price, int daysAfterMinDay, String title, Attribute[] attributes) {
-      super(ProductCategory.Pants, id, price, daysAfterMinDay, title,attributes);
+  public ProductPants(int id, double price, int daysAfterMinDay, String title, Values[] attributes) {
+      super(Values.Pant, id, price, daysAfterMinDay, title,attributes);
 
   }
 

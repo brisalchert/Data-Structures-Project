@@ -1,6 +1,7 @@
 import Attributes.*;
 import DataStructure.*;
 import Products.Product;
+import SearchMap.SearchMap;
 import TestScripts.TestingMethods;
 
 import java.util.*;
@@ -20,7 +21,8 @@ public class main {
 
         System.out.println("##########################################");
 
-       tokenizeSearch(input.nextLine(), catalog);
+        System.out.println(SearchMap.levenshteinDistance("Sharts", "Shirt"));
+       //tokenizeSearch(input.nextLine(), catalog);
         //printHome(catalog, input);
 
     }
