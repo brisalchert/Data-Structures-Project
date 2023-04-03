@@ -158,45 +158,30 @@ public class main {
 
         switch (action.toLowerCase()) {
             case "add" -> {
-//                System.out.println("Enter product info: [Type], [Price], [Title], [Color], [Size], [Animal]");
-//                System.out.println();
-//                String info = input.nextLine();
-//
-//                Scanner productInfo = new Scanner(info);
-//
-//                ArrayList<ProductCategory> types = new ArrayList<>(Arrays.asList(ProductCategory.values()));
-//                ArrayList<ColorCategory> colors = new ArrayList<>(Arrays.asList(ColorCategory.values()));
-//                ArrayList<SizeCategory> sizes = new ArrayList<>(Arrays.asList(SizeCategory.values()));
-//                ArrayList<AnimalCategory> animals = new ArrayList<>(Arrays.asList(AnimalCategory.values()));
-//
-//                Calendar minDay = Calendar.getInstance();
-//                minDay.set(Calendar.YEAR, 2023);
-//                minDay.set(Calendar.DAY_OF_YEAR, 1);
-//
-//                Date current = new Date();
-//
-//                Temporal start = minDay.toInstant();
-//                Temporal end = current.toInstant();
-//
-//                int daysAfterMinDay = (int) ChronoUnit.DAYS.between(start, end);
-//
-//                ProductCategory type = types.get(types.indexOf(productInfo.next()));
-//                double price = Double.parseDouble(productInfo.next());
-//                String title = productInfo.next();
-//                ColorCategory color = colors.get(colors.indexOf(productInfo.next()));
-//                SizeCategory size = sizes.get(sizes.indexOf(productInfo.next()));
-//                AnimalCategory animal;
-//                Attribute[] attributes;
-//                if (type == ProductCategory.Plush) {
-//                    animal = animals.get(animals.indexOf(productInfo.next()));
-//                    attributes = new Attribute[] {color, size, animal};
-//                }
-//                else {
-//                    attributes = new Attribute[] {color, size};
-//                }
-//
-//                catalog.addProduct(type, price, daysAfterMinDay, title, attributes);
+                ProductCategory type = getType();
+                ColorCategory color = getColor();
+                SizeCategory size = getSize();
+                AnimalCategory animal = null;
+                if (type == ProductCategory.Plush) {
+                    animal = getAnimal();
+                }
 
+                Attribute[] attributes;
+
+                if (animal != null) {
+                    attributes = new Attribute[] {color, size, animal};
+                }
+                else {
+                    attributes = new Attribute[] {color, size};
+                }
+
+                double price = getPrice();
+                int daysAfterMinDay = getDaysAfterMinDay();
+                String title = getTitle();
+
+                catalog.addProduct(type, price, daysAfterMinDay, title, attributes);
+
+                System.out.println();
                 System.out.println("Product added to catalog.");
 
                 getEditAction(catalog, isAdmin);
@@ -636,5 +621,209 @@ public class main {
         }
 
         return result;
+    }
+
+    /**
+     * Gets the product type from an admin user
+     * @return the chosen product category
+     */
+    private static ProductCategory getType() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("\tChoose a product type:");
+        System.out.println();
+        System.out.println("\t\tHat\n\t\tShirt\n\t\tPants\n\t\tPlush");
+        System.out.println();
+        System.out.print("Enter product type: ");
+
+        String choice = input.nextLine().toLowerCase();
+
+        System.out.println();
+
+        switch (choice) {
+            case "hat" -> {
+                return ProductCategory.Hat;
+            }
+            case "shirt" -> {
+                return ProductCategory.Shirt;
+            }
+            case "pants" -> {
+                return ProductCategory.Pants;
+            }
+            case "plush" -> {
+                return ProductCategory.Plush;
+            }
+            default -> {
+                System.out.println("Invalid choice -- please select again.");
+
+                return getType();
+            }
+        }
+    }
+
+    /**
+     * Gets the product color from an admin user
+     * @return the chosen color category
+     */
+    private static ColorCategory getColor() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("\tChoose a color:");
+        System.out.println();
+        System.out.println("\t\tRed\n\t\tGreen\n\t\tBlue\n\t\tPurple");
+        System.out.println();
+        System.out.print("Enter product color: ");
+
+        String choice = input.nextLine().toLowerCase();
+
+        System.out.println();
+
+        switch (choice) {
+            case "red" -> {
+                return ColorCategory.Red;
+            }
+            case "green" -> {
+                return ColorCategory.Green;
+            }
+            case "blue" -> {
+                return ColorCategory.Blue;
+            }
+            case "purple" -> {
+                return ColorCategory.Purple;
+            }
+            default -> {
+                System.out.println("Invalid choice -- please select again.");
+
+                return getColor();
+            }
+        }
+    }
+
+    /**
+     * Gets the product size from an admin user
+     * @return the chosen size category
+     */
+    private static SizeCategory getSize() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("\tChoose a size:");
+        System.out.println();
+        System.out.println("\t\tSmall\n\t\tMedium\n\t\tLarge\n\t\tXLarge");
+        System.out.println();
+        System.out.print("Enter product size: ");
+
+        String choice = input.nextLine().toLowerCase();
+
+        System.out.println();
+
+        switch (choice) {
+            case "small" -> {
+                return SizeCategory.Small;
+            }
+            case "medium" -> {
+                return SizeCategory.Medium;
+            }
+            case "large" -> {
+                return SizeCategory.Large;
+            }
+            case "xlarge" -> {
+                return SizeCategory.XLarge;
+            }
+            default -> {
+                System.out.println("Invalid choice -- please select again.");
+
+                return getSize();
+            }
+        }
+    }
+
+    /**
+     * Gets the plush animal from an admin user
+     * @return the chosen animal category
+     */
+    private static AnimalCategory getAnimal() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("\tChoose an animal:");
+        System.out.println();
+        System.out.println("\t\tCat\n\t\tDog\n\t\tSeal\n\t\tRabbit");
+        System.out.println();
+        System.out.print("Enter plush animal: ");
+
+        String choice = input.nextLine().toLowerCase();
+
+        System.out.println();
+
+        switch (choice) {
+            case "cat" -> {
+                return AnimalCategory.Cat;
+            }
+            case "dog" -> {
+                return AnimalCategory.Dog;
+            }
+            case "seal" -> {
+                return AnimalCategory.Seal;
+            }
+            case "rabbit" -> {
+                return AnimalCategory.Rabbit;
+            }
+            default -> {
+                System.out.println();
+                System.out.println("Invalid choice -- please select again.");
+
+                return getAnimal();
+            }
+        }
+    }
+
+    /**
+     * Gets the days after Jan 1st 2023 a new product is listed
+     * @return days after the minimum listing date
+     */
+    private static int getDaysAfterMinDay() {
+        Calendar minDay = Calendar.getInstance();
+        minDay.set(Calendar.YEAR, 2023);
+        minDay.set(Calendar.DAY_OF_YEAR, 1);
+
+        Date current = new Date();
+
+        Temporal start = minDay.toInstant();
+        Temporal end = current.toInstant();
+
+        return (int) ChronoUnit.DAYS.between(start, end);
+    }
+
+    /**
+     * Gets the product price from an admin user
+     * @return the chosen price
+     */
+    private static double getPrice() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter a listing price: ");
+
+        if (input.hasNextDouble()) {
+            System.out.println();
+
+            return input.nextDouble();
+        }
+        else {
+            System.out.println();
+            System.out.println("Invalid price -- please select again.");
+
+            return getPrice();
+        }
+    }
+
+    /**
+     * Gets the product title from an admin user
+     * @return the chosen title
+     */
+    private static String getTitle() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter a product title: ");
+
+        return input.nextLine();
     }
 }
