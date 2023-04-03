@@ -1,5 +1,4 @@
 package DataStructure;
-import Attributes.Category;
 import Attributes.Values;
 import Products.Product;
 import Products.SortCategory;
@@ -85,7 +84,7 @@ public class Catalog {
         }
         removedProd = catalog.get(id);
 
-        removedProd.getType().getSet().add(id);
+        removedProd.getType().getSet().remove(id);
         for(Values attribute : removedProd.getAttributes()){ //remove from Category sets
                 attribute.getSet().remove(id);
         }

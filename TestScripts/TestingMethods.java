@@ -1,18 +1,17 @@
 package TestScripts;
-
 import Attributes.Values;
-import DataStructure.Catalog;
+import DataStructure.*;
 import java.util.Random;
 
 public class TestingMethods {
-    Catalog catalog;
+    private Catalog catalog;
     int size = 0;
     Random random = new Random();
     final double MAX_PRICE = 1000;
     final int MAX_DATE = 1000;
 
-    public TestingMethods(Catalog catalog){
-        this.catalog = catalog;
+    public TestingMethods(Catalog cat){
+        catalog = cat;
         size = catalog.getSize();
     }
 

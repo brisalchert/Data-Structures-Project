@@ -1,5 +1,5 @@
 import Attributes.*;
-import DataStructure.Catalog;
+import DataStructure.*;
 import Products.Product;
 import TestScripts.TestingMethods;
 
