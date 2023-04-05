@@ -1,17 +1,24 @@
 import Attributes.*;
 import DataStructure.*;
 import Products.Product;
-import SearchMap.SearchMap;
+import SearchMap.*;
 import TestScripts.TestingMethods;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         Catalog catalog = new Catalog(50);
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
+        SearchMap searchMap = new SearchMap();
+        String s = "hat";
 
+
+        for(Values v: Values.values()){
+            searchMap.addValue(v.name().toLowerCase().toCharArray(), v);
+        }
 
         test.load(); //fill Catalog
 
@@ -21,15 +28,16 @@ public class main {
 
         System.out.println("##########################################");
 
-        //System.out.println(SearchMap.levenshteinDistance("Sharts", "Shirt"));
-        for(Product p : tokenizeSearch(input.nextLine(), catalog)){
+
+        for(Product p : tokenizeSearch(input.nextLine(),searchMap, catalog)){
             System.out.println(p);
         }
         //printHome(catalog, input);
     }
 
 
-    public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
+
+    public static LinkedList<Product> tokenizeSearch(String search,SearchMap searchMap, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
         for (Values attribute : Values.values()) {
             validTokens.put(attribute.name().toLowerCase(), attribute);
@@ -42,6 +50,15 @@ public class main {
             if (validTokens.containsKey(token.toLowerCase())) {
                 Values searchValue = validTokens.get(token.toLowerCase());
                 searchValue.getCategory().getSearchSet().add(searchValue);
+            }else{
+                if(!searchMap.fillerWords.contains(token.toLowerCase())){
+                    for(Values v : searchMap.suggestion(token)){
+                        v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
+                        System.out.println("By " + token + " did you mean " + v.name());
+                        break;
+                    }
+                }
+
             }
         }
 
