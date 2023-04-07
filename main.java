@@ -12,12 +12,12 @@ public class main {
         Catalog catalog = new Catalog(50);
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
-        SearchMap searchMap = new SearchMap();
+        PropositionTree searchMap = new PropositionTree();
         String s = "hat";
 
 
         for(Values v: Values.values()){
-            searchMap.addValue(v.name().toLowerCase().toCharArray(), v);
+            searchMap.addCharacterPath(v.name().toLowerCase().toCharArray(), v);
         }
 
         test.load(); //fill Catalog
@@ -37,7 +37,7 @@ public class main {
 
 
 
-    public static LinkedList<Product> tokenizeSearch(String search,SearchMap searchMap, Catalog catalog) {
+    public static LinkedList<Product> tokenizeSearch(String search, PropositionTree searchMap, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
         for (Values attribute : Values.values()) {
             validTokens.put(attribute.name().toLowerCase(), attribute);
@@ -52,7 +52,7 @@ public class main {
                 searchValue.getCategory().getSearchSet().add(searchValue);
             }else{
                 if(!searchMap.fillerWords.contains(token.toLowerCase())){
-                    for(Values v : searchMap.suggestion(token)){
+                    for(Values v : searchMap.proposition(token)){
                         v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
                         System.out.println("By " + token + " did you mean " + v.name());
                         break;
