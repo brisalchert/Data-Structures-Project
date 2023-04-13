@@ -21,7 +21,9 @@ public class main {
     }
 
 
-    public static void tokenizeSearch(String search, Catalog catalog) {
+    public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
+        LinkedList<Product> searchResults;
+
         HashMap<String, Values> validTokens = new HashMap<>();
         for (Values attribute : Values.values()) {
             validTokens.put(attribute.name().toLowerCase(), attribute);
@@ -37,7 +39,13 @@ public class main {
             }
         }
 
-        catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0 );
+        searchResults = catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0 );
+
+        for (Product product : searchResults) {
+            System.out.println(product);
+        }
+
+        return searchResults;
     }
 
     /**
@@ -91,9 +99,9 @@ public class main {
 
                 System.out.println();
 
-//                LinkedList<Product> searchResults = tokenizeSearch(search, catalog);
+                LinkedList<Product> searchResults = tokenizeSearch(search, catalog);
 
-//                getSearchAction(catalog, searchResults, isAdmin);
+                getSearchAction(catalog, searchResults, isAdmin);
             }
             case "login" -> {
                 if (!isAdmin) {

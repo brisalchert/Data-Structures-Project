@@ -139,7 +139,7 @@ public class Catalog {
         return results;
     }
 
-    public void searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex) {
+    public LinkedList<Product> searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex) {
         for (int x = i; x < categories.length;x++) {
             if(valueIndex + 1 < categories[x].getSearchSet().size()) {
                 searchQueries(categories, s , x, arrayIndex, valueIndex + 1);
@@ -158,9 +158,8 @@ public class Catalog {
                 r.add(v);
             }
         }
-        for(Product p : this.getByAtt(r)){
-            System.out.println(p);
-        }
+
+        return new LinkedList<>(this.getByAtt(r));
     };
 
     /**
