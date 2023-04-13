@@ -23,6 +23,7 @@ public class main {
 
     public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
         LinkedList<Product> searchResults;
+        ArrayList<Values> searchQuery;
 
         HashMap<String, Values> validTokens = new HashMap<>();
         for (Values attribute : Values.values()) {
@@ -39,7 +40,13 @@ public class main {
             }
         }
 
-        searchResults = catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0 );
+        searchQuery = catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0 );
+
+        searchResults = catalog.getByAtt(searchQuery);
+
+        System.out.println("Found " + searchResults.size() + " results for the following query:");
+        System.out.println(searchQuery);
+        System.out.println();
 
         for (Product product : searchResults) {
             System.out.println(product);
@@ -354,7 +361,7 @@ public class main {
                 System.out.println("\tSearch results sorted by minimum price:");
                 System.out.println();
 
-                // Print the sorted serach results
+                // Print the sorted search results
                 for (Product product : searchResults) {
                     System.out.println("\t" + product);
                 }
@@ -368,7 +375,7 @@ public class main {
                 System.out.println("\tSearch results sorted by maximum price:");
                 System.out.println();
 
-                // Print the sorted serach results
+                // Print the sorted search results
                 for (Product product : searchResults) {
                     System.out.println("\t" + product);
                 }
@@ -382,7 +389,7 @@ public class main {
                 System.out.println("\tSearch results sorted by earliest listing date:");
                 System.out.println();
 
-                // Print the sorted serach results
+                // Print the sorted search results
                 for (Product product : searchResults) {
                     System.out.println("\t" + product);
                 }
@@ -396,7 +403,7 @@ public class main {
                 System.out.println("\tSearch results sorted by latest listing date:");
                 System.out.println();
 
-                // Print the sorted serach results
+                // Print the sorted search results
                 for (Product product : searchResults) {
                     System.out.println("\t" + product);
                 }
