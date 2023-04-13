@@ -1,17 +1,20 @@
 import Attributes.*;
 import DataStructure.*;
+import SearchMap.*;
 import Products.Product;
 import Products.SortCategory;
 import TestScripts.TestingMethods;
 
+import java.io.FileNotFoundException;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.*;
 
 public class main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         Catalog catalog = new Catalog(50);
         TestingMethods test = new TestingMethods(catalog);
+        PropositionTree searchMap = new PropositionTree();
         Scanner input = new Scanner(System.in);
 
         test.load(); //fill Catalog
@@ -22,9 +25,6 @@ public class main {
 
 
     public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
-        LinkedList<Product> searchResults;
-        ArrayList<Values> searchQuery;
-
         HashMap<String, Values> validTokens = new HashMap<>();
         for (Values attribute : Values.values()) {
             validTokens.put(attribute.name().toLowerCase(), attribute);
@@ -37,22 +37,30 @@ public class main {
             if (validTokens.containsKey(token.toLowerCase())) {
                 Values searchValue = validTokens.get(token.toLowerCase());
                 searchValue.getCategory().getSearchSet().add(searchValue);
+            }else{
+                if(!catalog.getSearchMap().fillerWords.contains(token.toLowerCase())){
+                    for(Values v : catalog.getSearchMap().proposition(token)){
+                        v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
+                        System.out.println("By " + token + " did you mean " + v.name());
+                        break;
+                    }
+                }
+
             }
         }
 
-        searchQuery = catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0 );
+        LinkedList<Product> searchQuery =  catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0, new LinkedList<Product>() );
 
-        searchResults = catalog.getByAtt(searchQuery);
 
-        System.out.println("Found " + searchResults.size() + " results for the following query:");
+        System.out.println("Found " + searchQuery.size() + " results for the following query:");
         System.out.println(searchQuery);
         System.out.println();
 
-        for (Product product : searchResults) {
+        for (Product product : searchQuery) {
             System.out.println(product);
         }
 
-        return searchResults;
+        return searchQuery;
     }
 
     /**

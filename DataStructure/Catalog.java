@@ -2,23 +2,29 @@ package DataStructure;
 import Attributes.Values;
 import Products.Product;
 import Products.SortCategory;
+import SearchMap.PropositionTree;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Catalog {
     private final int MAX_SIZE; //max size of catalog
     private final int MAX_ID; // Maximum id number for the catalog
     private HashMap<Integer, Product> catalog;
+    private final PropositionTree searchMap = new PropositionTree();
 
 
     /**
      * Constructs a Catalog
      * @param maxSize maximum size of catalog
      */
-    public Catalog(int maxSize){
+    public Catalog(int maxSize) throws FileNotFoundException {
         this.MAX_SIZE = maxSize;
         this.MAX_ID = maxSize * 2;
         this.catalog = new HashMap<Integer, Product>(MAX_SIZE);
+        for(Values v: Values.values()){
+            searchMap.addCharacterPath(v.name().toLowerCase().toCharArray(), v);
+        };
 
     }
 
@@ -28,6 +34,14 @@ public class Catalog {
      */
     public int getMAX_SIZE(){
         return MAX_SIZE;
+    }
+
+    /**
+     * returns the search map for the catalog
+     * @return PropositionTree based on the catalogs Attributes
+     */
+    public PropositionTree getSearchMap(){
+        return searchMap;
     }
 
     /**
@@ -95,7 +109,7 @@ public class Catalog {
 
         removedProd.getType().getSet().remove(id);
         for(Values attribute : removedProd.getAttributes()){ //remove from Category sets
-                attribute.getSet().remove(id);
+            attribute.getSet().remove(id);
         }
         return removedProd;
     }
@@ -139,10 +153,10 @@ public class Catalog {
         return results;
     }
 
-    public ArrayList<Values> searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex) {
+    public  LinkedList<Product> searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex,  LinkedList<Product> results) {
         for (int x = i; x < categories.length;x++) {
             if(valueIndex + 1 < categories[x].getSearchSet().size()) {
-                searchQueries(categories, s , x, arrayIndex, valueIndex + 1);
+                searchQueries(categories, s , x, arrayIndex, valueIndex + 1, results);
             }
             if(valueIndex < categories[x].getSearchSet().size()) {
                 s[arrayIndex] = categories[x].getSearchSet().get(valueIndex);
@@ -152,14 +166,15 @@ public class Catalog {
 
         }
 
-        ArrayList<Values> r = new ArrayList<>();
+        ArrayList<Values> quire = new ArrayList<>();
         for(Values v : s){
             if(v != null){
-                r.add(v);
+                quire.add(v);
             }
         }
+        results.addAll(getByAtt(quire));
 
-        return r;
+        return results;
     };
 
     /**
