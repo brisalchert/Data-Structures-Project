@@ -12,7 +12,7 @@ import java.util.*;
 
 public class main {
     public static void main(String[] args) throws FileNotFoundException {
-        Catalog catalog = new Catalog(50);
+        Catalog catalog = new Catalog(200);
         TestingMethods test = new TestingMethods(catalog);
         PropositionTree searchMap = new PropositionTree();
         Scanner input = new Scanner(System.in);
@@ -26,6 +26,11 @@ public class main {
 
     public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
+
+        for (Values.Category category : Values.Category.values()) {
+            category.getSearchSet().clear();
+        }
+
         for (Values attribute : Values.values()) {
             validTokens.put(attribute.name().toLowerCase(), attribute);
         }
