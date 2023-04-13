@@ -3,13 +3,12 @@ import DataStructure.*;
 import Products.Product;
 import SearchMap.*;
 import TestScripts.TestingMethods;
-
 import java.io.FileNotFoundException;
 import java.util.*;
 
 public class main {
     public static void main(String[] args) throws FileNotFoundException {
-        Catalog catalog = new Catalog(50);
+        Catalog catalog = new Catalog(100);
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
         PropositionTree searchMap = new PropositionTree();

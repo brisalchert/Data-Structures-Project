@@ -17,12 +17,12 @@ public class TestingMethods {
 
     public void load(){
         for(int i = 0; i < catalog.getMAX_SIZE();i++) {
-            Values type = Values.values()[random.nextInt(0, 3)];
+            Values type = Values.values()[random.nextInt(0, 4)];
             double price = random.nextDouble(MAX_PRICE) + 1;
             int daysAfterMinDay = random.nextInt(MAX_DATE);
-            Values size = Values.values()[random.nextInt(4, 7)];
-            Values color = Values.values()[random.nextInt(8, 11)];
-            Values animal = Values.values()[random.nextInt(12, 15)];
+            Values size = Values.values()[random.nextInt(4, 8)];
+            Values color = Values.values()[random.nextInt(8, 12)];
+            Values animal = Values.values()[random.nextInt(12, 16)];
 
             Values[] attributes;
             if(type == Values.Plush) {
