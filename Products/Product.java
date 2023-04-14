@@ -2,6 +2,7 @@ package Products;// Represent a single product. This is the base class for all t
 import Attributes.Values;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -102,9 +103,25 @@ public abstract class Product {
    * string representation of Catalog
    * @return string representation of Catalog
    */
-  public String toString(){
-      String result = "";
-      return  "Type: " + type + ", Id: " + id + ", Att: " + Arrays.toString(attributes) + ", Price: " + currencyFormatter.format(price) + ", Listing Date: " + listingDate;
+  public String toString() {
+      String datePattern = "MM/dd/yyyy";
+      SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+      final int MAX_TITLE_LENGTH = 24;
+      final int MAX_ATTRIBUTE_LENGTH = 28;
+      String modifiedTitle = title;
+      String modifiedAttributes = Arrays.toString(attributes);
+
+      // Make title standard length
+      while (modifiedTitle.length() < MAX_TITLE_LENGTH) {
+          modifiedTitle += " ";
+      }
+
+      // Make attributes standard length
+      while (modifiedAttributes.length() < MAX_ATTRIBUTE_LENGTH) {
+          modifiedAttributes += " ";
+      }
+
+      return  "\t" + modifiedTitle + type + "\t\t" + modifiedAttributes + currencyFormatter.format(price) + "\t\t" + dateFormat.format(listingDate);
   }
 
   //mutators ------------------------------------------------------------
