@@ -122,6 +122,7 @@ public class Catalog {
     public LinkedList<Product> getByAtt(ArrayList<Values> attributes){
         LinkedList<Product> results = new LinkedList<Product>();
         if(attributes.isEmpty()){
+            results.addAll(catalog.values());
             return results;
         }
         boolean match = true;
