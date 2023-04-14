@@ -6,6 +6,7 @@ import Products.SortCategory;
 import TestScripts.TestingMethods;
 
 import java.io.FileNotFoundException;
+import java.text.NumberFormat;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.*;
@@ -74,11 +75,11 @@ public class main {
         System.out.println();
 
         System.out.println("----------------------------------------------------------------------------------------------------");
-        System.out.println("\tItem Name\t\t\t\tProduct\t\tAttributes\t\t\t\t\tPrice\t\tListing Date");
+        System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
         System.out.println("----------------------------------------------------------------------------------------------------");
 
         for (Product product : searchResults) {
-            System.out.println(product);
+            System.out.println("\t" + product);
         }
 
         return searchResults;
@@ -297,14 +298,15 @@ public class main {
      * @param isAdmin true if the user is logged in as an administrator
      */
     private static void searchAction(Catalog catalog, LinkedList<Product> searchResults, String action, boolean isAdmin) {
-        Scanner input = new Scanner(System.in);
-
         switch (action.toLowerCase()) {
             case "sort" -> {
                 getSortCriterion(catalog, searchResults, isAdmin);
             }
             case "search" -> {
                 homeAction(catalog, "search", isAdmin);
+            }
+            case "buy" -> {
+                buyProduct(catalog, searchResults, isAdmin);
             }
             case "home" -> {
                 printHome(catalog, isAdmin);
@@ -318,6 +320,33 @@ public class main {
 
                 getSearchAction(catalog, searchResults, isAdmin);
             }
+        }
+    }
+
+    private static void buyProduct(Catalog catalog, LinkedList<Product> searchresults, boolean isAdmin) {
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+        Scanner input = new Scanner(System.in);
+
+        System.out.println();
+        System.out.println("\tEnter the ID of the product you wish to purchase:");
+        System.out.print("\tProduct ID: ");
+
+        int id = input.nextInt();
+
+        System.out.println();
+
+        if (catalog.containsID(id)) {
+            System.out.println("\tPurchased product: \"" + catalog.get(id).getTitle() + "\" for " + currencyFormatter.format(catalog.get(id).getPrice()) + ".");
+
+            // Remove product
+            catalog.removeProduct(id);
+
+            getSearchAction(catalog, searchresults, isAdmin);
+        }
+        else {
+            System.out.println("\tInvalid ID -- cannot purchase product.");
+
+            getSearchAction(catalog, searchresults, isAdmin);
         }
     }
 
@@ -335,15 +364,13 @@ public class main {
         System.out.println();
         System.out.println("\tPlease choose a search action below:");
         System.out.println();
-        System.out.println("\tSort (Sort the list of searched items)\n\tSearch (New query)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
+        System.out.println("\tSort (Sort the list of searched items)\n\tSearch (New query)\n\tBuy (Buy a product)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
         System.out.println();
         System.out.println("####################################################################################################");
         System.out.println();
         System.out.print("\tEnter an action: ");
 
         String action = input.nextLine();
-
-        System.out.println();
 
         searchAction(catalog, searchResults, action, isAdmin);
     }
@@ -462,15 +489,13 @@ public class main {
         System.out.println();
         System.out.println("\tPlease choose a sort action below:");
         System.out.println();
-        System.out.println("\tSort (Choose a new sort criterion)\n\tSearch (New query)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
+        System.out.println("\tSort (Choose a new sort criterion)\n\tSearch (New query)\n\tBuy (Buy a product)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
         System.out.println();
         System.out.println("####################################################################################################");
         System.out.println();
         System.out.print("\tEnter an action: ");
 
         String action = input.nextLine();
-
-        System.out.println();
 
         sortAction(catalog, searchResults, action, isAdmin);
     }
@@ -484,6 +509,9 @@ public class main {
             }
             case "search" -> {
                 homeAction(catalog, "search", isAdmin);
+            }
+            case "buy" -> {
+                buyProduct(catalog, searchResults, isAdmin);
             }
             case "home" -> {
                 printHome(catalog, isAdmin);
