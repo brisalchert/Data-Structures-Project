@@ -1,6 +1,8 @@
 package TestScripts;
 import Attributes.Values;
 import DataStructure.*;
+
+import java.util.Arrays;
 import java.util.Random;
 
 public class TestingMethods {
@@ -30,7 +32,18 @@ public class TestingMethods {
             } else {
                 attributes = new Values[]{size, color};
             }
-            catalog.addProduct(type, price, daysAfterMinDay, "", attributes);
+
+            String title = "";
+
+            for (int index = 0; index < attributes.length; index++) {
+                title += attributes[index] + " ";
+            }
+
+            if (type != Values.Plush) {
+                title += type;
+            }
+
+            catalog.addProduct(type, price, daysAfterMinDay, title, attributes);
         }
     }
 }
