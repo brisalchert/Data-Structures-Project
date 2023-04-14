@@ -108,12 +108,21 @@ public abstract class Product {
       SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
       final int MAX_TITLE_LENGTH = 24;
       final int MAX_ATTRIBUTE_LENGTH = 28;
+      final int MAX_TYPE_LENGTH = 12;
+      final int MAX_PRICE_LENGTH = 12;
       String modifiedTitle = title;
+      String modifiedType = String.valueOf(type);
       String modifiedAttributes = Arrays.toString(attributes);
+      String modifiedPrice = currencyFormatter.format(price);
 
       // Make title standard length
       while (modifiedTitle.length() < MAX_TITLE_LENGTH) {
           modifiedTitle += " ";
+      }
+
+      // Make type standard length
+      while (modifiedType.length() < MAX_TYPE_LENGTH) {
+          modifiedType += " ";
       }
 
       // Make attributes standard length
@@ -121,7 +130,12 @@ public abstract class Product {
           modifiedAttributes += " ";
       }
 
-      return  "\t" + modifiedTitle + type + "\t\t" + modifiedAttributes + currencyFormatter.format(price) + "\t\t" + dateFormat.format(listingDate);
+      // Make price standard length
+      while (modifiedPrice.length() < MAX_PRICE_LENGTH) {
+          modifiedPrice += " ";
+      }
+
+      return modifiedTitle + modifiedType + modifiedAttributes + modifiedPrice + dateFormat.format(listingDate);
   }
 
   //mutators ------------------------------------------------------------
