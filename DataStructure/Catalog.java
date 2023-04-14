@@ -105,7 +105,7 @@ public class Catalog {
         if(!catalog.containsKey(id)){
             return removedProd;
         }
-        removedProd = catalog.get(id);
+        removedProd = catalog.remove(id);
 
         removedProd.getType().getSet().remove(id);
         for(Values attribute : removedProd.getAttributes()){ //remove from Category sets
