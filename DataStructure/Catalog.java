@@ -153,10 +153,10 @@ public class Catalog {
         return results;
     }
 
-    public  LinkedList<Product> searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex,  LinkedList<Product> results) {
+    public  ArrayList<Values> searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex) {
         for (int x = i; x < categories.length;x++) {
             if(valueIndex + 1 < categories[x].getSearchSet().size()) {
-                searchQueries(categories, s , x, arrayIndex, valueIndex + 1, results);
+                searchQueries(categories, s , x, arrayIndex, valueIndex + 1);
             }
             if(valueIndex < categories[x].getSearchSet().size()) {
                 s[arrayIndex] = categories[x].getSearchSet().get(valueIndex);
@@ -166,15 +166,14 @@ public class Catalog {
 
         }
 
-        ArrayList<Values> quire = new ArrayList<>();
+        ArrayList<Values> query = new ArrayList<>();
         for(Values v : s){
             if(v != null){
-                quire.add(v);
+                query.add(v);
             }
         }
-        results.addAll(getByAtt(quire));
 
-        return results;
+        return query;
     };
 
     /**

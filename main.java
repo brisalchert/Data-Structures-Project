@@ -54,18 +54,19 @@ public class main {
             }
         }
 
-        LinkedList<Product> searchQuery =  catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0, new LinkedList<Product>() );
+        ArrayList<Values> searchQuery = catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0);
+        LinkedList<Product> searchResults = new LinkedList<>(catalog.getByAtt(searchQuery));
 
 
-        System.out.println("Found " + searchQuery.size() + " results for the following query:");
+        System.out.println("Found " + searchResults.size() + " results for the following query:");
         System.out.println(searchQuery);
         System.out.println();
 
-        for (Product product : searchQuery) {
+        for (Product product : searchResults) {
             System.out.println(product);
         }
 
-        return searchQuery;
+        return searchResults;
     }
 
     /**
