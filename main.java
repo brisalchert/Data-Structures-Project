@@ -48,7 +48,7 @@ public class main {
                 if(!catalog.getSearchMap().fillerWords.contains(token.toLowerCase())){
                     for(Values v : catalog.getSearchMap().proposition(token)){
                         v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
-                        System.out.println("By " + token + " did you mean " + v.name());
+                        System.out.println("Replaced " + token + " with " + v.name());
                         break;
                     }
                 }
