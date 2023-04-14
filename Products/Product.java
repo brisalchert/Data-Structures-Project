@@ -110,10 +110,12 @@ public abstract class Product {
       final int MAX_ATTRIBUTE_LENGTH = 28;
       final int MAX_TYPE_LENGTH = 12;
       final int MAX_PRICE_LENGTH = 12;
+      final int MAX_ID_LENGTH = 7;
       String modifiedTitle = title;
       String modifiedType = String.valueOf(type);
       String modifiedAttributes = Arrays.toString(attributes);
       String modifiedPrice = currencyFormatter.format(price);
+      String modifiedID = String.valueOf(id);
 
       // Make title standard length
       while (modifiedTitle.length() < MAX_TITLE_LENGTH) {
@@ -135,7 +137,12 @@ public abstract class Product {
           modifiedPrice += " ";
       }
 
-      return modifiedTitle + modifiedType + modifiedAttributes + modifiedPrice + dateFormat.format(listingDate);
+      // Make id standard length
+      while (modifiedID.length() < MAX_ID_LENGTH) {
+          modifiedID += " ";
+      }
+
+      return modifiedID + modifiedTitle + modifiedType + modifiedAttributes + modifiedPrice + dateFormat.format(listingDate);
   }
 
   //mutators ------------------------------------------------------------
