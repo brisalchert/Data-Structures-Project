@@ -48,7 +48,8 @@ public class main {
                 if(!catalog.getSearchMap().fillerWords.contains(token.toLowerCase())){
                     for(Values v : catalog.getSearchMap().proposition(token)){
                         v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
-                        System.out.println("Replaced " + token + " with " + v.name());
+                        System.out.println("\tReplaced " + token + " with " + v.name());
+                        System.out.println();
                         break;
                     }
                 }
@@ -68,9 +69,13 @@ public class main {
             }
         }
 
-        System.out.println("Found " + searchResults.size() + " results for the following query:");
-        System.out.println(usedValues);
+        System.out.println("\tFound " + searchResults.size() + " results for the following query:");
+        System.out.println("\t" + usedValues);
         System.out.println();
+
+        System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.println("\tItem Name\t\t\t\tProduct\t\tAttributes\t\t\t\t\tPrice\t\tListing Date");
+        System.out.println("----------------------------------------------------------------------------------------------------");
 
         for (Product product : searchResults) {
             System.out.println(product);
