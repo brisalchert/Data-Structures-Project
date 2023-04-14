@@ -323,7 +323,13 @@ public class main {
         }
     }
 
-    private static void buyProduct(Catalog catalog, LinkedList<Product> searchresults, boolean isAdmin) {
+    /**
+     * Prompts the user to buy a product and removes it from the catalog if it exists
+     * @param catalog the catalog of products
+     * @param searchResults the list of searched products from the previous search
+     * @param isAdmin true if the user has administrative privileges
+     */
+    private static void buyProduct(Catalog catalog, LinkedList<Product> searchResults, boolean isAdmin) {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         Scanner input = new Scanner(System.in);
 
@@ -341,12 +347,12 @@ public class main {
             // Remove product
             catalog.removeProduct(id);
 
-            getSearchAction(catalog, searchresults, isAdmin);
+            getSearchAction(catalog, searchResults, isAdmin);
         }
         else {
             System.out.println("\tInvalid ID -- cannot purchase product.");
 
-            getSearchAction(catalog, searchresults, isAdmin);
+            getSearchAction(catalog, searchResults, isAdmin);
         }
     }
 
