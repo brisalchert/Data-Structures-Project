@@ -26,6 +26,8 @@ public class main {
 
     public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
+        LinkedList<Product> searchResults = new LinkedList<>();
+        ArrayList<Values> usedValues = new ArrayList<>();
 
         for (Values.Category category : Values.Category.values()) {
             category.getSearchSet().clear();
@@ -54,12 +56,20 @@ public class main {
             }
         }
 
-        ArrayList<Values> searchQuery = catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0);
-        LinkedList<Product> searchResults = new LinkedList<>(catalog.getByAtt(searchQuery));
+        ArrayList<ArrayList<Values>> searchQueries = catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0, new ArrayList<>());
+        for (ArrayList<Values> query : searchQueries) {
+            searchResults.addAll(catalog.getByAtt(query));
 
+            for (Values value : query) {
+                // Check if the value has not been used in a previous query
+                if (!usedValues.contains(value)) {
+                    usedValues.add(value);
+                }
+            }
+        }
 
         System.out.println("Found " + searchResults.size() + " results for the following query:");
-        System.out.println(searchQuery);
+        System.out.println(usedValues);
         System.out.println();
 
         for (Product product : searchResults) {

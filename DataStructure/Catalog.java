@@ -153,10 +153,10 @@ public class Catalog {
         return results;
     }
 
-    public  ArrayList<Values> searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex) {
+    public  ArrayList<ArrayList<Values>> searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex, ArrayList<ArrayList<Values>> queries) {
         for (int x = i; x < categories.length;x++) {
             if(valueIndex + 1 < categories[x].getSearchSet().size()) {
-                searchQueries(categories, s , x, arrayIndex, valueIndex + 1);
+                searchQueries(categories, s , x, arrayIndex, valueIndex + 1, queries);
             }
             if(valueIndex < categories[x].getSearchSet().size()) {
                 s[arrayIndex] = categories[x].getSearchSet().get(valueIndex);
@@ -173,7 +173,9 @@ public class Catalog {
             }
         }
 
-        return query;
+        queries.add(query);
+
+        return queries;
     };
 
     /**
