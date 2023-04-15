@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class PropositionTree {
@@ -28,41 +29,72 @@ public class PropositionTree {
 
     /**
      * returns a hashset of possible propositions for the searched string
+     *
      * @param string searched string
      * @return hashset of possible propositions for the searched string
      */
-    public HashSet<Values> proposition(String string){
+    public Values proposition(String string){
         HashSet<Values> results = new HashSet<>();
-        propHelper(head, head, string.toLowerCase().toCharArray(), 0, results);
+        if(Objects.equals(string, "")) {
+            return null;
+        }
+        propHelper(head, string.toLowerCase().toCharArray(), 0, results);
 
-        return results;
+        Values bestMatch = null;
+        int bestDistance = 1000;
+        for(Values value: results){
+            if (levenshteinDistance(string, value.name()) < bestDistance){
+                bestMatch = value;
+            }
+        }
+
+        return bestMatch;
     }
 
     /**
-     * adds the results that are possible propositions for the searched characterPath to reults
+     * adds the results that are possible propositions for the searched characterPath to results
      * @param searchElement current searchElement being handled
-     * @param prevSearchElement previous searchElement being handled
      * @param characterPath character array representing the path to travel down the PropositionTree
      * @param pathIndex current index of the characterPath
      * @param results the possible results found by following the characterPath
      */
-    private void propHelper(PropositionTree.SearchElement searchElement, PropositionTree.SearchElement prevSearchElement, char[] characterPath, int pathIndex, HashSet<Values> results ){
-        if(pathIndex == characterPath.length){ //if end of characterPath is reached
+    private void propHelper(PropositionTree.SearchElement searchElement, char[] characterPath, int pathIndex, HashSet<Values> results ){
+        if(pathIndex == characterPath.length-1){ //if end of characterPath is reached
             if(!searchElement.results.isEmpty()){  // and there are results
                 results.addAll(searchElement.results); //return them
                 return;
             }
-            getResults(searchElement, results); //otherwise look for possible results
+            getResults(searchElement, results); // else look for other possible results
             return;
         }
 
         Integer address = characterToInteger.get(characterPath[pathIndex]);
         if(searchElement.paths[address] == null){
-            getResults(prevSearchElement, results);
+            getResults(searchElement, results);
         }else {
-            propHelper(searchElement.paths[address], searchElement, characterPath, pathIndex + 1, results); //found path move to it
+            propHelper(searchElement.paths[address], characterPath, pathIndex + 1, results); //found path move to it
         }
     }
+
+    public static int levenshteinDistance(String a, String b) {
+        int[][] dp = new int[a.length() + 1][b.length() + 1];
+
+        for (int i = 0; i <= a.length(); i++) {
+            for (int j = 0; j <= b.length(); j++) {
+                if (i == 0) {
+                    dp[i][j] = j;
+                } else if (j == 0) {
+                    dp[i][j] = i;
+                } else {
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1),
+                        dp[i - 1][j - 1] + (a.charAt(i - 1) == b.charAt(j - 1) ? 0 : 1));
+                }
+            }
+        }
+
+        return dp[a.length()][b.length()];
+    }
+
 
     /**
      * updates results with possible results based at current searchElement
@@ -98,21 +130,22 @@ public class PropositionTree {
         if(pathIndex == characterPath.length){
             element.results.add(result);
             return;
-        }
-        Integer address = characterToInteger.get(characterPath[pathIndex]);
-        if(element.paths[address] == null){
-            PropositionTree.SearchElement newNode = new PropositionTree.SearchElement(characterPath[pathIndex], new PropositionTree.SearchElement[26], new HashSet<Values>());
-            element.paths[address] = newNode;
-            addSearchElement(newNode, result, characterPath, pathIndex + 1); //created new path follow it
         }else {
-            addSearchElement(element.paths[address], result, characterPath, pathIndex + 1); //found path move to it
+            Integer address = characterToInteger.get(characterPath[pathIndex]);
+            if (element.paths[address] == null) {
+                PropositionTree.SearchElement newNode = new PropositionTree.SearchElement(characterPath[pathIndex], new PropositionTree.SearchElement[26], new HashSet<Values>());
+                element.paths[address] = newNode;
+                addSearchElement(newNode, result, characterPath, pathIndex + 1); //created new path follow it
+            } else {
+                addSearchElement(element.paths[address], result, characterPath, pathIndex + 1); //found path move to it
+            }
         }
     }
 
 
     private class SearchElement {
         private Character aChar; //character represented by element
-        public PropositionTree.SearchElement[] paths = new PropositionTree.SearchElement[26]; //other possible paths
+        private PropositionTree.SearchElement[] paths = new PropositionTree.SearchElement[26]; //other possible paths
         private HashSet<Values> results; //results ending with this element
 
         SearchElement(Character aChar, PropositionTree.SearchElement[] paths, HashSet<Values> results){

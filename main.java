@@ -15,7 +15,6 @@ public class main {
     public static void main(String[] args) throws FileNotFoundException {
         Catalog catalog = new Catalog(200);
         TestingMethods test = new TestingMethods(catalog);
-        PropositionTree searchMap = new PropositionTree();
         Scanner input = new Scanner(System.in);
 
         test.load(); //fill Catalog
@@ -31,30 +30,29 @@ public class main {
         ArrayList<Values> usedValues = new ArrayList<>();
 
         for (Values.Category category : Values.Category.values()) {
-            category.getSearchSet().clear();
+            category.getSearchSet().clear(); //clear from previous searches
         }
 
         for (Values attribute : Values.values()) {
-            validTokens.put(attribute.name().toLowerCase(), attribute);
+            validTokens.put(attribute.name().toLowerCase(), attribute); // define valid tokens
         }
 
         Scanner tokenScan = new Scanner(search);
 
-        while (tokenScan.hasNext()) {
+        while (tokenScan.hasNext()) { //extract valid tokens for search
             String token = tokenScan.next();
             if (validTokens.containsKey(token.toLowerCase())) {
                 Values searchValue = validTokens.get(token.toLowerCase());
                 searchValue.getCategory().getSearchSet().add(searchValue);
             }else{
                 if(!catalog.getSearchMap().fillerWords.contains(token.toLowerCase())){
-                    for(Values v : catalog.getSearchMap().proposition(token)){
+                    Values v = catalog.getSearchMap().proposition(token);
+                    if (v != null){
                         v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
                         System.out.println("\tReplaced " + token + " with " + v.name());
                         System.out.println();
-                        break;
                     }
                 }
-
             }
         }
 
