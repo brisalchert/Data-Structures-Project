@@ -2,8 +2,9 @@ package Attributes;
 import java.util.ArrayList;
 import java.util.HashSet;
 import Products.*;
+import SearchMap.Proposition;
 
-public enum Values implements Category {
+public enum Values implements Category, Proposition {
     //Size 0-3
     Shirt (new HashSet<Integer>(), Category.Product, ProductShirt::new),
     Hat   (new HashSet<Integer>(), Category.Product, ProductHat::new),
@@ -101,5 +102,19 @@ public enum Values implements Category {
         public ArrayList<Values> getSearchSet(){
             return this.set;
         }
+    }
+
+    public enum Actions  implements Attributes.Category, Proposition {
+        Exit,
+        Home,
+        Search,
+        Buy,
+        Sell,
+        Sort,
+        PriceMin,
+        PriceMax,
+        DateNew,
+        Login;
+
     }
 };

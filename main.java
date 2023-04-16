@@ -23,6 +23,19 @@ public class main {
 
     }
 
+    public static String actionPropositions(String action, Catalog catalog){
+        for(Values.Actions x : Values.Actions.values()){
+            if(x.name().equalsIgnoreCase(action)){
+                return x.name();
+            }
+        }
+        if(catalog.getActionProp().proposition(action) instanceof Values.Actions result){
+            if(PropositionTree.levenshteinDistance(result.name().toLowerCase(), action.toLowerCase()) <= 3){
+                return result.name();
+            }
+        };
+        return action;
+    }
 
     public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
@@ -46,8 +59,8 @@ public class main {
                 searchValue.getCategory().getSearchSet().add(searchValue);
             }else{
                 if(!catalog.getSearchMap().fillerWords.contains(token.toLowerCase())){
-                    Values v = catalog.getSearchMap().proposition(token);
-                    if (v != null){
+                    Proposition p = catalog.getSearchMap().proposition(token);
+                    if (p instanceof Values v){
                         v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
                         System.out.println("\tReplaced " + token + " with " + v.name());
                         System.out.println();
@@ -110,8 +123,10 @@ public class main {
         System.out.println();
         System.out.print("\tEnter an action: ");
 
-        String action = input.nextLine();
-        homeAction(catalog, action, isAdmin);
+
+        String action =  actionPropositions(input.nextLine(), catalog);
+
+        homeAction(catalog,action , isAdmin);
     }
 
     /**
@@ -205,11 +220,11 @@ public class main {
         System.out.println();
         System.out.print("\tEnter an action: ");
 
-        String action = input.nextLine();
+        String action =  actionPropositions(input.nextLine(), catalog);
 
         System.out.println();
 
-        editAction(catalog, action, isAdmin);
+        editAction(catalog,action , isAdmin);
     }
 
     private static void editAction(Catalog catalog, String action, boolean isAdmin) {
@@ -374,7 +389,7 @@ public class main {
         System.out.println();
         System.out.print("\tEnter an action: ");
 
-        String action = input.nextLine();
+        String action =  actionPropositions(input.nextLine(), catalog);
 
         searchAction(catalog, searchResults, action, isAdmin);
     }
@@ -399,7 +414,8 @@ public class main {
         System.out.println();
         System.out.print("\tEnter a criterion: ");
 
-        String action = input.nextLine();
+        String action =  actionPropositions(input.nextLine(), catalog);
+
         sort(catalog, searchResults, action, isAdmin);
     }
 
@@ -499,7 +515,7 @@ public class main {
         System.out.println();
         System.out.print("\tEnter an action: ");
 
-        String action = input.nextLine();
+        String action =  actionPropositions(input.nextLine(), catalog);
 
         sortAction(catalog, searchResults, action, isAdmin);
     }

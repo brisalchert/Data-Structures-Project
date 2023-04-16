@@ -2,6 +2,7 @@ package DataStructure;
 import Attributes.Values;
 import Products.Product;
 import Products.SortCategory;
+import SearchMap.Proposition;
 import SearchMap.PropositionTree;
 
 import java.io.FileNotFoundException;
@@ -12,6 +13,7 @@ public class Catalog {
     private final int MAX_ID; // Maximum id number for the catalog
     private HashMap<Integer, Product> catalog;
     private final PropositionTree searchMap = new PropositionTree();
+    private final PropositionTree actionProp = new PropositionTree();
 
 
     /**
@@ -25,6 +27,9 @@ public class Catalog {
         for(Values v: Values.values()){
             searchMap.addCharacterPath(v.name().toLowerCase().toCharArray(), v);
         };
+        for(Proposition p : Values.Actions.values()){
+            actionProp.addCharacterPath(p.name().toLowerCase().toCharArray(), p);
+        }
 
     }
 
@@ -42,6 +47,14 @@ public class Catalog {
      */
     public PropositionTree getSearchMap(){
         return searchMap;
+    }
+
+    /**
+     * returns the search map for the UI
+     * @return PropositionTree based on UI actions
+     */
+    public PropositionTree getActionProp(){
+        return actionProp;
     }
 
     /**
