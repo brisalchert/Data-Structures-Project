@@ -106,6 +106,7 @@ public enum Values implements Category, Proposition {
 
     public enum Actions  implements Attributes.Category, Proposition {
         Exit,
+        Edit,
         Home,
         Search,
         Buy,
