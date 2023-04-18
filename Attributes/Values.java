@@ -115,6 +115,7 @@ public enum Values implements Category, Proposition {
         PriceMin,
         PriceMax,
         DateNew,
+        DateOld,
         Login;
 
     }
