@@ -210,7 +210,7 @@ public class Catalog {
     }
 
     public LinkedList<Product> bucketSort(SortCategory sortCategory, LinkedList<Product> list) {
-        int bucketSize = 100;
+        int bucketSize = 5;
         ArrayList<LinkedList<Product>> buckets = new ArrayList<>();
         int max = (int)sortCategory.getMax(sortCategory) / bucketSize;
         LinkedList<Product> result = new LinkedList<>();
@@ -220,7 +220,7 @@ public class Catalog {
             return list;
         }
 
-        // Initialize the buckets each with range 5
+        // Initialize the buckets each with range bucketsize
         for (int bucketIndex = 0; bucketIndex < (max + 1); bucketIndex++) {
             buckets.add(new LinkedList<>());
         }
