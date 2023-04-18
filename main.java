@@ -439,7 +439,6 @@ public class main {
                 System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
                 System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println();
 
                 // Print the sorted search results
                 for (Product product : searchResults) {
@@ -457,7 +456,6 @@ public class main {
                 System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
                 System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println();
 
                 // Print the sorted search results
                 for (Product product : searchResults) {
@@ -475,7 +473,6 @@ public class main {
                 System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
                 System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println();
 
                 // Print the sorted search results
                 for (Product product : searchResults) {
@@ -493,7 +490,6 @@ public class main {
                 System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
                 System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println();
 
                 // Print the sorted search results
                 for (Product product : searchResults) {
