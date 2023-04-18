@@ -13,7 +13,7 @@ public abstract class Product {
     private Values type;                                                                // type of the product
     private String title;                                                               // title of the product
     private Date listingDate;                                                           // when the product first brought to the inventory
-    private int daysAfterMinDay;                                                        // How many days after Jan 1 2023 the product was listed
+    private int daysAfterMinDay;                                                        // How many days after Jan 1 2020 the product was listed
     private int id;                                                                     // unique id
     private Values[] attributes;                                                        // Array of attributes
 
@@ -24,7 +24,7 @@ public abstract class Product {
   * @param id value used for identification
   * @param price cost of Product in dollars
   * @param title display name of Product
-  * @param daysAfterMinDay days after Jan 1 2023 the Product was listed
+  * @param daysAfterMinDay days after Jan 1 2020 the Product was listed
   */
   public Product(Values type, int id, double price, int daysAfterMinDay, String title, Values[] attributes){
         this.price = price;
@@ -36,7 +36,8 @@ public abstract class Product {
         // Set listingDate
         Calendar date = Calendar.getInstance();
         date.setLenient(true);
-        date.set(Calendar.YEAR, 2023);
+        date.set(Calendar.YEAR, 2020);
+        date.set(Calendar.MONTH, Calendar.JANUARY);
         date.set(Calendar.DAY_OF_MONTH, (this.daysAfterMinDay = daysAfterMinDay));
         this.listingDate = date.getTime();
   }
@@ -68,7 +69,7 @@ public abstract class Product {
   }
 
     /**
-     * Returns the number of days after Jan 1 2023 the product was listed
+     * Returns the number of days after Jan 1 2020 the product was listed
      * @return the number of days after the minimum date
      */
   protected int getDaysAfterMinDay() {

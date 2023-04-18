@@ -246,9 +246,16 @@ public class Catalog {
         return result;
     }
 
+    /**
+     * Sorts a bucket using Insertion Sort
+     * @param sortCategory the sorting criterion given by the user
+     * @param list the bucket
+     */
     private void insertionSortBucket(SortCategory sortCategory, LinkedList<Product> list) {
+        // Iterate over each item in the bucket
         for (int listIndex = 0; listIndex < list.size(); listIndex++) {
             int index = listIndex;
+            // Continue to swap item lower in the bucket until it is sorted
             while ((index >= 1) && sortCategory.compare(list.get(index), list.get(index - 1)) < 0) {
                 swapBucketValues(list, list.get(index), list.get(index - 1));
                 index--;
@@ -256,6 +263,12 @@ public class Catalog {
         }
     }
 
+    /**
+     * Swaps two bucket values using a temp variable
+     * @param list the bucket
+     * @param prod1 the first product
+     * @param prod2 the second product
+     */
     private void swapBucketValues(LinkedList<Product> list, Product prod1, Product prod2) {
         int prod2Index = list.indexOf(prod2);
         list.set(list.indexOf(prod1), prod2);
