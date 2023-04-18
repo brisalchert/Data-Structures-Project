@@ -46,14 +46,14 @@ public enum SortCategory implements Comparator<Product> {
         }
     };
 
-    private final double[] MAX_VALUES = {1000, 1000};
+    private final static double[] MAX_VALUES = {1000, 1200};
 
     /**
      * Gets the maximum allowed value for a particular sorting category
      * @param sortCategory the sorting category
      * @return the maximum allowed value
      */
-    public double getMax(SortCategory sortCategory) {
+    public static double getMax(SortCategory sortCategory) {
         return MAX_VALUES[sortCategory.ordinal() / 2];
     }
 

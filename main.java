@@ -91,6 +91,7 @@ public class main {
             }
         }
 
+        // Print the search results
         System.out.println("\tFound " + searchResults.size() + " results for the following query:");
         System.out.println("\t" + usedValues);
         System.out.println();
@@ -121,6 +122,7 @@ public class main {
         System.out.println("\tPlease choose an action below:");
         System.out.println();
 
+        // Print either the normal menu or administrative menu based on user privilege
         if (isAdmin) {
             System.out.println("\tSearch (Search the catalog)\n\tEdit (Edit the catalog)\n\tExit (Exit the store)");
         }
@@ -154,13 +156,16 @@ public class main {
                 System.out.println("####################################################################################################");
                 System.out.println();
 
+                // Get search query
                 System.out.print("\tEnter your search query: ");
                 String search = input.nextLine();
 
                 System.out.println();
 
+                // Search the catalog for the items matching the query
                 LinkedList<Product> searchResults = tokenizeSearch(search, catalog);
 
+                // Get the user's next action to perform on the search results
                 getSearchAction(catalog, searchResults, isAdmin);
             }
             case "login" -> {
@@ -169,9 +174,11 @@ public class main {
                     System.out.println("####################################################################################################");
                     System.out.println();
 
+                    // Request password
                     System.out.print("\tEnter password: ");
                     String password = input.nextLine();
 
+                    // Verify password
                     if (password.equals("password")) {
                         isAdmin = true;
                     }
@@ -181,6 +188,7 @@ public class main {
                     System.out.println();
                 }
                 else {
+                    // Report to the user they are already logged in
                     System.out.println();
                     System.out.println("\tUser is already an admin.");
                     System.out.println();
@@ -189,6 +197,7 @@ public class main {
                 printHome(catalog, isAdmin);
             }
             case "edit" -> {
+                // Check for editing privileges
                 if (isAdmin) {
                     getEditAction(catalog, isAdmin);
                 }
@@ -206,6 +215,7 @@ public class main {
                 System.out.println();
                 System.out.println("\tAction not recognized -- please try again.");
 
+                // Return to home menu
                 printHome(catalog, isAdmin);
             }
         }
@@ -230,6 +240,7 @@ public class main {
         System.out.println();
         System.out.print("\tEnter an action: ");
 
+        // Correct the user input
         String action = actionPropositions(input.nextLine(), catalog);
 
         System.out.println();
@@ -237,11 +248,18 @@ public class main {
         editAction(catalog, action, isAdmin);
     }
 
+    /**
+     * Responds to the edit action chosen by the user, allowing them to edit the catalog
+     * @param catalog the catalog of products
+     * @param action the user's action
+     * @param isAdmin true if the user has administrative privileges
+     */
     private static void editAction(Catalog catalog, String action, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
 
         switch (action.toLowerCase()) {
             case "add" -> {
+                // Ask the user for each attribute of the product
                 Values type = getType();
                 Values color = getColor();
                 Values size = getSize();
@@ -252,6 +270,7 @@ public class main {
 
                 Values[] attributes;
 
+                // Set the attribute list appropriately for plush/non-plush products
                 if (animal != null) {
                     attributes = new Values[] {color, size, animal};
                 }
@@ -263,17 +282,20 @@ public class main {
                 int daysAfterMinDay = getDaysAfterMinDay();
                 String title = getTitle();
 
+                // Add the product to the catalog
                 catalog.addProduct(type, price, daysAfterMinDay, title, attributes);
 
                 System.out.println();
                 System.out.println("Product added to catalog.");
 
+                // Respond to the user's edit action
                 getEditAction(catalog, isAdmin);
             }
             case "remove" -> {
                 int id;
                 System.out.print("Enter the ID of a product to remove: ");
 
+                // Check for invalid input
                 try {
                     id = Integer.parseInt(input.nextLine());
                 }
@@ -287,16 +309,20 @@ public class main {
 
                 System.out.println();
 
+                // Attempt to remove the product from the catalog
                 if (catalog.containsID(id)) {
                     catalog.removeProduct(id);
 
                     System.out.println("Removed product with ID " + id + ".");
 
+                    // Return to the edit menu
                     getEditAction(catalog, isAdmin);
                 }
                 else {
+                    // Report that the product could not be removed
                     System.out.println("Could not remove ID " + id + ": ID does not exist.");
 
+                    // Return to the edit menu
                     getEditAction(catalog, isAdmin);
                 }
             }
@@ -309,6 +335,7 @@ public class main {
             default -> {
                 System.out.println("Edit action not recognized -- please try again.");
 
+                // Ask the user for input again
                 getEditAction(catalog, isAdmin);
             }
         }
@@ -341,6 +368,7 @@ public class main {
                 System.out.println();
                 System.out.println("\tAction not recognized -- please try again.");
 
+                // Ask the user for input again
                 getSearchAction(catalog, searchResults, isAdmin);
             }
         }
@@ -364,17 +392,20 @@ public class main {
 
         System.out.println();
 
+        // Remove the product from the catalog if it exists
         if (catalog.containsID(id)) {
             System.out.println("\tPurchased product: \"" + catalog.get(id).getTitle() + "\" for " + currencyFormatter.format(catalog.get(id).getPrice()) + ".");
 
             // Remove product
             catalog.removeProduct(id);
 
+            // Return to the search menu
             getSearchAction(catalog, searchResults, isAdmin);
         }
         else {
             System.out.println("\tInvalid ID -- cannot purchase product.");
 
+            // Return to the search menu
             getSearchAction(catalog, searchResults, isAdmin);
         }
     }
@@ -399,8 +430,10 @@ public class main {
         System.out.println();
         System.out.print("\tEnter an action: ");
 
+        // Correct the user input if necessary
         String action =  actionPropositions(input.nextLine(), catalog);
 
+        // Respond to the user input
         searchAction(catalog, searchResults, action, isAdmin);
     }
 
@@ -424,8 +457,10 @@ public class main {
         System.out.println();
         System.out.print("\tEnter a criterion: ");
 
+        // Correct the user input if necessary
         String action =  actionPropositions(input.nextLine(), catalog);
 
+        // Sort the search results by the chosen criterion
         sort(catalog, searchResults, action, isAdmin);
     }
 
@@ -441,6 +476,7 @@ public class main {
 
         switch (criterion.toLowerCase()) {
             case "pricemin" -> {
+                // Bucketsort by minimum price
                 searchResults = catalog.bucketSort(SortCategory.PriceCheapToExpensive, searchResults);
 
                 System.out.println();
@@ -455,9 +491,11 @@ public class main {
                     System.out.println("\t" + product);
                 }
 
+                // Return to the sorting menu
                 getSortAction(catalog, searchResults, isAdmin);
             }
             case "pricemax" -> {
+                // Bucketsort by maximum price
                 searchResults = catalog.bucketSort(SortCategory.PriceExpensiveToCheap, searchResults);
 
                 System.out.println();
@@ -472,9 +510,11 @@ public class main {
                     System.out.println("\t" + product);
                 }
 
+                // Return to the sorting menu
                 getSortAction(catalog, searchResults, isAdmin);
             }
             case "dateold" -> {
+                // Bucketsort by oldest date
                 searchResults = catalog.bucketSort(SortCategory.DateOldToNew, searchResults);
 
                 System.out.println();
@@ -489,9 +529,11 @@ public class main {
                     System.out.println("\t" + product);
                 }
 
+                // Return to the sorting menu
                 getSortAction(catalog, searchResults, isAdmin);
             }
             case "datenew" -> {
+                // Bucketsort by newest date
                 searchResults = catalog.bucketSort(SortCategory.DateNewToOld, searchResults);
 
                 System.out.println();
@@ -506,12 +548,14 @@ public class main {
                     System.out.println("\t" + product);
                 }
 
+                // Return to the sorting menu
                 getSortAction(catalog, searchResults, isAdmin);
             }
             default -> {
                 System.out.println();
                 System.out.println("\tSort criterion not recognized -- please try again.");
 
+                // Ask user for sort criterion again
                 getSortCriterion(catalog, searchResults, isAdmin);
             }
         }
@@ -537,8 +581,10 @@ public class main {
         System.out.println();
         System.out.print("\tEnter an action: ");
 
+        // Correct user input if necessary
         String action =  actionPropositions(input.nextLine(), catalog);
 
+        // Respond to the user input
         sortAction(catalog, searchResults, action, isAdmin);
     }
 
@@ -602,6 +648,7 @@ public class main {
             default -> {
                 System.out.println("\tInvalid choice -- please select again.");
 
+                // Ask again for input
                 return getType();
             }
         }
@@ -640,6 +687,7 @@ public class main {
             default -> {
                 System.out.println("\tInvalid choice -- please select again.");
 
+                // Ask again for input
                 return getColor();
             }
         }
@@ -678,6 +726,7 @@ public class main {
             default -> {
                 System.out.println("\tInvalid choice -- please select again.");
 
+                // Ask again for input
                 return getSize();
             }
         }
@@ -717,26 +766,31 @@ public class main {
                 System.out.println();
                 System.out.println("\tInvalid choice -- please select again.");
 
+                // Ask again for input
                 return getAnimal();
             }
         }
     }
 
     /**
-     * Gets the days after Jan 1st 2023 a new product is listed
+     * Gets the days after Jan 1st 2020 a new product is listed
      * @return days after the minimum listing date
      */
     private static int getDaysAfterMinDay() {
         Calendar minDay = Calendar.getInstance();
-        minDay.set(Calendar.YEAR, 2023);
+        // Set the minDay to Jan 1st, 2020
+        minDay.set(Calendar.YEAR, 2020);
         minDay.set(Calendar.DAY_OF_YEAR, 1);
 
         Date current = new Date();
 
+        // Get the nanosecond values for the minimum listing date and the current date
         Temporal start = minDay.toInstant();
         Temporal end = current.toInstant();
 
-        return (int) ChronoUnit.DAYS.between(start, end);
+        // Return the days after the minimum listing date
+        // Testing revealed that the date needed to be corrected by two days
+        return (int) (ChronoUnit.DAYS.between(start, end) + 2);
     }
 
     /**
@@ -748,6 +802,7 @@ public class main {
 
         System.out.print("\tEnter a listing price: ");
 
+        // Get a valid price from the user
         if (input.hasNextDouble()) {
             System.out.println();
 

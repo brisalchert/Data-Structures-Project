@@ -1,6 +1,7 @@
 package TestScripts;
 import Attributes.Values;
 import DataStructure.*;
+import Products.SortCategory;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -10,7 +11,7 @@ public class TestingMethods {
     int size = 0;
     Random random = new Random();
     final double MAX_PRICE = 1000;
-    final int MAX_DATE = 1000;
+    final int MAX_DATE = (int) SortCategory.getMax(SortCategory.DateOldToNew);
 
     public TestingMethods(Catalog cat){
         catalog = cat;
