@@ -4,25 +4,19 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class PropositionTree {
     public char[] alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',};
     public PropositionTree.SearchElement head = new PropositionTree.SearchElement('#', new PropositionTree.SearchElement[26], new HashSet<>());
     public HashMap<Character, Integer> characterToInteger = new HashMap<>();
     public HashSet<String> fillerWords = new HashSet<>();
-    Scanner scan = new Scanner(new File("SearchMap/english"));
 
     /**
      * Constructor
-     * @throws FileNotFoundException if filler english file cant be found
      */
-    public PropositionTree() throws FileNotFoundException {
+    public PropositionTree() {
         for(int i = 0 ; i < 26; i++){ //set up conversion table
             characterToInteger.put(alphabet[i], i);
-        }
-        while(scan.hasNextLine()){ // set up filler table
-            fillerWords.add(scan.nextLine().toLowerCase());
         }
     }
 
@@ -34,15 +28,16 @@ public class PropositionTree {
      */
     public Proposition proposition(String string){
         HashSet<Proposition> results = new HashSet<>();
-        if(Objects.equals(string, "")) {
+        if(Objects.equals(string, "")) { // if nothing is entered
             return null;
         }
         propHelper(head, string.toLowerCase().toCharArray(), 0, results); //get results
 
         Proposition bestMatch = null;
         int bestDistance = 1000;
-        for(Proposition prop: results){ //find closest possible result
-            if (levenshteinDistance(string, prop.name()) < bestDistance){
+        for(Proposition prop: results){ //find closest possible result if one exists
+            int distance = levenshteinDistance(string, prop.name());
+            if (distance < bestDistance && distance <= string.length()/2){
                 bestMatch = prop;
             }
         }
@@ -75,6 +70,12 @@ public class PropositionTree {
         }
     }
 
+    /**
+     * finds the distance between two words based on the edits required to make them similar
+     * @param a string one
+     * @param b string two
+     * @return distance tween a and b
+     */
     public static int levenshteinDistance(String a, String b) {
         int[][] dp = new int[a.length() + 1][b.length() + 1];
 

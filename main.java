@@ -12,7 +12,7 @@ import java.time.temporal.Temporal;
 import java.util.*;
 
 public class main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         Catalog catalog = new Catalog(200);
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
@@ -23,27 +23,39 @@ public class main {
 
     }
 
+    /**
+     *
+     * @param action
+     * @param catalog
+     * @return
+     */
     public static String actionPropositions(String action, Catalog catalog){
-        for(Values.Actions x : Values.Actions.values()){
+        for(Values.Actions x : Values.Actions.values()){ //looks to see if action is valid value
             if(x.name().equalsIgnoreCase(action)){
                 return x.name();
             }
         }
-        if(catalog.getActionProp().proposition(action) instanceof Values.Actions result){
-            if(PropositionTree.levenshteinDistance(result.name().toLowerCase(), action.toLowerCase()) <= 3){
+        if(catalog.getActionProp().proposition(action) instanceof Values.Actions result){ //see if something can be suggested
+            if(PropositionTree.levenshteinDistance(result.name().toLowerCase(), action.toLowerCase()) <= 3){ // if it is within three edits
                 return result.name();
             }
         };
         return action;
     }
 
+    /**
+     *
+     * @param search
+     * @param catalog
+     * @return
+     */
     public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
         LinkedList<Product> searchResults = new LinkedList<>();
         ArrayList<Values> usedValues = new ArrayList<>();
 
         for (Values.Category category : Values.Category.values()) {
-            category.getSearchSet().clear(); //clear from previous searches
+            category.getSearchSet().clear(); //clear search set from previous searches
         }
 
         for (Values attribute : Values.values()) {
@@ -52,19 +64,17 @@ public class main {
 
         Scanner tokenScan = new Scanner(search);
 
-        while (tokenScan.hasNext()) { //extract valid tokens for search
+        while (tokenScan.hasNext()) { //extract possible tokens for search
             String token = tokenScan.next();
-            if (validTokens.containsKey(token.toLowerCase())) { //looks for valid tokens
+            if (validTokens.containsKey(token.toLowerCase())) { //looks if token is valid
                 Values searchValue = validTokens.get(token.toLowerCase());
                 searchValue.getCategory().getSearchSet().add(searchValue);
             }else{
-                if(!catalog.getSearchMap().fillerWords.contains(token.toLowerCase())){ //can valid tokens be suggested
-                    Proposition p = catalog.getSearchMap().proposition(token);
-                    if (p instanceof Values v){
-                        v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
-                        System.out.println("\tReplaced " + token + " with " + v.name());
-                        System.out.println();
-                    }
+                Proposition p = catalog.getSearchProp().proposition(token);
+                if (p instanceof Values v){
+                    v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
+                    System.out.println("\tReplaced " + token + " with " + v.name()); //show user the replacement
+                    System.out.println();
                 }
             }
         }
