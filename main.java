@@ -436,6 +436,10 @@ public class main {
                 System.out.println();
                 System.out.println("\tSearch results sorted by minimum price:");
                 System.out.println();
+                System.out.println("----------------------------------------------------------------------------------------------------");
+                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
+                System.out.println("----------------------------------------------------------------------------------------------------");
+                System.out.println();
 
                 // Print the sorted search results
                 for (Product product : searchResults) {
@@ -449,6 +453,10 @@ public class main {
 
                 System.out.println();
                 System.out.println("\tSearch results sorted by maximum price:");
+                System.out.println();
+                System.out.println("----------------------------------------------------------------------------------------------------");
+                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
+                System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println();
 
                 // Print the sorted search results
@@ -464,6 +472,10 @@ public class main {
                 System.out.println();
                 System.out.println("\tSearch results sorted by earliest listing date:");
                 System.out.println();
+                System.out.println("----------------------------------------------------------------------------------------------------");
+                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
+                System.out.println("----------------------------------------------------------------------------------------------------");
+                System.out.println();
 
                 // Print the sorted search results
                 for (Product product : searchResults) {
@@ -477,6 +489,10 @@ public class main {
 
                 System.out.println();
                 System.out.println("\tSearch results sorted by latest listing date:");
+                System.out.println();
+                System.out.println("----------------------------------------------------------------------------------------------------");
+                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
+                System.out.println("----------------------------------------------------------------------------------------------------");
                 System.out.println();
 
                 // Print the sorted search results
@@ -558,7 +574,7 @@ public class main {
         System.out.println();
         System.out.println("\t\tHat\n\t\tShirt\n\t\tPants\n\t\tPlush");
         System.out.println();
-        System.out.print("Enter product type: ");
+        System.out.print("\tEnter product type: ");
 
         String choice = input.nextLine().toLowerCase();
 
@@ -578,7 +594,7 @@ public class main {
                 return Values.Plush;
             }
             default -> {
-                System.out.println("Invalid choice -- please select again.");
+                System.out.println("\tInvalid choice -- please select again.");
 
                 return getType();
             }
@@ -596,7 +612,7 @@ public class main {
         System.out.println();
         System.out.println("\t\tRed\n\t\tGreen\n\t\tBlue\n\t\tPurple");
         System.out.println();
-        System.out.print("Enter product color: ");
+        System.out.print("\tEnter product color: ");
 
         String choice = input.nextLine().toLowerCase();
 
@@ -616,7 +632,7 @@ public class main {
                 return Values.Purple;
             }
             default -> {
-                System.out.println("Invalid choice -- please select again.");
+                System.out.println("\tInvalid choice -- please select again.");
 
                 return getColor();
             }
@@ -634,7 +650,7 @@ public class main {
         System.out.println();
         System.out.println("\t\tSmall\n\t\tMedium\n\t\tLarge\n\t\tXLarge");
         System.out.println();
-        System.out.print("Enter product size: ");
+        System.out.print("\tEnter product size: ");
 
         String choice = input.nextLine().toLowerCase();
 
@@ -654,7 +670,7 @@ public class main {
                 return Values.XLarge;
             }
             default -> {
-                System.out.println("Invalid choice -- please select again.");
+                System.out.println("\tInvalid choice -- please select again.");
 
                 return getSize();
             }
@@ -672,7 +688,7 @@ public class main {
         System.out.println();
         System.out.println("\t\tCat\n\t\tDog\n\t\tSeal\n\t\tRabbit");
         System.out.println();
-        System.out.print("Enter plush animal: ");
+        System.out.print("\tEnter plush animal: ");
 
         String choice = input.nextLine().toLowerCase();
 
@@ -693,7 +709,7 @@ public class main {
             }
             default -> {
                 System.out.println();
-                System.out.println("Invalid choice -- please select again.");
+                System.out.println("\tInvalid choice -- please select again.");
 
                 return getAnimal();
             }
@@ -724,7 +740,7 @@ public class main {
     private static double getPrice() {
         Scanner input = new Scanner(System.in);
 
-        System.out.print("Enter a listing price: ");
+        System.out.print("\tEnter a listing price: ");
 
         if (input.hasNextDouble()) {
             System.out.println();
@@ -733,7 +749,7 @@ public class main {
         }
         else {
             System.out.println();
-            System.out.println("Invalid price -- please select again.");
+            System.out.println("\tInvalid price -- please select again.");
 
             return getPrice();
         }
@@ -746,7 +762,7 @@ public class main {
     private static String getTitle() {
         Scanner input = new Scanner(System.in);
 
-        System.out.print("Enter a product title: ");
+        System.out.print("\tEnter a product title: ");
 
         return input.nextLine();
     }
