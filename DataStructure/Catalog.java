@@ -170,10 +170,10 @@ public class Catalog {
     public  ArrayList<ArrayList<Values>> searchQueries(Values.Category[] categories, Values[] s, int i, int arrayIndex, int valueIndex, ArrayList<ArrayList<Values>> queries) {
         for (int x = i; x < categories.length;x++) {
             if(valueIndex + 1 < categories[x].getSearchSet().size()) {
-                searchQueries(categories, s , x, arrayIndex, valueIndex + 1, queries);
+                searchQueries(categories, s , x, arrayIndex, valueIndex + 1, queries); //same category new value
             }
             if(valueIndex < categories[x].getSearchSet().size()) {
-                s[arrayIndex] = categories[x].getSearchSet().get(valueIndex);
+                s[arrayIndex] = categories[x].getSearchSet().get(valueIndex); //new category same value
             }
             arrayIndex = arrayIndex + 1;
             valueIndex = 0;

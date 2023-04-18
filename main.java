@@ -54,11 +54,11 @@ public class main {
 
         while (tokenScan.hasNext()) { //extract valid tokens for search
             String token = tokenScan.next();
-            if (validTokens.containsKey(token.toLowerCase())) {
+            if (validTokens.containsKey(token.toLowerCase())) { //looks for valid tokens
                 Values searchValue = validTokens.get(token.toLowerCase());
                 searchValue.getCategory().getSearchSet().add(searchValue);
             }else{
-                if(!catalog.getSearchMap().fillerWords.contains(token.toLowerCase())){
+                if(!catalog.getSearchMap().fillerWords.contains(token.toLowerCase())){ //can valid tokens be suggested
                     Proposition p = catalog.getSearchMap().proposition(token);
                     if (p instanceof Values v){
                         v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));
