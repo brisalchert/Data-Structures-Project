@@ -12,7 +12,7 @@ import java.time.temporal.Temporal;
 import java.util.*;
 
 public class main {
-    public static void main(String[] args) {
+    public main(String[] args) {
         Catalog catalog = new Catalog(200);
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
@@ -24,10 +24,10 @@ public class main {
     }
 
     /**
-     *
-     * @param action
-     * @param catalog
-     * @return
+     * Makes spelling propositions based on the user input for actions in the UI
+     * @param action action entered by user
+     * @param catalog catalog being navigated
+     * @return proposed action
      */
     public static String actionPropositions(String action, Catalog catalog){
         for(Values.Actions x : Values.Actions.values()){ //looks to see if action is valid value
@@ -35,19 +35,14 @@ public class main {
                 return x.name();
             }
         }
-        if(catalog.getActionProp().proposition(action) instanceof Values.Actions result){ //see if something can be suggested
-            if(PropositionTree.levenshteinDistance(result.name().toLowerCase(), action.toLowerCase()) <= 3){ // if it is within three edits
-                return result.name();
-            }
-        };
-        return action;
+        return catalog.getActionProp().proposition(action).name();
     }
 
     /**
-     *
-     * @param search
-     * @param catalog
-     * @return
+     * Takes in a users search and tokenizes it to process and return the results of the search
+     * @param search the users search
+     * @param catalog the catalog being searched
+     * @return results for products matching search
      */
     public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
@@ -79,6 +74,7 @@ public class main {
             }
         }
 
+        //get all possible search quires
         ArrayList<ArrayList<Values>> searchQueries = catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0, new ArrayList<>());
         for (ArrayList<Values> query : searchQueries) {
             searchResults.addAll(catalog.getByAtt(query));
