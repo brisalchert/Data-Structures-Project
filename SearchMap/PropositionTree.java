@@ -36,7 +36,7 @@ public class PropositionTree {
         Proposition bestMatch = null;
         int bestDistance = 1000;
         for(Proposition prop: results){ //find closest possible result if one exists
-            int distance = levenshteinDistance(string, prop.name());
+            int distance = levenshteinDistance(string.toLowerCase(), prop.name().toLowerCase());
             if (distance < bestDistance && distance <= string.length()/2){
                 bestMatch = prop;
             }
@@ -91,7 +91,7 @@ public class PropositionTree {
                 }
             }
         }
-
+        System.out.println(dp[a.length()][b.length()]);
         return dp[a.length()][b.length()];
     }
 

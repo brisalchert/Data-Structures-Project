@@ -19,6 +19,8 @@ public class main {
 
         test.load(); //fill Catalog
 
+        System.out.println(PropositionTree.levenshteinDistance("rid", "red"));
+
         printHome(catalog, false);
 
     }
@@ -202,7 +204,6 @@ public class main {
                     getEditAction(catalog, isAdmin);
                 }
                 else {
-                    System.out.println();
                     System.out.println("\tUser does not have administrative privileges.");
 
                     printHome(catalog, isAdmin);
