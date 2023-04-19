@@ -91,7 +91,6 @@ public class PropositionTree {
                 }
             }
         }
-        System.out.println(dp[a.length()][b.length()]);
         return dp[a.length()][b.length()];
     }
 

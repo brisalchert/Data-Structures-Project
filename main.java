@@ -19,8 +19,6 @@ public class main {
 
         test.load(); //fill Catalog
 
-        System.out.println(PropositionTree.levenshteinDistance("rid", "red"));
-
         printHome(catalog, false);
 
     }
