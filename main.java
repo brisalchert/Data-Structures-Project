@@ -64,7 +64,7 @@ public class main {
             if (validTokens.containsKey(token.toLowerCase())) { //looks if token is valid
                 Values searchValue = validTokens.get(token.toLowerCase());
                 searchValue.getCategory().getSearchSet().add(searchValue);
-            }else{
+            }else{ //look if suggestion can be made
                 Proposition p = catalog.getSearchProp().proposition(token);
                 if (p instanceof Values v){
                     v.getCategory().getSearchSet().add(validTokens.get(v.name().toLowerCase()));

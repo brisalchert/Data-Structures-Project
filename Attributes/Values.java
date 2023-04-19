@@ -29,8 +29,8 @@ public enum Values implements Category, Proposition {
     Seal(new HashSet<Integer>(), Category.Animal),
     Rabbit(new HashSet<Integer>(), Category.Animal);
 
-    private HashSet<Integer> set;
-    private Category category;
+    private final HashSet<Integer> set;
+    private final Category category;
     private TypeConstructor constructor;
 
     /**
