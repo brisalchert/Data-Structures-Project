@@ -63,11 +63,9 @@ public class TestingMethods {
             microseconds = (endTime - startTime) / 1000;
 
             System.out.println("\tAdded " + numberOfProducts + " products to the catalog in " + microseconds + " microseconds.");
-            System.out.println();
         }
         catch (IllegalArgumentException overflow) {
             System.out.println("\tCould not add " + numberOfProducts + " products: quantity too large.");
-            System.out.println();
         }
     }
 
