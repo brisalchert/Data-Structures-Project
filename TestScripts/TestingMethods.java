@@ -18,7 +18,12 @@ public class TestingMethods {
         size = catalog.getSize();
     }
 
-    public void load(){
+    public long load(){
+        long startTime;
+        long endTime;
+
+        startTime = System.nanoTime();
+
         for(int i = 0; i < catalog.getMAX_SIZE();i++) {
             Values type = Values.values()[random.nextInt(0, 4)];
             double price = random.nextDouble(MAX_PRICE) + 1;
@@ -46,5 +51,9 @@ public class TestingMethods {
 
             catalog.addProduct(type, price, daysAfterMinDay, title, attributes);
         }
+
+        endTime = System.nanoTime();
+
+        return endTime - startTime;
     }
 }

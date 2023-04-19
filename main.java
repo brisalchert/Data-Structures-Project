@@ -17,7 +17,8 @@ public class main {
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
 
-        test.load(); //fill Catalog
+        System.out.println();
+        System.out.println("Filled catalog in " + test.load() / 1000000 + " milliseconds."); // fill Catalog and record time to fill
 
         printHome(catalog, false);
 
@@ -80,6 +81,12 @@ public class main {
 
         //get all possible search quires
         ArrayList<ArrayList<Values>> searchQueries = catalog.searchQueries(Values.Category.values(), new Values[Values.Category.values().length] , 0, 0, 0, new ArrayList<>());
+        long startTime;
+        long endTime;
+        long microseconds;
+
+        startTime = System.nanoTime();
+
         for (ArrayList<Values> query : searchQueries) {
             searchResults.addAll(catalog.getByAtt(query));
 
@@ -91,8 +98,12 @@ public class main {
             }
         }
 
+        endTime = System.nanoTime();
+
+        microseconds = ((endTime - startTime) / 1000);
+
         // Print the search results
-        System.out.println("\tFound " + searchResults.size() + " results for the following query:");
+        System.out.println("\tFound " + searchResults.size() + " results for the following query in " + microseconds + " microseconds:");
         System.out.println("\t" + usedValues);
         System.out.println();
 
@@ -283,10 +294,17 @@ public class main {
                 String title = getTitle();
 
                 // Add the product to the catalog
+                long startTime;
+                long endTime;
+
+                startTime = System.nanoTime();
+
                 catalog.addProduct(type, price, daysAfterMinDay, title, attributes);
 
+                endTime = System.nanoTime();
+
                 System.out.println();
-                System.out.println("Product added to catalog.");
+                System.out.println("Product added to catalog in " + (endTime - startTime) / 1000 + " microseconds.");
 
                 // Respond to the user's edit action
                 getEditAction(catalog, isAdmin);
@@ -311,9 +329,16 @@ public class main {
 
                 // Attempt to remove the product from the catalog
                 if (catalog.containsID(id)) {
+                    long startTime;
+                    long endTime;
+
+                    startTime = System.nanoTime();
+
                     catalog.removeProduct(id);
 
-                    System.out.println("Removed product with ID " + id + ".");
+                    endTime = System.nanoTime();
+
+                    System.out.println("Removed product with ID " + id + " in " + (endTime - startTime) / 1000 + " microseconds.");
 
                     // Return to the edit menu
                     getEditAction(catalog, isAdmin);
