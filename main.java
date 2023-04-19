@@ -5,6 +5,7 @@ import Products.Product;
 import Products.SortCategory;
 import TestScripts.TestingMethods;
 
+import java.io.FileNotFoundException;
 import java.text.NumberFormat;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
@@ -43,14 +44,13 @@ public class main {
 
     /**
      * Takes in a users search and tokenizes it to process and return the results of the search
-     *
-     * @param search  the users search
+     * @param search the users search
      * @param catalog the catalog being searched
      * @return results for products matching search
      */
-    public static HashSet<Product> tokenizeSearch(String search, Catalog catalog) {
+    public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
-        HashSet<Product> searchResults = new HashSet<>();
+        LinkedList<Product> searchResults = new LinkedList<>();
         ArrayList<Values> usedValues = new ArrayList<>();
 
         for (Values.Category category : Values.Category.values()) {
@@ -92,7 +92,17 @@ public class main {
         }
 
         // Print the search results
+        System.out.println("\tFound " + searchResults.size() + " results for the following query:");
         System.out.println("\t" + usedValues);
+        System.out.println();
+
+        System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
+        System.out.println("----------------------------------------------------------------------------------------------------");
+
+        for (Product product : searchResults) {
+            System.out.println("\t" + product);
+        }
 
         return searchResults;
     }
@@ -148,40 +158,15 @@ public class main {
 
                 // Get search query
                 System.out.print("\tEnter your search query: ");
-                HashSet<Product> searchSetResults = new HashSet<>();
                 String search = input.nextLine();
 
-                try
-                {
-                    //search the catalog by ID
-                    Product result = catalog.get(Integer.parseInt(search));
-                    if(result != null){
-                        searchSetResults.add(result);
-                    }
-                }
-                catch (NumberFormatException e)
-                {
-                    // Search the catalog for the items whose title matches the query
-                    if(catalog.getTitleCatalog().get(search) != null){
-                        searchSetResults.addAll(catalog.getTitleCatalog().get(search.toLowerCase()));
-                    }
-                    // Search the catalog for the items matching the query
-                    searchSetResults.addAll(tokenizeSearch(search, catalog));
-                }
-                System.out.println("\tFound " + searchSetResults.size() + " results for the following query:");
                 System.out.println();
 
-
-                System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
-                System.out.println("----------------------------------------------------------------------------------------------------");
-
-                for (Product product : searchSetResults) {
-                    System.out.println("\t" + product);
-                }
+                // Search the catalog for the items matching the query
+                LinkedList<Product> searchResults = tokenizeSearch(search, catalog);
 
                 // Get the user's next action to perform on the search results
-                getSearchAction(catalog, new LinkedList<>(searchSetResults), isAdmin);
+                getSearchAction(catalog, searchResults, isAdmin);
             }
             case "login" -> {
                 if (!isAdmin) {

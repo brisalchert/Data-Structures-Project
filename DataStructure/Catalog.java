@@ -5,13 +5,13 @@ import Products.SortCategory;
 import SearchMap.Proposition;
 import SearchMap.PropositionTree;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Catalog {
     private int MAX_SIZE; //max size of catalog
     private int MAX_ID; // Maximum id number for the catalog
     private final HashMap<Integer, Product> catalog;
-    private final HashMap<String, LinkedList<Product>> titleCatalog;
     private final PropositionTree searchProp = new PropositionTree();
     private final PropositionTree actionProp = new PropositionTree();
 
@@ -24,7 +24,6 @@ public class Catalog {
         this.MAX_SIZE = maxSize;
         this.MAX_ID = maxSize * 2;
         this.catalog = new HashMap<Integer, Product>();
-        this.titleCatalog = new HashMap<String, LinkedList<Product>>();
 
         for(Values v: Values.values()){
             searchProp.addCharacterPath(v.name().toLowerCase().toCharArray(), v);
@@ -67,15 +66,6 @@ public class Catalog {
      */
     public int getSize(){ //O(1)
         return catalog.size();
-    }
-
-    /**
-     * Returns titleCatalog
-     *
-     * @return titleCatalog
-     */
-    public HashMap<String, LinkedList<Product>> getTitleCatalog(){ //O(1)
-        return titleCatalog;
     }
 
     /**
@@ -134,13 +124,8 @@ public class Catalog {
                 id = random.nextInt(MAX_ID);
             }
         }
-        Product product = (type.getConstructor().apply(id, price, daysAfterMinDay, title, attributes));
-        catalog.put(id, product);
-        type.getSet().add(id); // add set to type set
-
-        titleCatalog.computeIfAbsent(title.toLowerCase(), k -> new LinkedList<Product>()); // add to title catalog
-        titleCatalog.get(title.toLowerCase()).add(product);
-
+        catalog.put(id, type.getConstructor().apply(id, price, daysAfterMinDay, title, attributes));
+        type.getSet().add(id);
         for(Values attribute : attributes) { //add to corresponding value sets
             attribute.getSet().add(id);
         }
@@ -149,25 +134,20 @@ public class Catalog {
     /**
      * Removes a product from the catalog and returns it
      * @param id id number of product to be removed
+     * @return removed product
      */
-    public void removeProduct(int id){ //O(1) runtime
+    public Product removeProduct(int id){ //O(1) runtime
         Product removedProd = null;
         if(!catalog.containsKey(id)){ //make sure id can be removed
-            return;
+            return removedProd;
         }
         removedProd = catalog.remove(id); //remove the id
 
-        removedProd.getType().getSet().remove(id);//remove from type set
-
-        for(Product product : titleCatalog.get(removedProd.getTitle().toLowerCase())){ // remove from title catalog
-            if(product.getId() == removedProd.getId()){
-                titleCatalog.get(removedProd.getTitle().toLowerCase()).remove(product);
-                break;
-            }
-        }
+        removedProd.getType().getSet().remove(id);
         for(Values attribute : removedProd.getAttributes()){ //remove from Category sets
             attribute.getSet().remove(id);
         }
+        return removedProd;
     }
 
     //##############################CATALOG SEARCHING################################################################
