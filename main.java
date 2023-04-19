@@ -245,7 +245,7 @@ public class main {
         System.out.println();
         System.out.println("\tPlease choose an edit action below:");
         System.out.println();
-        System.out.println("\tAdd (add products to the catalog)\n\tRemove (remove products from the catalog)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
+        System.out.println("\tAdd (add products to the catalog)\n\tAddBulk (add random products to the catalog)\n\tRemove (remove products from the catalog)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
         System.out.println();
         System.out.println("####################################################################################################");
         System.out.println();
@@ -304,14 +304,23 @@ public class main {
                 endTime = System.nanoTime();
 
                 System.out.println();
-                System.out.println("Product added to catalog in " + (endTime - startTime) / 1000 + " microseconds.");
+                System.out.println("\tProduct added to catalog in " + (endTime - startTime) / 1000 + " microseconds.");
 
-                // Respond to the user's edit action
+                // Return to the edit menu
+                getEditAction(catalog, isAdmin);
+            }
+            case "addbulk" -> {
+                TestingMethods bulk = new TestingMethods(catalog);
+
+                // Add random products in bulk
+                bulk.addBulk(getNumProducts());
+
+                // Return to the edit menu
                 getEditAction(catalog, isAdmin);
             }
             case "remove" -> {
                 int id;
-                System.out.print("Enter the ID of a product to remove: ");
+                System.out.print("\tEnter the ID of a product to remove: ");
 
                 // Check for invalid input
                 try {
@@ -319,7 +328,7 @@ public class main {
                 }
                 catch (NumberFormatException error) {
                     System.out.println();
-                    System.out.println("Invalid ID.");
+                    System.out.println("\tInvalid ID.");
 
                     getEditAction(catalog, isAdmin);
                     break;
@@ -338,14 +347,14 @@ public class main {
 
                     endTime = System.nanoTime();
 
-                    System.out.println("Removed product with ID " + id + " in " + (endTime - startTime) / 1000 + " microseconds.");
+                    System.out.println("\tRemoved product with ID " + id + " in " + (endTime - startTime) / 1000 + " microseconds.");
 
                     // Return to the edit menu
                     getEditAction(catalog, isAdmin);
                 }
                 else {
                     // Report that the product could not be removed
-                    System.out.println("Could not remove ID " + id + ": ID does not exist.");
+                    System.out.println("\tCould not remove ID " + id + ": ID does not exist.");
 
                     // Return to the edit menu
                     getEditAction(catalog, isAdmin);
@@ -358,7 +367,7 @@ public class main {
                 break;
             }
             default -> {
-                System.out.println("Edit action not recognized -- please try again.");
+                System.out.println("\tEdit action not recognized -- please try again.");
 
                 // Ask the user for input again
                 getEditAction(catalog, isAdmin);
@@ -851,5 +860,27 @@ public class main {
         System.out.print("\tEnter a product title: ");
 
         return input.nextLine();
+    }
+
+    /**
+     * Gets the number of products to add in bulk from an admin user
+     * @return the number of products to add
+     */
+    private static int getNumProducts() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("\tEnter the number of random products to add: ");
+
+        if (input.hasNextInt()) {
+            System.out.println();
+
+            return input.nextInt();
+        }
+        else {
+            System.out.println();
+            System.out.println("\tInvalid input -- please try again.");
+
+            return getNumProducts();
+        }
     }
 }

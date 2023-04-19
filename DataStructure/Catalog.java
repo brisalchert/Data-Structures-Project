@@ -4,8 +4,6 @@ import Products.Product;
 import Products.SortCategory;
 import SearchMap.Proposition;
 import SearchMap.PropositionTree;
-
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Catalog {
