@@ -110,6 +110,8 @@ public enum Values implements Category, Proposition {
         Home,
         Search,
         Buy,
+        Add,
+        Remove,
         Sell,
         Sort,
         PriceMin,

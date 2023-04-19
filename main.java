@@ -12,7 +12,7 @@ import java.time.temporal.Temporal;
 import java.util.*;
 
 public class main {
-    public main(String[] args) {
+    public static void main(String[] args) {
         Catalog catalog = new Catalog(200);
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
@@ -35,7 +35,11 @@ public class main {
                 return x.name();
             }
         }
-        return catalog.getActionProp().proposition(action).name();
+        String prop = catalog.getActionProp().proposition(action).name();
+        if (prop == null) {
+            return action;
+        }
+        return prop;
     }
 
     /**

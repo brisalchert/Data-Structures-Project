@@ -9,8 +9,8 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Catalog {
-    private final int MAX_SIZE; //max size of catalog
-    private final int MAX_ID; // Maximum id number for the catalog
+    private int MAX_SIZE; //max size of catalog
+    private int MAX_ID; // Maximum id number for the catalog
     private final HashMap<Integer, Product> catalog;
     private final PropositionTree searchProp = new PropositionTree();
     private final PropositionTree actionProp = new PropositionTree();
@@ -23,7 +23,7 @@ public class Catalog {
     public Catalog(int maxSize) {
         this.MAX_SIZE = maxSize;
         this.MAX_ID = maxSize * 2;
-        this.catalog = new HashMap<Integer, Product>(MAX_SIZE);
+        this.catalog = new HashMap<Integer, Product>();
 
         for(Values v: Values.values()){
             searchProp.addCharacterPath(v.name().toLowerCase().toCharArray(), v);
@@ -113,7 +113,8 @@ public class Catalog {
      */
     public void addProduct(Values type, double price, int daysAfterMinDay, String title, Values[] attributes){ //O(1)
         if(getSize() == MAX_SIZE){
-            return;
+            MAX_SIZE = MAX_SIZE*2;
+            MAX_ID = MAX_SIZE*2;
         }
         Random random = new Random();
         int id = random.nextInt(MAX_ID); //set a random id
