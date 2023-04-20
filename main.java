@@ -169,7 +169,7 @@ public class main {
                 catch (NumberFormatException e)
                 {
                     // Search the catalog for the items whose title matches the query
-                    if(catalog.getTitleCatalog().get(search) != null){
+                    if(catalog.getTitleCatalog().get(search.toLowerCase()) != null){
                         searchSetResults.addAll(catalog.getTitleCatalog().get(search.toLowerCase()));
                     }
                     // Search the catalog for the items matching the query
