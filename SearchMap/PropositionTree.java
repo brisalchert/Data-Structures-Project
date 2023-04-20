@@ -63,6 +63,9 @@ public class PropositionTree {
         }
 
         Integer address = characterToInteger.get(characterPath[pathIndex]);
+        if(address == null){
+            return;
+        }
         if(searchElement.paths[address] == null){ //if there is not a path to follow see what results are valid
             getResults(searchElement, results);
         }else {
