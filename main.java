@@ -179,7 +179,7 @@ public class main {
 
                 // Print the search results
                 System.out.println("\tFound " + searchSetResults.size() +  " results for the following query in " + microseconds + " microseconds:");
-                System.out.println("\t" + usedValues);
+                System.out.println("\t\"" + search + "\", " + usedValues);
                 System.out.println();
 
 
