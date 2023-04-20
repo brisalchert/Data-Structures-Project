@@ -12,7 +12,7 @@ import java.util.*;
 
 public class main {
     public static void main(String[] args) {
-        Catalog catalog = new Catalog(200);
+        Catalog catalog = new Catalog(10000);
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
 
