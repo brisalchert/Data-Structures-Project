@@ -133,6 +133,9 @@ public class main {
 
         switch (action.toLowerCase()) {
             case "search" -> {
+                // Set the current page to the first page
+                int pageIndex = 0;
+
                 System.out.println();
                 System.out.println("####################################################################################################");
                 System.out.println();
@@ -176,7 +179,11 @@ public class main {
 
                 microseconds = ((endTime - startTime) / 1000);
 
+                // Convert the searchSetResults to a LinkedList
+                LinkedList<Product> searchResults = new LinkedList<>(searchSetResults);
+
                 // Print the search results
+                System.out.println();
                 System.out.println("\tFound " + searchSetResults.size() + " results for the following query in " + microseconds + " microseconds:");
                 System.out.println("\t" + usedValues);
                 System.out.println();
@@ -186,12 +193,11 @@ public class main {
                 System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
                 System.out.println("----------------------------------------------------------------------------------------------------");
 
-                for (Product product : searchSetResults) {
-                    System.out.println("\t" + product);
-                }
+                // Print all products for the current page of products
+                printPage(searchResults, pageIndex);
 
                 // Get the user's next action to perform on the search results
-                getSearchAction(catalog, new LinkedList<>(searchSetResults), isAdmin);
+                getSearchAction(catalog, searchResults, isAdmin);
             }
             case "login" -> {
                 if (!isAdmin) {
@@ -396,6 +402,24 @@ public class main {
      */
     private static void searchAction(Catalog catalog, LinkedList<Product> searchResults, String action, boolean isAdmin) {
         switch (action.toLowerCase()) {
+            case "page" -> {
+                Scanner input = new Scanner(System.in);
+
+                System.out.println();
+                System.out.print("\tEnter a page number: ");
+
+                // If the input is an integer as expected, print the page
+                if (input.hasNextInt()) {
+                    printPage(searchResults, (input.nextInt() - 1));
+                }
+                else {
+                    System.out.println();
+                    System.out.println("\tInvalid input.");
+                }
+
+                // Return to the search menu
+                getSearchAction(catalog, searchResults, isAdmin);
+            }
             case "sort" -> {
                 getSortCriterion(catalog, searchResults, isAdmin);
             }
@@ -471,7 +495,7 @@ public class main {
         System.out.println();
         System.out.println("\tPlease choose a search action below:");
         System.out.println();
-        System.out.println("\tSort (Sort the list of searched items)\n\tSearch (New query)\n\tBuy (Buy a product)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
+        System.out.println("\tPage (Change pages in search results)\n\tSort (Sort the list of searched items)\n\tSearch (New query)\n\tBuy (Buy a product)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
         System.out.println();
         System.out.println("####################################################################################################");
         System.out.println();
@@ -895,5 +919,34 @@ public class main {
 
             return getNumProducts();
         }
+    }
+
+    private static void printPage(LinkedList<Product> searchResults, int pageIndex) {
+        // Set the number of items to display per page
+        final int pageSize = 20;
+        // Set the max page index
+        int maxPageIndex = (searchResults.size() / pageSize);
+        int endIndex;
+
+        // Ensure validity of the pageIndex
+        if (pageIndex > maxPageIndex || pageIndex < 0) {
+            System.out.println();
+            System.out.println("\tInvalid page index.");
+
+            return;
+        }
+
+        // Set the endIndex for printing to the minimum of the index of the max page length or
+        // the end of the search results
+        endIndex = Math.min(((pageIndex + 1) * pageSize), searchResults.size());
+
+        // Print all products for the current page of products
+        for (int productIndex = (pageIndex * pageSize); productIndex < endIndex; productIndex++) {
+            System.out.println("\t" + searchResults.get(productIndex));
+        }
+
+        // Inform the user of what page they are on and how many pages there are
+        System.out.println();
+        System.out.println("\tPage: " + (pageIndex + 1) + "/" + (maxPageIndex + 1));
     }
 }
