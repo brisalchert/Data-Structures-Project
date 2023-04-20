@@ -140,6 +140,7 @@ public class main {
                 // Get search query
                 System.out.print("\tEnter your search query: ");
                 HashSet<Product> searchSetResults = new HashSet<>();
+                HashSet<Product> titleSetResults = new HashSet<>();
                 String search = input.nextLine();
 
                 long startTime;
@@ -160,7 +161,7 @@ public class main {
                 {
                     // Search the catalog for the items whose title matches the query
                     if(catalog.getTitleCatalog().get(search.toLowerCase()) != null){
-                        searchSetResults.addAll(catalog.getTitleCatalog().get(search.toLowerCase()));
+                        titleSetResults.addAll(catalog.getTitleCatalog().get(search.toLowerCase()));
                     }
                     // Search the catalog for the items matching the query
                     searchSetResults.addAll(tokenizeSearch(search, catalog));
@@ -177,7 +178,7 @@ public class main {
                 microseconds = ((endTime - startTime) / 1000);
 
                 // Print the search results
-                System.out.println("\tFound " + searchSetResults.size() + " results for the following query in " + microseconds + " microseconds:");
+                System.out.println("\tFound " + searchSetResults.size() +  " results for the following query in " + microseconds + " microseconds:");
                 System.out.println("\t" + usedValues);
                 System.out.println();
 
@@ -186,8 +187,14 @@ public class main {
                 System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
                 System.out.println("----------------------------------------------------------------------------------------------------");
 
-                for (Product product : searchSetResults) {
+                //make sure title searches are printed first
+                for (Product product : titleSetResults) {
                     System.out.println("\t" + product);
+                }
+                for (Product product : searchSetResults) { //makes sure that title search results aren't printed twice
+                    if(!titleSetResults.contains(product)){
+                        System.out.println("\t" + product);
+                    }
                 }
 
                 // Get the user's next action to perform on the search results
