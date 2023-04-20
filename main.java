@@ -35,11 +35,11 @@ public class main {
                 return x.name();
             }
         }
-        String prop = catalog.getActionProp().proposition(action).name();
+        Proposition prop = catalog.getActionProp().proposition(action);
         if (prop == null) {
             return action;
         }
-        return prop;
+        return prop.name();
     }
 
     /**
@@ -52,7 +52,6 @@ public class main {
     public static HashSet<Product> tokenizeSearch(String search, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
         HashSet<Product> searchResults = new HashSet<>();
-        ArrayList<Values> usedValues = new ArrayList<>();
 
         for (Values.Category category : Values.Category.values()) {
             category.getSearchSet().clear(); //clear search set from previous searches
@@ -84,16 +83,7 @@ public class main {
         for (ArrayList<Values> query : searchQueries) {
             searchResults.addAll(catalog.getByAtt(query));
 
-            for (Values value : query) {
-                // Check if the value has not been used in a previous query
-                if (!usedValues.contains(value)) {
-                    usedValues.add(value);
-                }
-            }
         }
-
-        // Print the search results
-        System.out.println("\t" + usedValues);
 
         return searchResults;
     }
@@ -176,11 +166,19 @@ public class main {
                     searchSetResults.addAll(tokenizeSearch(search, catalog));
                 }
 
+                ArrayList<Values> usedValues = new ArrayList<>();
+                for(Values.Category category : Values.Category.values()){
+                    usedValues.addAll(category.getSearchSet());
+                }
+
+
                 endTime = System.nanoTime();
 
                 microseconds = ((endTime - startTime) / 1000);
 
+                // Print the search results
                 System.out.println("\tFound " + searchSetResults.size() + " results for the following query in " + microseconds + " microseconds:");
+                System.out.println("\t" + usedValues);
                 System.out.println();
 
 
