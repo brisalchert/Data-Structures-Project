@@ -188,11 +188,6 @@ public class main {
                 System.out.println("\t" + usedValues);
                 System.out.println();
 
-
-                System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
-                System.out.println("----------------------------------------------------------------------------------------------------");
-
                 // Print all products for the current page of products
                 printPage(searchResults, pageIndex);
 
@@ -558,9 +553,6 @@ public class main {
                 System.out.println();
                 System.out.println("\tSearch results sorted by minimum price:");
                 System.out.println();
-                System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
-                System.out.println("----------------------------------------------------------------------------------------------------");
 
                 // Print the sorted search results
                 printPage(searchResults, pageIndex);
@@ -575,9 +567,6 @@ public class main {
                 System.out.println();
                 System.out.println("\tSearch results sorted by maximum price:");
                 System.out.println();
-                System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
-                System.out.println("----------------------------------------------------------------------------------------------------");
 
                 // Print the sorted search results
                 printPage(searchResults, pageIndex);
@@ -592,9 +581,6 @@ public class main {
                 System.out.println();
                 System.out.println("\tSearch results sorted by earliest listing date:");
                 System.out.println();
-                System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
-                System.out.println("----------------------------------------------------------------------------------------------------");
 
                 // Print the sorted search results
                 printPage(searchResults, pageIndex);
@@ -609,9 +595,6 @@ public class main {
                 System.out.println();
                 System.out.println("\tSearch results sorted by latest listing date:");
                 System.out.println();
-                System.out.println("----------------------------------------------------------------------------------------------------");
-                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
-                System.out.println("----------------------------------------------------------------------------------------------------");
 
                 // Print the sorted search results
                 printPage(searchResults, pageIndex);
@@ -952,6 +935,11 @@ public class main {
         // Set the endIndex for printing to the minimum of the index of the max page length or
         // the end of the search results
         endIndex = Math.min(((pageIndex + 1) * pageSize), searchResults.size());
+
+        // Print catalog header
+        System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
+        System.out.println("----------------------------------------------------------------------------------------------------");
 
         // Print all products for the current page of products
         for (int productIndex = (pageIndex * pageSize); productIndex < endIndex; productIndex++) {
