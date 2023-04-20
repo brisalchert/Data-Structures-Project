@@ -468,8 +468,10 @@ public class main {
         if (catalog.containsID(id)) {
             System.out.println("\tPurchased product: \"" + catalog.get(id).getTitle() + "\" for " + currencyFormatter.format(catalog.get(id).getPrice()) + ".");
 
-            // Remove product
+            // Remove product from catalog and searchResults
+            Product prodToBuy = catalog.get(id);
             catalog.removeProduct(id);
+            searchResults.remove(prodToBuy);
 
             // Return to the search menu
             getSearchAction(catalog, searchResults, isAdmin);
@@ -942,7 +944,6 @@ public class main {
 
         // Ensure validity of the pageIndex
         if (pageIndex > maxPageIndex || pageIndex < 0) {
-            System.out.println();
             System.out.println("\tInvalid page index.");
 
             return;
