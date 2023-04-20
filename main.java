@@ -143,6 +143,8 @@ public class main {
                 // Get search query
                 System.out.print("\tEnter your search query: ");
                 HashSet<Product> searchSetResults = new HashSet<>();
+                HashSet<Product> titleSetResults = new HashSet<>();
+                LinkedList<Product> searchResults = new LinkedList<>();
                 String search = input.nextLine();
 
                 long startTime;
@@ -163,7 +165,7 @@ public class main {
                 {
                     // Search the catalog for the items whose title matches the query
                     if(catalog.getTitleCatalog().get(search.toLowerCase()) != null){
-                        searchSetResults.addAll(catalog.getTitleCatalog().get(search.toLowerCase()));
+                        titleSetResults.addAll(catalog.getTitleCatalog().get(search.toLowerCase()));
                     }
                     // Search the catalog for the items matching the query
                     searchSetResults.addAll(tokenizeSearch(search, catalog));
@@ -179,13 +181,22 @@ public class main {
 
                 microseconds = ((endTime - startTime) / 1000);
 
-                // Convert the searchSetResults to a LinkedList
-                LinkedList<Product> searchResults = new LinkedList<>(searchSetResults);
+                // Add title search results to the front of searchResults
+                for (Product product : titleSetResults) {
+                    searchResults.add(product);
+                }
+                
+                // Add the other search results to searchResults
+                for (Product product : searchSetResults) { //makes sure that title search results aren't printed twice
+                    if(!titleSetResults.contains(product)){
+                        searchResults.add(product);
+                    }
+                }
 
                 // Print the search results
                 System.out.println();
-                System.out.println("\tFound " + searchSetResults.size() + " results for the following query in " + microseconds + " microseconds:");
-                System.out.println("\t" + usedValues);
+                System.out.println("\tFound " + searchResults.size() + " results for the following query in " + microseconds + " microseconds:");
+                System.out.println("\t\"" + search + "\", " + usedValues);
                 System.out.println();
 
                 // Print all products for the current page of products
