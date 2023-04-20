@@ -410,6 +410,7 @@ public class main {
 
                 // If the input is an integer as expected, print the page
                 if (input.hasNextInt()) {
+                    System.out.println();
                     printPage(searchResults, (input.nextInt() - 1));
                 }
                 else {
@@ -544,6 +545,8 @@ public class main {
      */
     private static void sort(Catalog catalog, LinkedList<Product> searchResults, String criterion, boolean isAdmin) {
         Scanner input = new Scanner(System.in);
+        // Set default page for sort to the first page of results
+        int pageIndex = 0;
 
         switch (criterion.toLowerCase()) {
             case "pricemin" -> {
@@ -558,9 +561,7 @@ public class main {
                 System.out.println("----------------------------------------------------------------------------------------------------");
 
                 // Print the sorted search results
-                for (Product product : searchResults) {
-                    System.out.println("\t" + product);
-                }
+                printPage(searchResults, pageIndex);
 
                 // Return to the sorting menu
                 getSortAction(catalog, searchResults, isAdmin);
@@ -577,9 +578,7 @@ public class main {
                 System.out.println("----------------------------------------------------------------------------------------------------");
 
                 // Print the sorted search results
-                for (Product product : searchResults) {
-                    System.out.println("\t" + product);
-                }
+                printPage(searchResults, pageIndex);
 
                 // Return to the sorting menu
                 getSortAction(catalog, searchResults, isAdmin);
@@ -596,9 +595,7 @@ public class main {
                 System.out.println("----------------------------------------------------------------------------------------------------");
 
                 // Print the sorted search results
-                for (Product product : searchResults) {
-                    System.out.println("\t" + product);
-                }
+                printPage(searchResults, pageIndex);
 
                 // Return to the sorting menu
                 getSortAction(catalog, searchResults, isAdmin);
@@ -615,9 +612,7 @@ public class main {
                 System.out.println("----------------------------------------------------------------------------------------------------");
 
                 // Print the sorted search results
-                for (Product product : searchResults) {
-                    System.out.println("\t" + product);
-                }
+                printPage(searchResults, pageIndex);
 
                 // Return to the sorting menu
                 getSortAction(catalog, searchResults, isAdmin);
@@ -646,7 +641,7 @@ public class main {
         System.out.println();
         System.out.println("\tPlease choose a sort action below:");
         System.out.println();
-        System.out.println("\tSort (Choose a new sort criterion)\n\tSearch (New query)\n\tBuy (Buy a product)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
+        System.out.println("\tPage (Change pages in the sorted results)\n\tSort (Choose a new sort criterion)\n\tSearch (New query)\n\tBuy (Buy a product)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
         System.out.println();
         System.out.println("####################################################################################################");
         System.out.println();
@@ -663,6 +658,23 @@ public class main {
         Scanner input = new Scanner(System.in);
 
         switch (action.toLowerCase()) {
+            case "page" -> {
+                System.out.println();
+                System.out.print("\tEnter a page number: ");
+
+                // If the input is an integer as expected, print the page
+                if (input.hasNextInt()) {
+                    System.out.println();
+                    printPage(searchResults, (input.nextInt() - 1));
+                }
+                else {
+                    System.out.println();
+                    System.out.println("\tInvalid input.");
+                }
+
+                // Return to the sort menu
+                getSortAction(catalog, searchResults, isAdmin);
+            }
             case "sort" -> {
                 getSortCriterion(catalog, searchResults, isAdmin);
             }
