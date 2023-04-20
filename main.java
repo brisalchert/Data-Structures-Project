@@ -144,7 +144,6 @@ public class main {
                 System.out.print("\tEnter your search query: ");
                 HashSet<Product> searchSetResults = new HashSet<>();
                 HashSet<Product> titleSetResults = new HashSet<>();
-                LinkedList<Product> searchResults = new LinkedList<>();
                 String search = input.nextLine();
 
                 long startTime;
@@ -181,11 +180,9 @@ public class main {
 
                 microseconds = ((endTime - startTime) / 1000);
 
-                // Add title search results to the front of searchResults
-                for (Product product : titleSetResults) {
-                    searchResults.add(product);
-                }
-                
+                // Add title search results to the front of LinkedList searchResults
+                LinkedList<Product> searchResults = new LinkedList<>(titleSetResults);
+
                 // Add the other search results to searchResults
                 for (Product product : searchSetResults) { //makes sure that title search results aren't printed twice
                     if(!titleSetResults.contains(product)){
