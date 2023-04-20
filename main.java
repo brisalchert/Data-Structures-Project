@@ -5,7 +5,6 @@ import Products.Product;
 import Products.SortCategory;
 import TestScripts.TestingMethods;
 
-import java.io.FileNotFoundException;
 import java.text.NumberFormat;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
@@ -17,7 +16,8 @@ public class main {
         TestingMethods test = new TestingMethods(catalog);
         Scanner input = new Scanner(System.in);
 
-        test.load(); //fill Catalog
+        System.out.println();
+        System.out.println("Filled catalog in " + test.load() / 1000000 + " milliseconds."); // fill Catalog and record time to fill
 
         printHome(catalog, false);
 
@@ -44,13 +44,14 @@ public class main {
 
     /**
      * Takes in a users search and tokenizes it to process and return the results of the search
-     * @param search the users search
+     *
+     * @param search  the users search
      * @param catalog the catalog being searched
      * @return results for products matching search
      */
-    public static LinkedList<Product> tokenizeSearch(String search, Catalog catalog) {
+    public static HashSet<Product> tokenizeSearch(String search, Catalog catalog) {
         HashMap<String, Values> validTokens = new HashMap<>();
-        LinkedList<Product> searchResults = new LinkedList<>();
+        HashSet<Product> searchResults = new HashSet<>();
         ArrayList<Values> usedValues = new ArrayList<>();
 
         for (Values.Category category : Values.Category.values()) {
@@ -92,17 +93,7 @@ public class main {
         }
 
         // Print the search results
-        System.out.println("\tFound " + searchResults.size() + " results for the following query:");
         System.out.println("\t" + usedValues);
-        System.out.println();
-
-        System.out.println("----------------------------------------------------------------------------------------------------");
-        System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
-        System.out.println("----------------------------------------------------------------------------------------------------");
-
-        for (Product product : searchResults) {
-            System.out.println("\t" + product);
-        }
 
         return searchResults;
     }
@@ -158,15 +149,51 @@ public class main {
 
                 // Get search query
                 System.out.print("\tEnter your search query: ");
+                HashSet<Product> searchSetResults = new HashSet<>();
                 String search = input.nextLine();
 
+                long startTime;
+                long endTime;
+                long microseconds;
+
+                startTime = System.nanoTime();
+
+                try
+                {
+                    //search the catalog by ID
+                    Product result = catalog.get(Integer.parseInt(search));
+                    if(result != null){
+                        searchSetResults.add(result);
+                    }
+                }
+                catch (NumberFormatException e)
+                {
+                    // Search the catalog for the items whose title matches the query
+                    if(catalog.getTitleCatalog().get(search) != null){
+                        searchSetResults.addAll(catalog.getTitleCatalog().get(search.toLowerCase()));
+                    }
+                    // Search the catalog for the items matching the query
+                    searchSetResults.addAll(tokenizeSearch(search, catalog));
+                }
+
+                endTime = System.nanoTime();
+
+                microseconds = ((endTime - startTime) / 1000);
+
+                System.out.println("\tFound " + searchSetResults.size() + " results for the following query in " + microseconds + " microseconds:");
                 System.out.println();
 
-                // Search the catalog for the items matching the query
-                LinkedList<Product> searchResults = tokenizeSearch(search, catalog);
+
+                System.out.println("----------------------------------------------------------------------------------------------------");
+                System.out.println("\tID     Item Name               Product     Attributes                  Price       Listing Date");
+                System.out.println("----------------------------------------------------------------------------------------------------");
+
+                for (Product product : searchSetResults) {
+                    System.out.println("\t" + product);
+                }
 
                 // Get the user's next action to perform on the search results
-                getSearchAction(catalog, searchResults, isAdmin);
+                getSearchAction(catalog, new LinkedList<>(searchSetResults), isAdmin);
             }
             case "login" -> {
                 if (!isAdmin) {
@@ -233,7 +260,7 @@ public class main {
         System.out.println();
         System.out.println("\tPlease choose an edit action below:");
         System.out.println();
-        System.out.println("\tAdd (add products to the catalog)\n\tRemove (remove products from the catalog)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
+        System.out.println("\tAdd (add products to the catalog)\n\tAddBulk (add random products to the catalog)\n\tRemove (remove products from the catalog)\n\tHome (Return to the homepage)\n\tExit (Exit the store)");
         System.out.println();
         System.out.println("####################################################################################################");
         System.out.println();
@@ -282,17 +309,33 @@ public class main {
                 String title = getTitle();
 
                 // Add the product to the catalog
+                long startTime;
+                long endTime;
+
+                startTime = System.nanoTime();
+
                 catalog.addProduct(type, price, daysAfterMinDay, title, attributes);
 
-                System.out.println();
-                System.out.println("Product added to catalog.");
+                endTime = System.nanoTime();
 
-                // Respond to the user's edit action
+                System.out.println();
+                System.out.println("\tProduct added to catalog in " + (endTime - startTime) / 1000 + " microseconds.");
+
+                // Return to the edit menu
+                getEditAction(catalog, isAdmin);
+            }
+            case "addbulk" -> {
+                TestingMethods bulk = new TestingMethods(catalog);
+
+                // Add random products in bulk
+                bulk.addBulk(getNumProducts());
+
+                // Return to the edit menu
                 getEditAction(catalog, isAdmin);
             }
             case "remove" -> {
                 int id;
-                System.out.print("Enter the ID of a product to remove: ");
+                System.out.print("\tEnter the ID of a product to remove: ");
 
                 // Check for invalid input
                 try {
@@ -300,7 +343,7 @@ public class main {
                 }
                 catch (NumberFormatException error) {
                     System.out.println();
-                    System.out.println("Invalid ID.");
+                    System.out.println("\tInvalid ID.");
 
                     getEditAction(catalog, isAdmin);
                     break;
@@ -310,16 +353,23 @@ public class main {
 
                 // Attempt to remove the product from the catalog
                 if (catalog.containsID(id)) {
+                    long startTime;
+                    long endTime;
+
+                    startTime = System.nanoTime();
+
                     catalog.removeProduct(id);
 
-                    System.out.println("Removed product with ID " + id + ".");
+                    endTime = System.nanoTime();
+
+                    System.out.println("\tRemoved product with ID " + id + " in " + (endTime - startTime) / 1000 + " microseconds.");
 
                     // Return to the edit menu
                     getEditAction(catalog, isAdmin);
                 }
                 else {
                     // Report that the product could not be removed
-                    System.out.println("Could not remove ID " + id + ": ID does not exist.");
+                    System.out.println("\tCould not remove ID " + id + ": ID does not exist.");
 
                     // Return to the edit menu
                     getEditAction(catalog, isAdmin);
@@ -332,7 +382,7 @@ public class main {
                 break;
             }
             default -> {
-                System.out.println("Edit action not recognized -- please try again.");
+                System.out.println("\tEdit action not recognized -- please try again.");
 
                 // Ask the user for input again
                 getEditAction(catalog, isAdmin);
@@ -825,5 +875,27 @@ public class main {
         System.out.print("\tEnter a product title: ");
 
         return input.nextLine();
+    }
+
+    /**
+     * Gets the number of products to add in bulk from an admin user
+     * @return the number of products to add
+     */
+    private static int getNumProducts() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("\tEnter the number of random products to add: ");
+
+        if (input.hasNextInt()) {
+            System.out.println();
+
+            return input.nextInt();
+        }
+        else {
+            System.out.println();
+            System.out.println("\tInvalid input -- please try again.");
+
+            return getNumProducts();
+        }
     }
 }
