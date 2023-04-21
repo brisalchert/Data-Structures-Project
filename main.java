@@ -53,10 +53,6 @@ public class main {
         HashMap<String, Values> validTokens = new HashMap<>();
         HashSet<Product> searchResults = new HashSet<>();
 
-        for (Values.Category category : Values.Category.values()) {
-            category.getSearchSet().clear(); //clear search set from previous searches
-        }
-
         for (Values attribute : Values.values()) {
             validTokens.put(attribute.name().toLowerCase(), attribute); // define valid tokens
         }
@@ -153,7 +149,10 @@ public class main {
                 startTime = System.nanoTime();
 
                 try
-                {
+                {   //clear search set from previous searches
+                    for (Values.Category category : Values.Category.values()) {
+                        category.getSearchSet().clear();
+                    }
                     //search the catalog by ID
                     Product result = catalog.get(Integer.parseInt(search));
                     if(result != null){
