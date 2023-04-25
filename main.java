@@ -913,13 +913,26 @@ public class main {
         System.out.print("\tEnter the number of random products to add: ");
 
         if (input.hasNextInt()) {
-            System.out.println();
+            int number = input.nextInt();
 
-            return input.nextInt();
+            // Check that the input is positive and nonzero
+            if (number > 0) {
+                System.out.println();
+
+                return number;
+            }
+            else {
+                System.out.println();
+                System.out.println("\tInvalid input -- please try again.");
+                System.out.println();
+
+                return getNumProducts();
+            }
         }
         else {
             System.out.println();
             System.out.println("\tInvalid input -- please try again.");
+            System.out.println();
 
             return getNumProducts();
         }
