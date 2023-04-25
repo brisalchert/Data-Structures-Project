@@ -182,8 +182,7 @@ Product adding is also accessed through the "Edit" menu and allows the user to a
 
 Since the catalog is implemented using a HashMap, new products are inserted in arbitrary locations that the programmer does not choose. As such, we cannot specifically insert at the beginning, middle, or end of the HashMap. This is compounded by the fact that we assigned the products random IDs. However, we should expect similar runtime for any additions since adding to a HashMap is always a 0(1) operation.
 
-- Test cases for the "Add" operation:
-
+    Test cases for the "Add" operation:
 
     Input: hat, green, small, 20, "cool green hat"
     Output: Product added to catalog in 220 microseconds.
@@ -194,8 +193,8 @@ Since the catalog is implemented using a HashMap, new products are inserted in a
     Input: plush, purple, xlarge, seal, 50, "enormous seal"
     Output: Product added to catalog in 121 microseconds.
 
-- Test cases for the "AddBulk" operation:
 
+    Test cases for the "AddBulk" operation:
 
     Input: 20
     Output: Added 20 products to the catalog in 325 microseconds.
