@@ -138,7 +138,7 @@ The catalog contains a method called bucketSort() that takes as input a SortCate
 
 ### ❖・Word Suggestion・❖
 
-Word suggestion works by using a modified tree data structure where nodes of the tree contain an identifying character and results. Nodes can also have a children which represent possible paths. When a word is searched, it is broken into a character array that is used as a path to try and traverse the tree. If that path is part of the tree, then the value representing that ???each??? will be returned. If the path is not in the tree then it will be followed for as long as possible and return the results that could be found from the subtree starting at the character-path's end. The result that is closest to the search by edit actions will be returned as long as it doesn't exceed 3 actions otherwise no word is suggested. Run time is O(n), were n is the length of the character array.
+Word suggestion works by using a modified tree data structure where nodes of the tree contain an identifying character and results. Nodes can also have a children which represent possible paths. When a word is searched, it is broken into a character array that is used as a path to try and traverse the tree. If that path is part of the tree, then the value representing the string will be returned. If the path is not in the tree then it will be followed for as long as possible and return the results that could be found from the subtree starting at the character-path's end. The result that is closest to the search by edit actions will be returned as long as it doesn't exceed 3 actions otherwise no word is suggested. Run time is O(n), were n is the length of the character array.
 
 ---
 
