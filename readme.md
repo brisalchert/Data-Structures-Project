@@ -2,6 +2,12 @@
 
 ---
 
+## ❖・Running the Program・❖
+
+To interact with and use the clothing store, simply run main.java in the terminal window. This will open the user interface for the store. You will be prompted to select an action from a list of available actions. Based on the action chosen, more actions will become available. In order to log in as an administrator, you will need to provide a password, which is set to "password". Logging in will provide access to the "Edit" action from the home menu, which allows for adding and removing items from the store while the program is running.
+
+---
+
 ## ❖・Introduction・❖
 
 The objective of this project is to design a program for managing a clothing shop. This includes managing several types of products and creating a user interface for searching through and sorting products. There are several data structures with which one may implement these features, and each has its advantages and disadvantages. In this document, we will discuss these different implementations and which is most preferable for the project.
@@ -72,7 +78,7 @@ We have many options for sorting algorithms to use for our data. Here are a few 
 
 Of these options, we can first exclude selection sort and insertion sort, since both of these algorithms have a worst-case time complexity of 0(n^2). This leaves us with merge sort, quick sort, and bucket sort.
 
-Merge sort and quick sort have worst-case time complexities of 0(n*log(n)), making them much better candidates for large data sets than selection sort and insertion sort. Bucket sort technically has a worst-case time complexity of 0(n^2), although this is for the scenario in which every element ends up in the same bucket. If we implement our data such that the set is uniformly distributed across the set of buckets, the average time complexity becomes 0(n), and we avoid the worst-case scenario of 0(n^2).
+Merge sort and quick sort have worst-case time complexities of 0(n×log(n)), making them much better candidates for large data sets than selection sort and insertion sort. Bucket sort technically has a worst-case time complexity of 0(n^2), although this is for the scenario in which every element ends up in the same bucket. If we implement our data such that the set is uniformly distributed across the set of buckets, the average time complexity becomes 0(n×log(n)), and we avoid the worst-case scenario of 0(n^2).
 
 #### Chosen Sorting Algorithm
 
@@ -90,3 +96,43 @@ There are several sorting algorithms that could be used for this project, althou
 ---
 
 ## ❖・Implementation・❖
+
+This section provides more detailed discussion of some of the code created for this project. This may include classes, enumerations, or even just methods that are worth examining in more detail.
+
+---
+
+### ❖・Products・❖
+
+
+
+---
+
+### ❖・The Catalog・❖
+
+
+
+---
+
+### ❖・Sorting・❖
+
+In order to support sorting by multiple criteria and in different orders (low to high versus high to low), we created an enumeration called SortCategory that implements comparable. Each value in the enumeration has its own implementation of the compare() method, which allows us to define the order for that particular sort.
+
+The Catalog contains a method called bucketSort() that takes as input a SortCategory and a LinkedList of products. The buckets are initialized based on the type of sort being performed, and then each item in the list is added to its respective bucket (Example: items priced between $0.00 and $4.99 would be placed in the first bucket in a price-low-to-high sort). Then, each bucket is sorted using Insertion Sort, which is efficient for small input sizes (such as the size of the buckets). Finally, the results of the individual sorts are concatenated together into a LinkedList that is returned as output.
+
+---
+
+### ❖・Word Suggestion・❖
+
+
+
+---
+
+### ❖・User Interface・❖
+
+The User Interface (UI) for the store consists of methods corresponding to different menus or necessary inputs from the user. For example, there is a method called printHome() that prints the home menu of the store and then  calls a method called homeAction() to get the next action from the user. By designing the UI this way, we can easily return to any menu simply by calling its method.
+
+User actions are handled mostly through the use of switch statements, with the cases being the lowercase selection of actions given to the user. The default case for each switch assumes that the user made an error in their input and calls the method again for the user to make another attempt.
+
+When interacting with the Catalog, the program keeps track of the most recently returned set of search results. This is the list of items that is used for sorting and other search actions. To accommodate a large number of items without over-populating the menu, we chose to limit the number of items per page of results to 20 products. When viewing searched or sorted products, the user can enter page numbers through the available "page" action to view different pages of the list of items.
+
+For editing actions, we chose to allow administrative users to add or remove single items, or add in bulk a selection of random items. This allowed us to stress-test our program as well as measure the runtime of certain methods.
