@@ -879,9 +879,21 @@ public class main {
 
         // Get a valid price from the user
         if (input.hasNextDouble()) {
-            System.out.println();
+            double price = input.nextDouble();
 
-            return input.nextDouble();
+            // Check that price is within acceptable bounds
+            if (price > 0 && price < 1000) {
+                System.out.println();
+
+                return price;
+            }
+            else {
+                System.out.println();
+                System.out.println("\tInvalid price -- please select again.");
+                System.out.println();
+
+                return getPrice();
+            }
         }
         else {
             System.out.println();

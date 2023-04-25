@@ -208,3 +208,54 @@ Since the catalog is implemented using a HashMap, new products are inserted in a
 
     Input: 2000
     Output: Could not add 2000 products: quantity too large.
+
+    Input: -1
+    Output: Invalid input -- please try again.
+
+---
+
+### ❖・Searching・❖
+
+The following test cases will verify the accuracy of the product search function. The search allows search by title, ID, or attributes. For ease of reading, the actual search results are excluded here, although testing verifies that they do match the query.
+
+    Input: red shirt
+    Output: Found 602 results for the following query in 1221 microseconds:
+    "red shirt", [Shirt, Red]
+
+    Input: 961
+    Output: Found 1 results for the following query in 30 microseconds:
+    "961", []
+
+---
+
+### ❖・Word Correction・❖
+
+The following test cases verify that some spelling errors are corrected by the program.
+
+    Search input: rid shirt
+    Output: Replaced rid with Red
+
+    Search input: bleu pant medum
+    Output: Replaced bleu with Blue
+            Replaced pant with Pants
+            Replaced medum with Medium
+
+Several input actions as listed below are also reinterpreted by the program, although the program does not inform the user that they were corrected. Rather, it just continues with the interpreted action.
+
+    Input: hoem
+    Interpretation: "Home"
+
+    Input: saerch
+    Interpretation: "Search"
+
+    Input: paeg
+    Interpretation: "Page"
+
+    Input: buyy
+    Interpretation: "Buy"
+
+---
+
+## ❖・Conclusion・❖
+
+The program successfully emulates a simple clothing store in the terminal window using Java. The word suggestion effectively corrects user input, and all methods sport efficient runtimes due to careful selection of the data structures and algorithms used.
